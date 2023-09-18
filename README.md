@@ -4,7 +4,7 @@ This is a free bible plugin that you can use to display bible passages.
 
 # obs-bible-plugin
 
-How to Install the plugin
+# How to Install the plugin
 1. Download the obs-bible-plugin.zip
 2. Extract the plugin
 3. Copy to a safe location on your computer.
