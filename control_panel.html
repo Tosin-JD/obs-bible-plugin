@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/cp_style.css">
+    <title>Sender</title>
+  </head>
+  <body>
+    <div class="main">
+      <div class="tab-item">
+        <div id="text" class="tab-area">
+          <div class="container">
+            <textarea id="messageInput" placeholder="Type a message"></textarea>
+            <button id="sendButton">Display Text</button>
+          </div>
+        </div>
+        <div id="bibleText" class="tab-area" style="display:none;">
+          <div class="container">
+            <div class="bible-search">
+              <input type="text" id="bible-input" placeholder="Psalms 1:1 or Any Verse content">
+              <input type="submit" id="bible-submit" value="Search">
+              <span id="history">History</span>
+            </div>
+            <div class="bible">
+              <div class="bible-verse" id="bible-verse">
+                <!-- This is the area for bible verses -->
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="songs" class="tab-area" style="display:none;">
+          <div class="container">
+            <div class="song-search">
+              <input type="text" id="song-input" placeholder="Search for Song">
+              <input type="submit" id="song-submit" value="Search">
+            </div>
+            <div class="song" id="song">
+              <div class="song-verse" id="verse1">
+                <p>Omo to mo yare loju o</p>
+                <p>Osi yio to mo na paa</p>
+                <p>Iya to jiya po lori re</p>
+                <p>Baba to ji ya po lori re</p>
+                <p>Omo to mo ya re loju o</p>
+                <p>Osi yio to mo na paa</p>
+              </div>
+              
+              <div class="song-chorus"  id="chorus">
+                <p>CHORUS</p>
+                <p>Many things about tomorrow,</p>
+                <p>I don’t seem to understand;</p>
+                <p>But I know who holds tomorrow,</p>
+                <p>And I know who holds my hand.</p>
+              </div>
+
+              <div class="song-verse"  id="verse2">
+                <p>VERSE 2</p>
+                <p>Ev’ry step is getting brighter,</p>
+                <p>As the golden stairs I climb;</p>
+                <p>Ev’ry burden’s getting lighter;</p>
+                <p>Ev’ry cloud is silver lined.</p>
+                <p>There the sun is always shining,</p>
+                <p>There no tear will dim the eye,</p>
+                <p>At the ending of the rainbow,</p>
+                <p>Where the mountains touch the sky.</p>
+              </div>
+              <div class="song-verse"  id="verse2">
+                <p>VERSE 3</p>
+                <p>I don't know about tomorrow,</p>
+                <p>It may bring me poverty;</p>
+                <p>But the one who feeds the sparrow,</p>
+                <p>Is the one who stands by me.</p>
+                <p>And the path that be my portion,</p>
+                <p>May be through the flame or flood,</p>
+                <p>But His presence goes before me,</p>
+                <p>And I’m covered with His blood.</p>
+              </div>
+            </div>
+            <div class="next-prev">
+              <button id="prev-line">Previous</button>
+              <button id="next-line">Next</button>
+            </div>
+          </div>
+        </div>
+        <div id="listText" class="tab-area" style="display:none;">
+          <div class="container">
+            <input type="text" id="listTitle" placeholder="Title of List">
+            <textarea id="listItems" placeholder="Type a message"></textarea>
+            <button id="sendList">Display Text</button>
+          </div>
+        </div>
+        <div id="setBg" class="tab-area" style="display:none;">
+          <div class="container">
+            <!-- <div class="settings">
+              <span class="font-settings" id="bold">B</span>
+              <span class="font-settings" id="italic">I</span>
+              <span class="font-settings" id="underline">U</span>
+              <span class="paragraphs" id="left">Left</span>
+              <span class="paragraphs" id="center">Center</span>
+              <span class="paragraphs" id="right">Right</span>
+            </div> -->
+            <div class="settings">
+              <div class="color-picker">
+                <label>Background</label>
+                <input type="color" id="bgColor">
+              </div>
+              <div class="color-picker">
+                <label>Font</label>
+                <input type="color" id="fontColor">
+              </div>
+              <div class="color-picker">
+                <label>Title</label>
+                <input type="color" id="titleColor">
+              </div>
+            </div>
+            <div class="slidecontainer">
+              <label>Rounded Corners</label>
+              <input type="range" min="0" max="120" value="0" class="slider" id="borderRadius">
+              <label>Opacity</label>
+              <input type="range" min="0" max="10" value="0" class="slider" id="opacity">
+            </div>
+            <select id="fontStyle">
+                <option value="Arial">Arial</option>
+                <option value="Courier New">Courier New</option>
+                <option value="Georgia">Georgia</option>
+                <option value="Helvetica">Helvetica</option>
+                <option value="Impact">Impact</option>
+                <option value="Lucida Sans Unicode">Lucida Sans Unicode</option>
+                <option value="sans-serif">Sans Serif</option>
+                <option value="Serif">Serif</option>
+                <option value="Tahoma">Tahoma</option>
+                <option value="Times New Roman">Times New Roman</option>
+                <option value="Trebuchet MS">Trebuchet MS</option>
+                <option value="Verdana">Verdana</option>
+            </select>
+            <button id="saveSettings">Save Settings</button>
+            <button id="resetSettings">Reset</button>
+          </div>
+        </div>
+      </div>
+      <div class="tabs">
+        <button class="tab-button" onclick="openTab('text')">Text</button>
+        <button class="tab-button" onclick="openTab('bibleText')">Bible</button>
+        <button class="tab-button" onclick="openTab('songs')">Songs</button>
+        <button class="tab-button" onclick="openTab('listText')">List Text</button>
+        <button class="tab-button" onclick="openTab('setBg')">Settings</button>
+      </div>
+    </div>
+    <script src='kjv_json/kjv.js'></script>
+    <script src="js/control_app.js"></script>
+    <script src="js/sendMessage.js"></script>
+    <script src="js/changeBg.js"></script>
+    
+    <script>
+
+    </script>
+    <script src="js/searchBible.js"></script>
+  </body>
+</html>
