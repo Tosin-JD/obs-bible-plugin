@@ -18,7 +18,10 @@
         <div id="bibleText" class="tab-area" style="display:none;">
           <div class="container">
             <div class="bible-search">
-              <input type="text" id="bible-input" placeholder="Psalms 1:1 or Any Verse content">
+              <div class="input-suggest">
+                <input id="bible-input" placeholder="Psalms 1:1 or Any Verse content">
+                <div id="suggestions"></div>
+              </div>
               <input type="submit" id="bible-submit" value="Search">
               <span id="history">History</span>
             </div>
@@ -155,5 +158,6 @@
 
     </script>
     <script src="js/searchBible.js"></script>
+    <script src="js/suggestBibleBooks.js"></script>
   </body>
 </html>

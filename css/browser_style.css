@@ -5,11 +5,12 @@
   }
 
 body{
-    background-color: rgba(0, 0, 0, 0);
+    background-color: rgba(0, 5, 0, 0);
     color: #fff;
     display: flex;
     justify-content: center;
     align-items: center;
+    align-content: center;
     height: 100vh;
     margin: 0;
     padding: 0;
@@ -21,6 +22,9 @@ body{
     width: 100%;
     height: 100%;
     background-color: #525;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .container {
@@ -29,6 +33,9 @@ body{
     padding: 0.1em;
     overflow-y: hidden;
     opacity: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
    
 #messageDisplay {
