@@ -137,7 +137,7 @@ button:active {
   margin-right: 10px; 
 }
 
-.song-search, .bible-search{
+.add-song, .bible-search{
   max-height: 10%;
   font-size: 1.5em;
   display: flex;
@@ -148,7 +148,7 @@ button:active {
 }
 
 
-#song-input, #song-submit, #bible-submit{
+#bible-submit{
   font-size: 0.6em;
   border-radius: 5px;
   border: none;
@@ -314,7 +314,6 @@ button:active {
   list-style-type: none;
   margin: 0;
   padding: 0;
-  border: 1px solid #ccc;
   border-top: none;
   border-radius: 5px;
   box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.3);
@@ -328,7 +327,6 @@ button:active {
 #suggestions li {
   padding: 10px;
   cursor: pointer;
-  transition: background-color 0.3s;
 }
 
 #suggestions li:hover {
@@ -338,4 +336,15 @@ button:active {
 .selected{
   background-color: #333;
 }
+
+.verse{
+  padding: 10px;
+}
+
+.chorus{
+  background-color: #335;
+  padding: 10px;
+  border-radius: 5px;
+}
+
 

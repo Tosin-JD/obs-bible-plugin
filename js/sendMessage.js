@@ -64,7 +64,6 @@ document.addEventListener('keyup', doc_keyUp, false);
 const songVerseDiv = document.getElementById("song");
 const songElements = songVerseDiv.querySelectorAll("p");
 
-// Convert the NodeList to an array (if needed)
 let songVerses = Array.from(songElements);
 
 
@@ -75,11 +74,28 @@ songVerses.forEach((verse, index) => {
     if (event.target.tagName === "P") {
       const message = event.target.textContent;
       channel.postMessage(message);
+      console.log(message);
+
     }
   });
 });
 
+function displaySongs() {
+  let songDiv = document.getElementById("song-display");
 
+  let pElements = songDiv.querySelectorAll("p");
+
+  let songLines = Array.from(pElements);
+
+  songLines.forEach((verse, index) => {
+    verse.addEventListener("click", (event) => {
+      if (event.target.tagName === "P") {
+        const message = event.target.innerHTML;
+        channel.postMessage(message);
+      }
+    });
+  });
+}
 
 function displayBible() {
   let bibleVerseDiv = document.getElementById("bible-verse");

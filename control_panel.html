@@ -34,12 +34,13 @@
         </div>
         <div id="songs" class="tab-area" style="display:none;">
           <div class="container">
-            <div class="song-search">
-              <input type="text" id="song-input" placeholder="Search for Song">
-              <input type="submit" id="song-submit" value="Search">
+            <div class="add-song" id="add-song">
+              <input type="file" id="fileInput" accept=".txt">
             </div>
             <div class="song" id="song">
-              <div class="song-verse" id="verse1">
+              <div  class="song-verse" id="song-display"></div>
+
+              <div id="verse1">
                 <p>Omo to mo yare loju o</p>
                 <p>Osi yio to mo na paa</p>
                 <p>Iya to jiya po lori re</p>
@@ -56,28 +57,6 @@
                 <p>And I know who holds my hand.</p>
               </div>
 
-              <div class="song-verse"  id="verse2">
-                <p>VERSE 2</p>
-                <p>Ev’ry step is getting brighter,</p>
-                <p>As the golden stairs I climb;</p>
-                <p>Ev’ry burden’s getting lighter;</p>
-                <p>Ev’ry cloud is silver lined.</p>
-                <p>There the sun is always shining,</p>
-                <p>There no tear will dim the eye,</p>
-                <p>At the ending of the rainbow,</p>
-                <p>Where the mountains touch the sky.</p>
-              </div>
-              <div class="song-verse"  id="verse2">
-                <p>VERSE 3</p>
-                <p>I don't know about tomorrow,</p>
-                <p>It may bring me poverty;</p>
-                <p>But the one who feeds the sparrow,</p>
-                <p>Is the one who stands by me.</p>
-                <p>And the path that be my portion,</p>
-                <p>May be through the flame or flood,</p>
-                <p>But His presence goes before me,</p>
-                <p>And I’m covered with His blood.</p>
-              </div>
             </div>
             <div class="next-prev">
               <button id="prev-line">Previous</button>
@@ -153,10 +132,9 @@
     <script src="js/control_app.js"></script>
     <script src="js/sendMessage.js"></script>
     <script src="js/changeBg.js"></script>
-    
-    <script>
 
-    </script>
+
+    <script src="js/loadSong.js"></script>
     <script src="js/searchBible.js"></script>
     <script src="js/suggestBibleBooks.js"></script>
   </body>
