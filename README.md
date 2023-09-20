@@ -20,5 +20,16 @@ This is a free bible plugin that you can use to display bible passages.
 15. You can type on the textbox to display text and you can click on bible passages to display it.
 
 
-## Work in progress
-There is still work that needs to be done in the song section.
+## How to Display A Bible Passage
+1. Go to the Bible tap
+2. Search for the Bible Passage with name such is **John 1:1** or with a passage from the scripture as: **Love your neighbor as yourself**
+3. Click on the Bible Verse to display it.
+
+## How to Add Song
+In order to add song
+1. Go to the **Song** tab
+2. Click on **Choose Tab** to upload a song a txt file that contains a song: **Example:** song.txt
+3. If you want to differentiate chorus, make sure that the first line of the chorus is the word "CHORUS"
+4. Click on any line to display it.
+
+
