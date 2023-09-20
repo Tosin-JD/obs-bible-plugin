@@ -74,12 +74,13 @@ songVerses.forEach((verse, index) => {
     if (event.target.tagName === "P") {
       const message = event.target.textContent;
       channel.postMessage(message);
-      console.log(message);
 
     }
   });
 });
 
+
+// Function to display songs
 function displaySongs() {
   let songDiv = document.getElementById("song-display");
 
@@ -87,15 +88,90 @@ function displaySongs() {
 
   let songLines = Array.from(pElements);
 
-  songLines.forEach((verse, index) => {
-    verse.addEventListener("click", (event) => {
+  let currentLine = null;
+  let currentLineIndex = 0;
+  // console.log()
+
+  songLines.forEach((line, index) => {
+    line.addEventListener("click", (event) => {
+      
+      currentLine = line;
+      currentLineIndex = index;
+      console.log(index);
       if (event.target.tagName === "P") {
         const message = event.target.innerHTML;
         channel.postMessage(message);
       }
     });
   });
+
+  // Event listener for arrow up key
+  window.addEventListener("keydown", (event) => {
+    if (event.key === "ArrowRight") {
+      if(currentLineIndex < songLines.length){
+        currentLineIndex++;
+        const message = songLines[currentLineIndex].innerText;
+        channel.postMessage(message);
+      }else{
+        currentLineIndex = 0;
+      }
+      
+    }
+    if (event.key === "ArrowLeft") {
+      if(currentLineIndex >= 0){
+        currentLineIndex--;
+        const message = songLines[currentLineIndex].innerText;
+        channel.postMessage(message);
+      }else{
+        currentLineIndex = 0;
+      }
+    }
+    if (event.key === "ArrowRight" && event.ctrlKey) {
+      if (currentLineIndex < songLines.length) {
+        currentLineIndex++;
+        const message = songLines[currentLineIndex].innerText;
+        channel.postMessage(message);
+      } else {
+        currentLineIndex = 0;
+      }
+    }
+    if (event.key === "ArrowLeft" && event.ctrlKey) {
+      if(currentLineIndex >= 0){
+        currentLineIndex--;
+        const message = songLines[currentLineIndex].innerText;
+        channel.postMessage(message);
+      }else{
+        currentLineIndex = 0;
+      }
+    }
+  });
+
+  // Event listener for Previous button
+  document.getElementById("prev-line").addEventListener("click", () => {
+    if(currentLineIndex >= 0){
+      currentLineIndex--;
+      const message = songLines[currentLineIndex].innerText;
+      channel.postMessage(message);
+    }else{
+      currentLineIndex = 0;
+    }
+  });
+
+  // Event listener for Next button
+  document.getElementById("next-line").addEventListener("click", () => {
+    if(currentLineIndex < songLines.length){
+      currentLineIndex++;
+      const message = songLines[currentLineIndex].innerText;
+      channel.postMessage(message);
+    }else{
+      currentLineIndex = 0;
+    }
+  });
 }
+
+// Call the displaySongs function to set up event listeners
+displaySongs();
+
 
 function displayBible() {
   let bibleVerseDiv = document.getElementById("bible-verse");
