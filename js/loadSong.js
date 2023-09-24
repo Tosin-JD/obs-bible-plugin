@@ -1,43 +1,6 @@
-// function splitAndOrganizeText(text) {
-//     const lines = text.split('\n');
-//     const verses = text.split('\n\n'); // Split by double newline
-//     const container = document.getElementById('song-display');
-
-//     let tempChorus = null;
-  
-//     verses.forEach((verse, index) => {
-//         const div = document.createElement('div');
-//         const paragraph = verse.split('\n'); // Split each verse by single newline
-
-//         // Assign an id based on content
-//         if (paragraph[0].trim() === 'CHORUS') {
-//             div.id = 'song-chorus';
-//         } else {
-//             div.id = `song-verse-${index + 1}`;
-//         }
-
-//         paragraph.forEach(line => {
-//             const p = document.createElement('p');
-//             p.textContent = line;
-//             div.appendChild(p);
-//         });
-
-//         if (div.id === "song-chorus"){
-//             tempChorus = div;
-//             console.log(container);
-//         }
-
-//         if (div.id[0] !== "song-chorus"){
-//             container.appendChild(div);
-//             container.appendChild(tempChorus);
-//             console.log(container);
-//         }
-        
-//     });
-// }
-
 function splitAndOrganizeText(text) {
-    const verses = text.split('\n\n'); // Split by double newline
+    const verses = text.split('\r\n\r\n');
+    
     const container = document.getElementById('song-display');
     const songDiv = document.getElementById('song');
 
@@ -45,12 +8,16 @@ function splitAndOrganizeText(text) {
     songDiv.innerHTML = null;
     let chorusDiv = null; // Initialize a variable to hold the chorus div
 
+    console.log(verses);
+
+    console.log(JSON.stringify(text, null, 2));
+
     verses.forEach((verse, index) => {
         const div = document.createElement('div');
         const paragraph = verse.split('\n'); // Split each verse by single newline
 
         // Assign an id based on content
-        if (paragraph[0].trim() === 'CHORUS') {
+        if (paragraph[0].includes('CHORUS')) {
             div.id = 'song-chorus';
             div.classList.add("chorus");
             chorusDiv = div; // Store the chorus div
@@ -58,6 +25,8 @@ function splitAndOrganizeText(text) {
             div.id = `song-verse-${index + 1}`;
             div.classList.add("verse");
         }
+
+        // console.log(paragraph);
 
         paragraph.forEach(line => {
             const p = document.createElement('p');

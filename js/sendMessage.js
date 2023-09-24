@@ -97,7 +97,7 @@ function displaySongs() {
       
       currentLine = line;
       currentLineIndex = index;
-      console.log(index);
+      
       if (event.target.tagName === "P") {
         const message = event.target.innerHTML;
         channel.postMessage(message);
@@ -181,10 +181,12 @@ function displayBible() {
 
   // Convert the NodeList to an array (if needed)
   let bibleVerses = Array.from(pElements);
+  let currentVerseIndex = 0;
 
   bibleVerses.forEach((verse, index) => {
     verse.addEventListener("click", (event) => {
       if (event.target.tagName === "P") {
+        currentVerseIndex++;
         const message = event.target.innerHTML;
         channel.postMessage(message);
         
@@ -196,6 +198,68 @@ function displayBible() {
         }
       }
     });
+  });
+
+  // // Event listener for arrow up key
+  // window.addEventListener("keydown", (event) => {
+  //   if (event.key === "ArrowDown") {
+  //     if(currentVerseIndex < bibleVerses.length){
+  //       currentVerseIndex++;
+  //       const message = bibleVerses[currentVerseIndex].innerText;
+  //       channel.postMessage(message);
+  //     }else{
+  //       currentVerseIndex = 0;
+  //     }
+      
+  //   }
+  //   if (event.key === "ArrowUp") {
+  //     if(currentVerseIndex >= 0){
+  //       currentVerseIndex--;
+  //       const message = bibleVerses[currentVerseIndex].innerText;
+  //       channel.postMessage(message);
+  //     }else{
+  //       currentVerseIndex = 0;
+  //     }
+  //   }
+  //   if (event.key === "ArrowDown" && event.ctrlKey) {
+  //     if (currentVerseIndex < bibleVerses.length) {
+  //       currentVerseIndex++;
+  //       const message = bibleVerses[currentVerseIndex].innerText;
+  //       channel.postMessage(message);
+  //     } else {
+  //       currentVerseIndex = 0;
+  //     }
+  //   }
+  //   if (event.key === "ArrowUp" && event.ctrlKey) {
+  //     if(currentVerseIndex >= 0){
+  //       currentVerseIndex--;
+  //       const message = bibleVerses[currentVerseIndex].innerText;
+  //       channel.postMessage(message);
+  //     }else{
+  //       currentVerseIndex = 0;
+  //     }
+  //   }
+  // });
+    // Event listener for Previous button
+  document.getElementById("prev-verse").addEventListener("click", () => {
+    if(currentVerseIndex >= 0){
+      currentVerseIndex--;
+      const message = bibleVerses[currentVerseIndex].innerText;
+      channel.postMessage(message);
+    }else{
+      currentLineIndex = 0;
+    }
+  });
+
+  // Event listener for Next button
+  document.getElementById("next-verse").addEventListener("click", () => {
+    if(currentVerseIndex < bibleVerses.length){
+      currentVerseIndex++;
+      const message = bibleVerses[currentVerseIndex].innerText;
+      channel.postMessage(message);
+    }else{
+      currentVerseIndex = 0;
+    }
   });
 }
 

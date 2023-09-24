@@ -215,7 +215,7 @@ button:active {
   align-items: flex-end;
 }
 
-#next-line, #prev-line{
+.next, .prev{
   padding: 2px 5px;
   margin: 2px;
 
