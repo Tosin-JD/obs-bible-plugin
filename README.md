@@ -28,8 +28,30 @@ This is a free bible plugin that you can use to display bible passages.
 ## How to Add Song
 In order to add song
 1. Go to the **Song** tab
-2. Click on **Choose Tab** to upload a song a txt file that contains a song: **Example:** song.txt
-3. If you want to differentiate chorus, make sure that the first line of the chorus is the word "CHORUS"
+2. Click on **Choose File** to upload a song a txt file that contains a song: **Example:** **song.txt**
+3. If you want to differentiate the chorus, make sure that the first line of the chorus is the word "CHORUS"
 4. Click on any line to display it.
+
+### Your _song.txt_ file should be arranged in this format.
+O soul, are you weary and troubled?
+No light in the darkness you see?
+There’s light for a look at the Savior,
+And life more abundant and free!
+
+CHORUS
+Turn your eyes upon Jesus,
+Look full in His wonderful face,
+And the things of earth will grow strangely dim,
+In the light of His glory and grace.
+
+Through death into life everlasting
+He passed, and we follow Him there;
+O’er us sin no more hath dominion—
+For more than conqu’rors we are!
+
+His Word shall not fail you—He promised;
+Believe Him, and all will be well:
+Then go to a world that is dying,
+His perfect salvation to tell!
 
 
