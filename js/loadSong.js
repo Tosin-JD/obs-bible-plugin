@@ -8,10 +8,6 @@ function splitAndOrganizeText(text) {
     songDiv.innerHTML = null;
     let chorusDiv = null; // Initialize a variable to hold the chorus div
 
-    console.log(verses);
-
-    console.log(JSON.stringify(text, null, 2));
-
     verses.forEach((verse, index) => {
         const div = document.createElement('div');
         const paragraph = verse.split('\n'); // Split each verse by single newline
@@ -26,8 +22,6 @@ function splitAndOrganizeText(text) {
             div.classList.add("verse");
         }
 
-        // console.log(paragraph);
-
         paragraph.forEach(line => {
             const p = document.createElement('p');
             p.textContent = line;
@@ -38,7 +32,7 @@ function splitAndOrganizeText(text) {
 
         // Append the chorus div after verse divs
         if (chorusDiv && div.id.startsWith('song-verse-')) {
-            container.appendChild(chorusDiv.cloneNode(true)); // Clone the chorus div and append it
+            container.appendChild(chorusDiv.cloneNode(true));
         }
     });
     songDiv.appendChild(container);

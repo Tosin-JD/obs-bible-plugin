@@ -90,7 +90,6 @@ function displaySongs() {
 
   let currentLine = null;
   let currentLineIndex = 0;
-  // console.log()
 
   songLines.forEach((line, index) => {
     line.addEventListener("click", (event) => {
@@ -105,46 +104,46 @@ function displaySongs() {
     });
   });
 
-  // Event listener for arrow up key
-  window.addEventListener("keydown", (event) => {
-    if (event.key === "ArrowRight") {
-      if(currentLineIndex < songLines.length){
-        currentLineIndex++;
-        const message = songLines[currentLineIndex].innerText;
-        channel.postMessage(message);
-      }else{
-        currentLineIndex = 0;
-      }
+  // // Event listener for arrow up key
+  // window.addEventListener("keydown", (event) => {
+  //   if (event.key === "ArrowRight") {
+  //     if(currentLineIndex < songLines.length){
+  //       currentLineIndex++;
+  //       const message = songLines[currentLineIndex].innerText;
+  //       channel.postMessage(message);
+  //     }else{
+  //       currentLineIndex = 0;
+  //     }
       
-    }
-    if (event.key === "ArrowLeft") {
-      if(currentLineIndex >= 0){
-        currentLineIndex--;
-        const message = songLines[currentLineIndex].innerText;
-        channel.postMessage(message);
-      }else{
-        currentLineIndex = 0;
-      }
-    }
-    if (event.key === "ArrowRight" && event.ctrlKey) {
-      if (currentLineIndex < songLines.length) {
-        currentLineIndex++;
-        const message = songLines[currentLineIndex].innerText;
-        channel.postMessage(message);
-      } else {
-        currentLineIndex = 0;
-      }
-    }
-    if (event.key === "ArrowLeft" && event.ctrlKey) {
-      if(currentLineIndex >= 0){
-        currentLineIndex--;
-        const message = songLines[currentLineIndex].innerText;
-        channel.postMessage(message);
-      }else{
-        currentLineIndex = 0;
-      }
-    }
-  });
+  //   }
+  //   if (event.key === "ArrowLeft") {
+  //     if(currentLineIndex >= 0){
+  //       currentLineIndex--;
+  //       const message = songLines[currentLineIndex].innerText;
+  //       channel.postMessage(message);
+  //     }else{
+  //       currentLineIndex = 0;
+  //     }
+  //   }
+  //   if (event.key === "ArrowRight" && event.ctrlKey) {
+  //     if (currentLineIndex < songLines.length) {
+  //       currentLineIndex++;
+  //       const message = songLines[currentLineIndex].innerText;
+  //       channel.postMessage(message);
+  //     } else {
+  //       currentLineIndex = 0;
+  //     }
+  //   }
+  //   if (event.key === "ArrowLeft" && event.ctrlKey) {
+  //     if(currentLineIndex >= 0){
+  //       currentLineIndex--;
+  //       const message = songLines[currentLineIndex].innerText;
+  //       channel.postMessage(message);
+  //     }else{
+  //       currentLineIndex = 0;
+  //     }
+  //   }
+  // });
 
   // Event listener for Previous button
   document.getElementById("prev-line").addEventListener("click", () => {
@@ -183,12 +182,15 @@ function displayBible() {
   let bibleVerses = Array.from(pElements);
   let currentVerseIndex = 0;
 
+
+
   bibleVerses.forEach((verse, index) => {
     verse.addEventListener("click", (event) => {
       if (event.target.tagName === "P") {
-        currentVerseIndex++;
+        currentVerseIndex = index;
         const message = event.target.innerHTML;
         channel.postMessage(message);
+        event.target.style.backgroundColor = "#222255";
         
         historyOfBibleVerse.push({name: event.target.id, verse: message});
 
@@ -196,7 +198,16 @@ function displayBible() {
         if (historyOfBibleVerse.length > maxHistorySize) {
           historyOfBibleVerse.shift(); 
         }
+
       }
+
+      // Set background color of all verses to #222222
+      bibleVerses.forEach((v, i) => {
+        if (i !== index) {
+          v.style.backgroundColor = "#222222";
+        }
+      });
+    
     });
   });
 
@@ -244,10 +255,29 @@ function displayBible() {
   document.getElementById("prev-verse").addEventListener("click", () => {
     if(currentVerseIndex >= 0){
       currentVerseIndex--;
-      const message = bibleVerses[currentVerseIndex].innerText;
+      const message = bibleVerses[currentVerseIndex].innerHTML;
       channel.postMessage(message);
-    }else{
-      currentLineIndex = 0;
+
+      // get the height of the display area
+      const displayVerse = document.getElementById('bible');
+      const currentVerse = bibleVerses[currentVerseIndex];
+      
+      const nextVerse = bibleVerses[currentVerseIndex + 1];
+
+      // change the backgroundColor of the current verse
+      nextVerse.style.backgroundColor = "#222222";
+      currentVerse.style.backgroundColor = "#222255";
+      
+      // Calculate the scroll position to ensure the selected item is visible
+      const verseHeight = bibleVerses[currentVerseIndex].offsetHeight;
+      const scrollTop = currentVerse.offsetTop - (verseHeight * 2); // Adjust as needed
+      displayVerse.scrollTop = scrollTop;
+
+      historyOfBibleVerse.push({name: event.target.id, verse: message});
+      const maxHistorySize = 20;
+      if (historyOfBibleVerse.length > maxHistorySize) {
+        historyOfBibleVerse.shift(); 
+      }
     }
   });
 
@@ -255,8 +285,29 @@ function displayBible() {
   document.getElementById("next-verse").addEventListener("click", () => {
     if(currentVerseIndex < bibleVerses.length){
       currentVerseIndex++;
-      const message = bibleVerses[currentVerseIndex].innerText;
+      const message = bibleVerses[currentVerseIndex].innerHTML;
       channel.postMessage(message);
+      historyOfBibleVerse.push({name: event.target.id, verse: message});
+
+      // get the height of the display area
+      const displayVerse = document.getElementById('bible');
+      const currentVerse = bibleVerses[currentVerseIndex];
+      
+      const previousVerse = bibleVerses[currentVerseIndex - 1];
+
+      // change the backgroundColor of the current verse
+      previousVerse.style.backgroundColor = "#222222";
+      currentVerse.style.backgroundColor = "#222255";
+      
+      // Calculate the scroll position to ensure the selected item is visible
+      const verseHeight = bibleVerses[currentVerseIndex].offsetHeight;
+      const scrollTop = currentVerse.offsetTop - (verseHeight * 2); // Adjust as needed
+      displayVerse.scrollTop = scrollTop;
+
+      const maxHistorySize = 20;
+      if (historyOfBibleVerse.length > maxHistorySize) {
+        historyOfBibleVerse.shift(); 
+      }
     }else{
       currentVerseIndex = 0;
     }
