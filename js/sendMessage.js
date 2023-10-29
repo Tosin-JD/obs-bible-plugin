@@ -100,7 +100,13 @@ function displaySongs() {
       if (event.target.tagName === "P") {
         const message = event.target.innerHTML;
         channel.postMessage(message);
+        event.target.style.backgroundColor = "#552222";
       }
+      songLines.forEach((v, i) => {
+        if (i !== index) {
+          v.style.backgroundColor = "#222222";
+        }
+      });
     });
   });
 
@@ -154,6 +160,21 @@ function displaySongs() {
     }else{
       currentLineIndex = 0;
     }
+
+    // get the height of the display area
+      const displayLine = document.getElementById('song');
+      const currentLine = songLines[currentLineIndex];
+      
+      const nextLine = songLines[currentLineIndex + 1];
+
+      // change the backgroundColor of the current verse
+      nextLine.style.backgroundColor = "#222222";
+      currentLine.style.backgroundColor = "#552222";
+      
+      // Calculate the scroll position to ensure the selected item is visible
+      const lineHeight = songLines[currentLineIndex].offsetHeight;
+      const scrollTop = currentLine.offsetTop - (lineHeight * 2); // Adjust as needed
+      displayLine.scrollTop = scrollTop;
   });
 
   // Event listener for Next button
@@ -165,6 +186,21 @@ function displaySongs() {
     }else{
       currentLineIndex = 0;
     }
+
+    // get the height of the display area
+      const displayLine = document.getElementById('song');
+      const currentLine = songLines[currentLineIndex];
+      
+      const previousLine = songLines[currentLineIndex - 1];
+
+      // change the backgroundColor of the current verse
+      previousLine.style.backgroundColor = "#222222";
+      currentLine.style.backgroundColor = "#552222";
+      
+      // Calculate the scroll position to ensure the selected item is visible
+      const lineHeight = songLines[currentLineIndex].offsetHeight;
+      const scrollTop = currentLine.offsetTop - (lineHeight * 2); // Adjust as needed
+      displayLine.scrollTop = scrollTop;
   });
 }
 
@@ -207,7 +243,7 @@ function displayBible() {
           v.style.backgroundColor = "#222222";
         }
       });
-    
+
     });
   });
 
