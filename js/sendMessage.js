@@ -153,54 +153,72 @@ function displaySongs() {
 
   // Event listener for Previous button
   document.getElementById("prev-line").addEventListener("click", () => {
-    if(currentLineIndex >= 0){
+    if(currentLineIndex > 0){
       currentLineIndex--;
       const message = songLines[currentLineIndex].innerText;
       channel.postMessage(message);
-    }else{
-      currentLineIndex = 0;
-    }
 
-    // get the height of the display area
+      // get the height of the display area
       const displayLine = document.getElementById('song');
+
       const currentLine = songLines[currentLineIndex];
-      
       const nextLine = songLines[currentLineIndex + 1];
+
+      const parentNode = currentLine.parentNode;
 
       // change the backgroundColor of the current verse
       nextLine.style.backgroundColor = "#222222";
       currentLine.style.backgroundColor = "#552222";
       
-      // Calculate the scroll position to ensure the selected item is visible
       const lineHeight = songLines[currentLineIndex].offsetHeight;
-      const scrollTop = currentLine.offsetTop - (lineHeight * 2); // Adjust as needed
-      displayLine.scrollTop = scrollTop;
-  });
+      const parentTop = parentNode.offsetTop;
+      const parentHeight = parentNode.offsetHeight;
 
-  // Event listener for Next button
-  document.getElementById("next-line").addEventListener("click", () => {
-    if(currentLineIndex < songLines.length){
-      currentLineIndex++;
-      const message = songLines[currentLineIndex].innerText;
-      channel.postMessage(message);
+      // Calculate scrollTop to center the current line in the parent container
+      const scrollTop = parentTop + currentLine.offsetTop - (parentHeight / 2) + (lineHeight / 2);
+
+      // Set the scrollTop of the display area to scroll to the calculated position
+      displayLine.scrollTop = scrollTop;
     }else{
       currentLineIndex = 0;
     }
 
-    // get the height of the display area
+  });
+
+  // Event listener for Next button
+  document.getElementById("next-line").addEventListener("click", () => {
+    if(currentLineIndex < songLines.length -1){
+      currentLineIndex++;
+      const message = songLines[currentLineIndex].innerText;
+      channel.postMessage(message);
+
+      // get the height of the display area
       const displayLine = document.getElementById('song');
-      const currentLine = songLines[currentLineIndex];
       
+      const currentLine = songLines[currentLineIndex];
       const previousLine = songLines[currentLineIndex - 1];
+
+      const parentNode = currentLine.parentNode;
 
       // change the backgroundColor of the current verse
       previousLine.style.backgroundColor = "#222222";
       currentLine.style.backgroundColor = "#552222";
       
-      // Calculate the scroll position to ensure the selected item is visible
       const lineHeight = songLines[currentLineIndex].offsetHeight;
-      const scrollTop = currentLine.offsetTop - (lineHeight * 2); // Adjust as needed
+      const parentTop = parentNode.offsetTop;
+      const parentHeight = parentNode.offsetHeight;
+
+      // Calculate scrollTop to center the current line in the parent container
+      const scrollTop = parentTop + currentLine.offsetTop - (parentHeight / 2) + (lineHeight / 2);
+
+      // Set the scrollTop of the display area to scroll to the calculated position
       displayLine.scrollTop = scrollTop;
+
+
+    }else{
+      currentLineIndex = 0;
+    }
+
   });
 }
 
