@@ -44,7 +44,7 @@ In order to add song
 
 ### Your _song.txt_ file should be arranged in this format.
 
-1.  
+1.
 O soul, are you weary and troubled?  
 No light in the darkness you see?  
 There’s light for a look at the Savior,  
@@ -56,13 +56,13 @@ Look full in His wonderful face,
 And the things of earth will grow strangely dim,  
 In the light of His glory and grace.  
 
-2.  
+2.
 Through death into life everlasting  
 He passed, and we follow Him there;  
 O’er us sin no more hath dominion—  
 For more than conqu’rors we are!  
 
-3.  
+3.
 His Word shall not fail you—He promised;  
 Believe Him, and all will be well:  
 Then go to a world that is dying,  
