@@ -6,11 +6,6 @@ You can modify it for your use.
 
 ![alt text](https://github.com/Tosin-JD/obs-bible-plugin/blob/main/Screenshot_20230918_110233.png)  
 
-    
-![alt text](https://github.com/Tosin-JD/obs-bible-plugin/blob/main/Screenshot_20230918_110311.png)  
-
-
-![alt text](https://github.com/Tosin-JD/obs-bible-plugin/blob/main/Screenshot_20230918_120017.png)
 
 # How to Install the plugin
 1. Download the **obs-bible-plugin.zip**.
