@@ -1,6 +1,16 @@
 # obs-bible-plugin
 
-This is a free bible plugin that you can use to display bible passages.
+This is a free bible plugin that you can use to display bible passages in Open Broadcasting Studio.
+I made it with the intention of helping me to display Bible passages since I could not find a free plugin to display Bible.
+You can modify it for your use.  
+
+![alt text](https://github.com/Tosin-JD/obs-bible-plugin/blob/main/Screenshot_20230918_110233.png)  
+
+    
+![alt text](https://github.com/Tosin-JD/obs-bible-plugin/blob/main/Screenshot_20230918_110311.png)  
+
+
+![alt text](https://github.com/Tosin-JD/obs-bible-plugin/blob/main/Screenshot_20230918_120017.png)
 
 # How to Install the plugin
 1. Download the **obs-bible-plugin.zip**.
