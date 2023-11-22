@@ -1,4 +1,6 @@
-# obs-bible-plugin
+# obs-bible-plugin  
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 This is a free bible plugin that you can use to display bible passages in Open Broadcasting Studio.
 I made it with the intention of helping me to display Bible passages since I could not find a free plugin to display Bible.
