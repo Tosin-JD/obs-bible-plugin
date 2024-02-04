@@ -6,13 +6,19 @@ This is a free bible plugin that you can use to display bible passages in Open B
 I made it with the intention of helping me to display Bible passages since I could not find a free plugin to display Bible.
 You can modify it for your use.  
 
+OBS Bible Plugin is now available in the following versions.
+
+1. Authorized King James Version (KJV)
+2. New King James Version (NKJV)
+3. Louis Segond 1920 (French Version)
+
 ![alt text](https://github.com/Tosin-JD/obs-bible-plugin/blob/main/Screenshot_20230918_110233.png)  
 
 
 # How to Install the plugin
-1. Download the **obs-bible-plugin.zip**.
+1. Download the **obs-bible-plugin.zip**, **obs-bible-french.zip**, **obs-bibl-multi-lang.zip**.
 2. Extract the zip file.
-3. Copy the **obs-bible-plugin** folder to a safe location in your computer.
+3. Copy the **obs-bible-plugin** or which ever version folder to a safe location in your computer.
 4. Open the **obs-bible-plugin** folder.
 5. Copy the URL or PATH of the **control_panel.html**.
 6. Click on **Docks** > **Custom Browser Docks**
@@ -65,4 +71,4 @@ Believe Him, and all will be well:
 Then go to a world that is dying,  
 His perfect salvation to tell!
 
-
+I hope that as time goes on, we would be able to add more translations. Thank you. God bless you.
