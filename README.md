@@ -6,11 +6,16 @@ This is a free bible plugin that you can use to display bible passages in Open B
 I made it with the intention of helping me to display Bible passages since I could not find a free plugin to display Bible.
 You can modify it for your use.  
 
+[!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/tosin789)  
+
+I am available for work.
+
 OBS Bible Plugin is now available in the following versions.
 
 1. Authorized King James Version (KJV)
 2. New King James Version (NKJV)
 3. Louis Segond 1920 (French Version)
+4. Reina-Valera Revision 1960 (RV60) (Spanish Version)
 
 ![alt text](https://github.com/Tosin-JD/obs-bible-plugin/blob/main/Screenshot_20230918_110233.png)  
 
@@ -72,3 +77,5 @@ Then go to a world that is dying,
 His perfect salvation to tell!
 
 I hope that as time goes on, we would be able to add more translations. Thank you. God bless you.
+
+Made with ❤️.
