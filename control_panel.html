@@ -11,8 +11,13 @@
       <div class="tab-item">
         <div id="text" class="tab-area">
           <div class="container">
-            <textarea id="messageInput" placeholder="Type a message"></textarea>
-            <button id="sendButton">Display Text</button>
+            <textarea id="messageInput" placeholder="Type a message
+Click on History to get previous text
+DoubleClick on History erase all previous text"></textarea>
+            <div class="display-btn-group">
+              <button id="sendButton">Display Text</button>
+              <button id="copyHistoryButton">History</button>
+            </div>
           </div>
         </div>
         <div id="bibleText" class="tab-area" style="display:none;">
@@ -25,7 +30,7 @@
               <input type="submit" id="bible-submit" value="Search">
               <span id="history">History</span>
             </div>
-            <div class="bible" id="bible">
+            <div class="bible-container" id="bible">
               <div class="bible-verse" id="bible-verse">
                 <!-- This is the area for bible verses -->
               </div>
@@ -134,13 +139,16 @@
         <button class="tab-button" onclick="openTab('listText')">List</button>
         <button class="tab-button" onclick="openTab('setBg')">Settings</button>
       </div>
+      <div class="toggle">
+        <button id="toggle-display">Toggle Display</button>
+      </div>
     </div>
     <script src='kjv_json/kjv.js'></script>
     <script src="js/control_app.js"></script>
     <script src="js/sendMessage.js"></script>
-    <script src="js/changeBg.js"></script>
     <script src="js/settings.js"></script>
     <script src="js/utils.js"></script>
+    <script src="js/toggle_display.js"></script>
 
 
     <script src="js/loadSong.js"></script>
