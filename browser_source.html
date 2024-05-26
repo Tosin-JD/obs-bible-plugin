@@ -14,6 +14,7 @@
     </div>
   </div>
 
+  <script src="js/browser_app.js"></script>
   <script>
     const bgContainer = document.getElementById("bg-container");
     const messageDisplay = document.getElementById("messageDisplay");
@@ -82,6 +83,22 @@
             messageDisplay.style.textAlign = event.data.selectedTextAlignment;
             localStorage.setItem('textAlign', event.data.selectedTextAlignment);
           }
+          if (event.data.toggleDisplay){
+            let body = document.body;
+            if (body.style.display === "none") {
+              body.style.display = "flex";
+              localStorage.setItem('toggleDisplay', "flex");
+            } else {
+              body.style.display = "none";
+              localStorage.setItem('toggleDisplay', "none");
+            }
+            adjustFontSizeBasedOnScroll();
+            // // Create a new MutationObserver instance
+            // let observer_two = new MutationObserver(handleMutation);
+
+            // // Start observing changes in the inner HTML of the <p> element
+            // observer_two.observe(document.getElementById('messageDisplay'), { childList: true });
+          }
         }
     };
 
@@ -89,7 +106,6 @@
         settingsChannel.close();
     });
   </script>
-  <script src="js/browser_app.js"></script>
   <script src="js/load_settings.js"></script>
 </body>
 </html>
