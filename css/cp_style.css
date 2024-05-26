@@ -14,25 +14,80 @@ body {
   margin: 0;
   padding: 0;
   height: 100vh;
+  min-width: 400px;
+  min-height: 450px;
   overflow: hidden;
 }
 
+/* =========================================== */
+/* arranging the items vertically on the main text area */
 .main{
   height: 100vh;
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  padding-bottom: 10px;
+  justify-content: center;
+  align-content: center;
+  padding: 5px;
+}
+
+.tab-item{
+  /* min-height: 90%;  */
+  /* max-height: 100%; */
+  /* height: inherit; */
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.tabs {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  min-width: 100%;
+}
+
+.toggle {
+  /* flex-grow: 1; */
+}
+/* ==================================================== */
+.tab-area{
+  flex-grow: 1;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .container {
+  flex-grow: 1;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding:5px;
-  height: 100%;
+  align-content: stretch;
+  gap: 5px;
   box-sizing: border-box;
+}
+
+.add-song, .bible-search{
+  font-size: 1.5em;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  width: 100%;
+}
+
+.song, .bible-container{
+  width: 100%;
+  font-size: 1em;
+  overflow-y: scroll;
+  height: 60vh;
+}
+
+.next-prev{
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  align-items: flex-end;
 }
 
 textarea{
@@ -45,7 +100,6 @@ textarea{
   color: #ffffff;
   resize: none;
   border-radius: 8px;
-  margin-top: 10px;
 }
 
 #colorPicker{
@@ -60,12 +114,15 @@ select{
   border-radius: 5px;
 }
 
+#listItems{
+  flex-grow: 1;
+}
+
 #listTitle{
   width: 100%;
   height: 10%;
   max-height: 10%;
   padding: 10px;
-  margin-top: 10px;
   font-size: 15px;
   border: none;
   background-color: #363636;
@@ -75,8 +132,7 @@ select{
   border-radius: 8px;
 }
 
-button {
-  margin-top: 10px;
+button{
   padding: 10px;
   font-size: 16px;
   background-color: #363636;
@@ -84,9 +140,9 @@ button {
   border: none;
   cursor: pointer;
   width: 100%;
-  max-width: 90%;
+  max-width: 100%;
   border-radius: 8px;
-  margin-bottom: 10px;
+  margin: 5px 0px;
 }
 
 button:active {
@@ -96,7 +152,6 @@ button:active {
   
 @media (max-width: 600px) {
   .container {
-    padding: 0 20px;
   }
 
   textarea,
@@ -106,27 +161,7 @@ button:active {
   }
 }
 
-.tab-item{
-  min-height: 90%;
-  max-height: 90%;
-}
 
-.tabs {
-  display: flex;
-  flex-direction: row;
-  padding: 0 5px;
-  width: 100%;
-  min-width: 100%;
-}
-
-.tab-area{
-  height: 100%;
-  min-height: 100%;
-  min-width: 100%;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-}
 
 .tab-button {
   margin: 0px;
@@ -139,17 +174,6 @@ button:active {
 .tab-button:not(:last-child) {
   margin-right: 10px; 
 }
-
-.add-song, .bible-search{
-  max-height: 10%;
-  font-size: 1.5em;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  margin: 5px 0px;
-  width: 100%;
-}
-
 
 #bible-submit{
   font-size: 0.6em;
@@ -188,15 +212,7 @@ button:active {
   padding: 5px;
 }
 
-.song, .bible{
-  width: 100%;
-  height: 80%;
-  font-size: 1em;
-  overflow-y: scroll;
-}
-
-
-.song p, .bible p{
+.song p, .bible-container p{
   margin: 5px 0px;
   background-color: #222;
   border-radius: 5px;
@@ -204,25 +220,16 @@ button:active {
 }
 
 .bible-verse, .song-verse, .song-chorus{
-  padding: 10px 5px;
+  padding: 5px;
   background-color: #444;
   border-radius: 5px;
   margin-right: 5px;
-  margin-bottom: 10px;
 }
 
-
-.next-prev{
-  display: flex;
-  flex-direction: row;
-  align-items: flex-end;
-}
-
-.next, .prev{
-  padding: 2px 5px;
-  margin: 2px;
-
-}
+/* .next, .prev{
+  padding: 0px 5px;
+  margin: 0px;
+} */
 
 
 /* Styling for the scroll bar */
@@ -358,3 +365,24 @@ button:active {
 .font-settings #italic{
   font-style: italic;
 }
+
+.display-btn-group{
+  width: 100%;
+  display: flex;
+}
+
+#sendButton{
+  margin-right: 5px;
+}
+
+#copyHistoryButton{
+  background-color: #185218;
+  width: 30%;
+}
+
+#toggle-display{
+  background-color: #185218;
+  margin-right: 0px;
+  width: 100%;
+}
+
