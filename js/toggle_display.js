@@ -6,6 +6,7 @@ toggleDisplay.addEventListener("click", function() {
     sendSettingsChannel.postMessage({ toggleDisplay: "toggleDisplay" });
     sendSettingsChannel.close();
 });
+<<<<<<< HEAD
 
 document.addEventListener('keydown', function(event) {
     if (event.ctrlKey && event.key === 'ArrowUp') {
@@ -15,3 +16,5 @@ document.addEventListener('keydown', function(event) {
         sendSettingsChannel.close();
     }
 });
+=======
+>>>>>>> 011b7423a553ca7018aa38c82443b16038a60b75

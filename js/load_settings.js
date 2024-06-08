@@ -9,7 +9,10 @@ var savedBoldState = localStorage.getItem('boldState');
 var savedItalicState = localStorage.getItem('italicState');
 var savedUnderlineState = localStorage.getItem('underlineState');
 var savedTextAlign = localStorage.getItem('textAlign');
+<<<<<<< HEAD
 var savedDisplay = localStorage.getItem('toggleDisplay');
+=======
+>>>>>>> 011b7423a553ca7018aa38c82443b16038a60b75
 
 if (savedMessage){
     messageDisplay.innerHTML = savedMessage;
@@ -24,11 +27,19 @@ if (savedFontFamily) {
 }
 
 if (savedFontColor) {
+<<<<<<< HEAD
     bgContainer.style.color = savedFontColor;
 }
 
 if (savedBorderRadius) {
     bgContainer.style.borderRadius = savedBorderRadius + "px";
+=======
+    messageDisplay.style.fontColor = savedFontColor;
+}
+
+if (savedBorderRadius) {
+    bgContainer.style.borderRadius = savedBorderRadius;
+>>>>>>> 011b7423a553ca7018aa38c82443b16038a60b75
 }
 
 if (savedTitleColor) {
@@ -49,6 +60,10 @@ if (savedUnderlineState){
 }
 
 if (savedTextAlign){
+<<<<<<< HEAD
     var body = document.body;
     body.style.display = savedDisplay;
+=======
+    messageDisplay.style.textAlign = savedTextAlign;
+>>>>>>> 011b7423a553ca7018aa38c82443b16038a60b75
 }

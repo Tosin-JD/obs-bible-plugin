@@ -5,13 +5,18 @@ function openTab(tabName) {
   }
   var selectedTab = document.getElementById(tabName);
   if (selectedTab) {
+<<<<<<< HEAD
     selectedTab.style.display = "flex";
     localStorage.setItem("selectedTab", tabName);
+=======
+    selectedTab.style.display = "block";
+>>>>>>> 011b7423a553ca7018aa38c82443b16038a60b75
   }
 }
 
 const bblVerseDiv = document.getElementById("bible-verse");
 
+<<<<<<< HEAD
 
 
 
@@ -43,3 +48,18 @@ window.onload = function() {
   }
   displayBible();
 };
+=======
+for (let i = 0; i < 31; i++) {
+  const name = bible_data[i].name;
+
+  const cleanedName = name.replace(/:/g, '-').replace(/\s/g, '').toLowerCase();
+  const ariParts = bible_data[i].ari.split(':');
+  const middleAriPart = ariParts[2];
+
+  const pElement = document.createElement('p');
+  pElement.id = cleanedName;
+  pElement.innerHTML = `<span>${name.toUpperCase()}</span> ${bible_data[i].verse}`;
+  bblVerseDiv.appendChild(pElement);
+}
+
+>>>>>>> 011b7423a553ca7018aa38c82443b16038a60b75
