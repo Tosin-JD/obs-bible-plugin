@@ -1,9 +1,8 @@
-<<<<<<< HEAD
 # obs-bible-plugin  
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-This is a free bible plugin in African Languages (SWAHILI AND YORUBA for now) that you can use to display bible passages in Open Broadcasting Studio.
+This is a free bible plugin that you can use to display bible passages in Open Broadcasting Studio.
 I made it with the intention of helping me to display Bible passages since I could not find a free plugin to display Bible.
 You can modify it for your use.  
 
@@ -80,4 +79,3 @@ His perfect salvation to tell!
 I hope that as time goes on, we would be able to add more translations. Thank you. God bless you.
 
 Made with ❤️.
-=======
