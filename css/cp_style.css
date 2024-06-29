@@ -8,22 +8,12 @@
 } 
 
 body {
-<<<<<<< HEAD
-=======
-  background-color: #1a1a1a;
-  color: #ffffff;
->>>>>>> 011b7423a553ca7018aa38c82443b16038a60b75
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
   height: 100vh;
-<<<<<<< HEAD
   /* min-width: 400px; */
   min-height: 450px !important;
-=======
-  min-width: 400px;
-  min-height: 450px;
->>>>>>> 011b7423a553ca7018aa38c82443b16038a60b75
   overflow: hidden;
 }
 
@@ -58,7 +48,6 @@ body {
 .toggle {
   /* flex-grow: 1; */
 }
-<<<<<<< HEAD
 
 /* ======================================================== */
 /* grid container for bible and songs */
@@ -70,7 +59,6 @@ body {
 }
 
 .grid-item {
-  /* background-color: #111; */
   /* padding: 20px;
   text-align: center; */
 }
@@ -79,12 +67,6 @@ body {
 .tab-area{
   flex-grow: 1;
   /* height: 100%; */
-=======
-/* ==================================================== */
-.tab-area{
-  flex-grow: 1;
-  height: 100%;
->>>>>>> 011b7423a553ca7018aa38c82443b16038a60b75
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -99,7 +81,7 @@ body {
   box-sizing: border-box;
 }
 
-.add-song, .bible-search{
+.bible-search{
   font-size: 1.5em;
   display: flex;
   flex-direction: row;
@@ -107,21 +89,14 @@ body {
   width: 100%;
 }
 
-<<<<<<< HEAD
 .no-border{
   border: none;
 }
-=======
->>>>>>> 011b7423a553ca7018aa38c82443b16038a60b75
 .song, .bible-container{
   width: 100%;
   font-size: 1em;
   overflow-y: scroll;
-<<<<<<< HEAD
   height: 100%;
-=======
-  height: 60vh;
->>>>>>> 011b7423a553ca7018aa38c82443b16038a60b75
 }
 
 .next-prev{
@@ -137,79 +112,53 @@ textarea{
   padding: 10px;
   font-size: 20px;
   border: none;
-<<<<<<< HEAD
-=======
-  background-color: #363636;
-  color: #ffffff;
->>>>>>> 011b7423a553ca7018aa38c82443b16038a60b75
   resize: none;
   border-radius: 8px;
 }
 
-<<<<<<< HEAD
 .row{
   display: flex;
   flex-direction: row;
   gap: 5px;
 }
 
-=======
->>>>>>> 011b7423a553ca7018aa38c82443b16038a60b75
+.column{
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
 #colorPicker{
   margin: 10px;
 }
 
 select{
   width: 100%;
-  font-size: 1em;
-<<<<<<< HEAD
-=======
-  background-color: #363636;
-  color: #fff;
->>>>>>> 011b7423a553ca7018aa38c82443b16038a60b75
+  font-size: 0.8em;
   border-radius: 5px;
+}
+
+.settings-icons{
+  font-size: 0.75em;
+  border-radius: 5px;
+  padding: 5px;
+  align-items: center;
+  width: 100%;
 }
 
 #listItems{
   flex-grow: 1;
 }
 
-<<<<<<< HEAD
-button{
+button, .btn-file-upload{
   padding: 10px;
   font-size: 16px;
-=======
-#listTitle{
-  width: 100%;
-  height: 10%;
-  max-height: 10%;
-  padding: 10px;
-  font-size: 15px;
-  border: none;
-  background-color: #363636;
-  font-family: monospace sans-serif;
-  color: #fff;
-  resize: none;
-  border-radius: 8px;
-}
-
-button{
-  padding: 10px;
-  font-size: 16px;
-  background-color: #363636;
->>>>>>> 011b7423a553ca7018aa38c82443b16038a60b75
-  color: #ffffff;
   border: none;
   cursor: pointer;
   width: 100%;
   max-width: 100%;
   border-radius: 8px;
   margin: 5px 0px;
-}
-
-button:active {
-  background-color: #222;
-  color: #ccc;
 }
   
 @media (max-width: 600px) {
@@ -224,18 +173,9 @@ button:active {
 }
 
 
-<<<<<<< HEAD
 .tab-button {
   margin: 0px;
   padding: 5px 10px;
-=======
-
-.tab-button {
-  margin: 0px;
-  padding: 5px 10px;
-  color: #ccc;
-  background-color: #222;
->>>>>>> 011b7423a553ca7018aa38c82443b16038a60b75
   font-size: 0.8em;
 }
 
@@ -250,90 +190,63 @@ button:active {
   padding: 0px 10px;
 }
 
-.input-suggest{
-<<<<<<< HEAD
+.input-group{
   /* margin-bottom: 5px; */
   flex-grow: 1;
-  width: 50%;
+  width: 100%;
+  flex-grow: 1;
 }
 
 .search-group{
   flex-grow: 3;
   flex-basis: auto;
   width: 100%;
-=======
-  margin-bottom: 5px;
->>>>>>> 011b7423a553ca7018aa38c82443b16038a60b75
+}
+
+.input{
+  border-radius: 5px;
+  height: 100%;
+  width: 100%;
+  border: none;
+  padding: 0px 10px;
+  flex-grow: 1;
 }
 
 #bible-input{
   height: 100%;
   width: 100%;
-  border-radius: 5px;
   border: none;
   padding: 0px 10px;
 }
 
 #song-input, #bible-input{
-<<<<<<< HEAD
-=======
-  background-color: #ccc;
-  color: #222;
->>>>>>> 011b7423a553ca7018aa38c82443b16038a60b75
   min-width: 50%;
-}
-
-#song-submit, #bible-submit{
-  background-color: #ddf;
-  color: #000;
 }
 
 #history{
   font-size: 0.6em;
-<<<<<<< HEAD
-=======
-  background-color: #252;
->>>>>>> 011b7423a553ca7018aa38c82443b16038a60b75
   border-radius: 5px;
   padding: 5px;
 }
 
 .song p, .bible-container p{
   margin: 5px 0px;
-<<<<<<< HEAD
-  background-color: #252525;
-=======
-  background-color: #222;
->>>>>>> 011b7423a553ca7018aa38c82443b16038a60b75
   border-radius: 5px;
   padding: 2px;
 }
 
-<<<<<<< HEAD
 
 
 .bible-verse, .song-verse{
   height: 10vh;
-=======
-.bible-verse, .song-verse, .song-chorus{
-  padding: 5px;
-  background-color: #444;
->>>>>>> 011b7423a553ca7018aa38c82443b16038a60b75
   border-radius: 5px;
   margin-right: 5px;
 }
 
-<<<<<<< HEAD
 .song-chorus{
   border-radius: 5px;
   margin-right: 5px;
 }
-=======
-/* .next, .prev{
-  padding: 0px 5px;
-  margin: 0px;
-} */
->>>>>>> 011b7423a553ca7018aa38c82443b16038a60b75
 
 
 /* Styling for the scroll bar */
@@ -341,16 +254,16 @@ button:active {
   width: 12px;
 }
 ::-webkit-scrollbar-track {
-  background-color: #333;
+  /* background-color: #333; */
   border-radius: 12px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: #666;
+  /* background-color: #666; */
   border-radius: 12px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background-color: #888;
+  /* background-color: #888; */
 }
 
 .settings{
@@ -361,21 +274,12 @@ button:active {
 
 
 .settings span{
-<<<<<<< HEAD
-=======
-  background-color: #555;
->>>>>>> 011b7423a553ca7018aa38c82443b16038a60b75
   padding: 5px;
   margin: 5px;
   border-radius: 5px;
 }
 
 .settings span:hover {
-<<<<<<< HEAD
-=======
-  background-color: #999;
-  color: #222;
->>>>>>> 011b7423a553ca7018aa38c82443b16038a60b75
   padding: 5px;
   margin: 5px;
   border-radius: 5px;
@@ -383,10 +287,6 @@ button:active {
 
 
 .color-picker{
-<<<<<<< HEAD
-=======
-  background-color: #444;
->>>>>>> 011b7423a553ca7018aa38c82443b16038a60b75
   padding: 5px;
   border-radius: 5px;
   margin-right: 10px;
@@ -402,10 +302,6 @@ button:active {
   appearance: none;
   width: 100%;
   height: 10px;
-<<<<<<< HEAD
-=======
-  background: #d3d3d3;
->>>>>>> 011b7423a553ca7018aa38c82443b16038a60b75
   outline: none;
   opacity: 0.7; 
   -webkit-transition: .2s;
@@ -416,10 +312,6 @@ button:active {
 /* Mouse-over effects */
 .slider:hover {
   opacity: 1; 
-<<<<<<< HEAD
-=======
-  background: #eee;
->>>>>>> 011b7423a553ca7018aa38c82443b16038a60b75
 }
 
 .slider::-webkit-slider-thumb {
@@ -427,23 +319,13 @@ button:active {
   appearance: none;
   width: 20px;
   height: 20px; 
-<<<<<<< HEAD
   cursor: pointer;
   /* background: rgb(134, 134, 134); */
-=======
-  background: #555;
-  cursor: pointer;
->>>>>>> 011b7423a553ca7018aa38c82443b16038a60b75
   border-radius: 50%;
   transition: background 0.2s;
 }
 
 .slider::-webkit-slider-thumb:hover {
-<<<<<<< HEAD
-  /* background: #ffffff; */
-=======
-  background: #050;
->>>>>>> 011b7423a553ca7018aa38c82443b16038a60b75
 }
 
 #suggestions {
@@ -455,11 +337,6 @@ button:active {
   border-top: none;
   border-radius: 5px;
   box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.3);
-<<<<<<< HEAD
-  /* background-color: #222; */
-=======
-  background-color: #222;
->>>>>>> 011b7423a553ca7018aa38c82443b16038a60b75
   max-height: 150px;
   overflow-y: auto;
   width: 100%;
@@ -472,11 +349,9 @@ button:active {
 }
 
 #suggestions li:hover {
-  background-color: #444;
 }
 
 .selected{
-  background-color: #333;
 }
 
 .verse{
@@ -484,10 +359,6 @@ button:active {
 }
 
 .chorus{
-<<<<<<< HEAD
-=======
-  background-color: #335;
->>>>>>> 011b7423a553ca7018aa38c82443b16038a60b75
   padding: 10px;
   border-radius: 5px;
 }
@@ -511,19 +382,18 @@ button:active {
 }
 
 #copyHistoryButton{
-<<<<<<< HEAD
-=======
-  background-color: #185218;
->>>>>>> 011b7423a553ca7018aa38c82443b16038a60b75
   width: 30%;
 }
 
 #toggle-display{
-<<<<<<< HEAD
-=======
-  background-color: #185218;
->>>>>>> 011b7423a553ca7018aa38c82443b16038a60b75
   margin-right: 0px;
   width: 100%;
 }
 
+.btn-file-upload{
+  border: 1px solid #ccc;
+  display: inline-block;
+  padding: 5px 7px;
+  cursor: pointer;
+  white-space: nowrap;
+}

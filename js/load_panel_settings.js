@@ -13,9 +13,13 @@ var savedTextAlign = localStorage.getItem('textAlign');
 var savedDisplay = localStorage.getItem('toggleDisplay');
 var savedBibleTranslation = localStorage.getItem('saved-bible-version');
 
-// if (savedMessage){
-//     messageDisplay.innerHTML = savedMessage;
-// }
+let savedTextShadowColor = localStorage.getItem('rawShadowColor');
+let savedTextShadowOpacity = localStorage.getItem('savedTextOpacity');
+let savedTextShadowIntensity = localStorage.getItem('savedTextIntensity');
+let savedTextShadowHorOffset = localStorage.getItem('savedHorOffset');
+let savedTextShadowVerOffset = localStorage.getItem('savedVerOffset');
+let savedBgMargin = localStorage.getItem('savedShadowColor');
+
 
 if (savedRawBgColor) {
     let defaultBgColor = document.getElementById("bgColor");
@@ -57,7 +61,7 @@ if (savedBorderRadius) {
 }
 
 if (savedOpacity) {
-    let defaultOpacity = document.getElementById("opacity");
+    let defaultOpacity = document.getElementById("bg-opacity");
     defaultOpacity.setAttribute("value", savedOpacity);
 }
 
@@ -100,10 +104,6 @@ if (savedUnderlineState){
     }
 }
 
-
-
-// ============================================================
-
 if (savedTextAlign){
     let textAlignOptions = document.getElementById('textAlign');
 
@@ -114,3 +114,35 @@ if (savedTextAlign){
         }
     }
 }
+
+
+if (savedTextShadowColor) {
+    let defaultShadowColor = document.getElementById("shadow-color");
+    defaultShadowColor.setAttribute("value", savedTextShadowColor);
+}
+
+if (savedTextShadowIntensity) {
+    let defaultShadowIntensity = document.getElementById("shadow-intensity");
+    defaultShadowIntensity.setAttribute("value", savedTextShadowIntensity);
+}
+
+if (savedTextShadowOpacity) {
+    let defaultShadowOpacity = document.getElementById("shadow-opacity");
+    defaultShadowOpacity.setAttribute("value", savedTextShadowOpacity);
+}
+
+if (savedTextShadowHorOffset) {
+    let defaultShadowHor = document.getElementById("hor-shadow-offset");
+    defaultShadowHor.setAttribute("value", savedTextShadowHorOffset);
+}
+
+if (savedTextShadowVerOffset) {
+    let defaultShadowVer = document.getElementById("ver-shadow-offset");
+    defaultShadowVer.setAttribute("value", savedTextShadowVerOffset);
+}
+
+if (savedBgMargin) {
+    let defaultMargin = document.getElementById("bg-margin");
+    defaultMargin.setAttribute("value", savedBgMargin);
+}
+

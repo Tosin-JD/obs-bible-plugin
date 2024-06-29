@@ -10,7 +10,7 @@
 <body>
   <div class="bg-container" id="bg-container">
     <div class="container" id="container">
-      <p id="messageDisplay"></p>
+      <p id="messageDisplay" class=""></p>
     </div>
   </div>
 
@@ -79,9 +79,18 @@
             localStorage.setItem('underlineState', event.data.currentUnderlineState);
             // messageDisplay.innerHTML = messageTitle;
           }
+          if (event.data.selectedBgMargin){
+            messageDisplay.style.padding = event.data.selectedBgMargin + "px";
+            
+            localStorage.setItem('savedBgMargin', event.data.selectedBgMargin);
+          }
           if (event.data.selectedTextAlignment){
             messageDisplay.style.textAlign = event.data.selectedTextAlignment;
             localStorage.setItem('textAlign', event.data.selectedTextAlignment);
+          }
+          if (event.data.selectedShadowColor){
+            messageDisplay.style.textShadow = event.data.selectedShadowColor;
+            localStorage.setItem('savedShadowColor', event.data.selectedShadowColor);
           }
           if (event.data.toggleDisplay){
             let body = document.body;
@@ -93,11 +102,6 @@
               localStorage.setItem('toggleDisplay', "none");
             }
             adjustFontSizeBasedOnScroll();
-            // // Create a new MutationObserver instance
-            // let observer_two = new MutationObserver(handleMutation);
-
-            // // Start observing changes in the inner HTML of the <p> element
-            // observer_two.observe(document.getElementById('messageDisplay'), { childList: true });
           }
         }
     };
@@ -107,6 +111,7 @@
     });
   </script>
   <script src="js/load_settings.js"></script>
+  <script src="js/settings.js"></script>
 </body>
 </html>
 

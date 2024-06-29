@@ -1,11 +1,8 @@
 //  setttings for font family
-<<<<<<< HEAD
 let colorMidBg = getCustomPropertyValue('--color-mid-bg');
 let colorFg = getCustomPropertyValue('--color-fg');
 
 
-=======
->>>>>>> 011b7423a553ca7018aa38c82443b16038a60b75
 const fontElement = document.getElementById("fontStyle");
 const selectedFont = fontElement.options[fontElement.selectedIndex].value;
 
@@ -14,22 +11,15 @@ fontElement.addEventListener("change", function() {
     
     let sendSettingsChannel = new BroadcastChannel("settings");
     sendSettingsChannel.postMessage({ selectedFont: selectedValue });
-<<<<<<< HEAD
     sendSettingsChannel.close();
-=======
-    sendSettingsChannel .close();
->>>>>>> 011b7423a553ca7018aa38c82443b16038a60b75
 });
 
 //  Dealing with opacity color
-const opacityRange = document.getElementById("opacity");
+const opacityRange = document.getElementById("bg-opacity");
 
 opacityRange.addEventListener("input", function () {
     let currentOpacity = opacityRange.value / 10;
-<<<<<<< HEAD
     localStorage.setItem('savedOpacity', opacityRange.value);
-=======
->>>>>>> 011b7423a553ca7018aa38c82443b16038a60b75
     let bgColor = localStorage.getItem('bgColor');
     
     let rgbValues = bgColor.match(/\d+/g);
@@ -57,10 +47,7 @@ const bgColorInput = document.getElementById("bgColor");
 bgColorInput.addEventListener("input", function () {
     let selectedColor = bgColorInput.value;
     let collectdBgColor = localStorage.getItem('bgColor');
-<<<<<<< HEAD
     localStorage.setItem('rawBgColor', bgColorInput.value);
-=======
->>>>>>> 011b7423a553ca7018aa38c82443b16038a60b75
 
     const rgbaParts = collectdBgColor.split(",");
     const alphaValue = rgbaParts.length === 4 ? parseFloat(rgbaParts[3]) : 1;
@@ -77,12 +64,8 @@ bgColorInput.addEventListener("input", function () {
 const fontColorInput = document.getElementById("fontColor");
 fontColorInput.addEventListener("input", function () {
     let selectedColor = fontColorInput.value;
-<<<<<<< HEAD
     localStorage.setItem('rawFontColor', fontColorInput.value);
 
-=======
-    
->>>>>>> 011b7423a553ca7018aa38c82443b16038a60b75
     let settingsChannel = new BroadcastChannel("settings");
     settingsChannel.postMessage({ selectedFontColor: selectedColor });
     settingsChannel.close();
@@ -92,10 +75,7 @@ fontColorInput.addEventListener("input", function () {
 const titleColorInput = document.getElementById("titleColor");
 titleColorInput.addEventListener("input", function () {
     let selectedColor = titleColorInput.value;
-<<<<<<< HEAD
     localStorage.setItem('rawTitleColor', titleColorInput.value);
-=======
->>>>>>> 011b7423a553ca7018aa38c82443b16038a60b75
     
     let settingsChannel = new BroadcastChannel("settings");
     settingsChannel.postMessage({ selectedTitleColor: selectedColor });
@@ -109,26 +89,16 @@ boldButton.addEventListener("click", function () {
     const newBoldState = (currentBoldState === 'bold') ? 'normal' : 'bold';
     boldButton.style.fontWeight = currentBoldState;
     if (currentBoldState === 'bold'){
-<<<<<<< HEAD
         // boldButton.style.backgroundColor  = colorMidBg;
         boldButton.classList.remove("activated");
     }else{
         // boldButton.style.backgroundColor ='#55a' 
         boldButton.classList.add("activated");
-=======
-        boldButton.style.backgroundColor  = '#555';
-    }else{
-        boldButton.style.backgroundColor ='#55a' 
->>>>>>> 011b7423a553ca7018aa38c82443b16038a60b75
     }
     
     let settingsChannel = new BroadcastChannel("settings");
     settingsChannel.postMessage({ currentBoldState: newBoldState });
     settingsChannel.close();
-<<<<<<< HEAD
-=======
-    console.log("Bold button");
->>>>>>> 011b7423a553ca7018aa38c82443b16038a60b75
 });
 
 // handle italic state
@@ -138,17 +108,10 @@ italicButton.addEventListener("click", function () {
     const newItalicState = (currentItalicState === 'italic') ? 'normal' : 'italic';
     italicButton.style.fontWeight = newItalicState;
     if (currentItalicState === 'italic'){
-<<<<<<< HEAD
         italicButton.classList.remove("activated");
         italicButton.style.fontStyle  = 'normal';
     }else{
         italicButton.classList.add("activated");
-=======
-        italicButton.style.backgroundColor  = '#555';
-        italicButton.style.fontStyle  = 'normal';
-    }else{
-        italicButton.style.backgroundColor ='#55a'
->>>>>>> 011b7423a553ca7018aa38c82443b16038a60b75
         italicButton.style.fontStyle  = 'italic';
     }
     
@@ -165,17 +128,10 @@ underlineButton.addEventListener("click", function () {
     const newUnderlineState = (currentUnderlineState === 'underline') ? 'none' : 'underline';
     underlineButton.style.fontWeight = newUnderlineState;
     if (currentUnderlineState === 'underline'){
-<<<<<<< HEAD
         underlineButton.classList.remove("activated");
         underlineButton.style.textDecoration  = 'none';
     }else{
         underlineButton.classList.add("activated");
-=======
-        underlineButton.style.backgroundColor  = '#555';
-        underlineButton.style.textDecoration  = 'none';
-    }else{
-        underlineButton.style.backgroundColor ='#55a' 
->>>>>>> 011b7423a553ca7018aa38c82443b16038a60b75
         underlineButton.style.textDecoration  = 'underline';
     }
     
@@ -195,10 +151,103 @@ textAlignElement.addEventListener("change", function() {
     let sendSettingsChannel = new BroadcastChannel("settings");
     sendSettingsChannel.postMessage({ selectedTextAlignment: selectedValue });
     sendSettingsChannel.close();
-<<<<<<< HEAD
-});
-=======
-    console.log("Text Align")
 });
 
->>>>>>> 011b7423a553ca7018aa38c82443b16038a60b75
+
+
+let textShadowColor = document.getElementById("shadow-color");
+let textShadowOpacity = document.getElementById("shadow-opacity");
+let textShadowIntensity = document.getElementById("shadow-intensity");
+let textShadowHorOffset = document.getElementById("hor-shadow-offset");
+let textShadowVerOffset = document.getElementById("ver-shadow-offset");
+let bgMargin = document.getElementById("bg-margin");
+
+textShadowColor.addEventListener("change", function() {
+    let selectedColor = textShadowColor.value;
+    localStorage.setItem('rawShadowColor', textShadowColor.value);
+    let rgbaParts
+    rgbaParts = selectedColor.split(",");
+    
+    const alphaValue  = Number(localStorage.getItem('savedTextOpacity')) /10;    
+    let newColor = hexToRgba(selectedColor, alphaValue);
+    localStorage.setItem('textShadowColor', newColor);
+
+    let savedVerOffset = localStorage.getItem('savedVerOffset');
+    let savedHorOffset = localStorage.getItem('savedHorOffset');
+    let savedIntensity = localStorage.getItem('savedTextIntensity');
+    let shadowValue = `${savedHorOffset}px ${savedVerOffset}px ${savedIntensity}px ${newColor}`;
+
+    let settingsChannel = new BroadcastChannel("settings");
+    settingsChannel.postMessage({ selectedShadowColor: shadowValue });
+    settingsChannel.close();
+});
+
+textShadowOpacity.addEventListener("input", function () {
+    let currentOpacity = textShadowOpacity.value / 10;
+    localStorage.setItem('savedTextOpacity', textShadowOpacity.value);
+    let shadowColor = localStorage.getItem('shadowColor');
+    
+    let rgbValues = shadowColor.match(/\d+/g);
+    let newColor = `rgba(${rgbValues[0]}, ${rgbValues[1]}, ${rgbValues[2]}, ${currentOpacity})`;
+    localStorage.setItem('textShadowColor', newColor);
+    let savedVerOffset = localStorage.getItem('savedVerOffset');
+    let savedHorOffset = localStorage.getItem('savedHorOffset');
+    let savedIntensity = localStorage.getItem('savedTextIntensity');
+    let shadowValue = `${savedHorOffset}px ${savedVerOffset}px ${savedIntensity}px ${newColor}`;
+
+    let settingsChannel = new BroadcastChannel("settings");
+    settingsChannel.postMessage({ selectedShadowColor: shadowValue });
+    settingsChannel.close();
+});
+
+textShadowIntensity.addEventListener('input', function () {
+    let currentIntensity = textShadowIntensity.value;
+    localStorage.setItem('savedTextIntensity', textShadowIntensity.value);
+    let savedTextShadowValue = localStorage.getItem('textShadowColor');
+    let savedVerOffset = localStorage.getItem('savedVerOffset');
+    let savedHorOffset = localStorage.getItem('savedHorOffset');
+    
+    let shadowValue = `${savedHorOffset}px ${savedVerOffset}px ${currentIntensity}px ${savedTextShadowValue}`;
+
+    let settingsChannel = new BroadcastChannel("settings");
+    settingsChannel.postMessage({ selectedShadowColor: shadowValue });
+    settingsChannel.close();
+});
+
+textShadowHorOffset.addEventListener('input', function () {
+    let currentOffset = textShadowHorOffset.value;
+    localStorage.setItem('savedHorOffset', currentOffset);
+    let savedTextShadowValue = localStorage.getItem('textShadowColor');
+    let savedIntensity = localStorage.getItem('savedTextIntensity');
+    let savedVerOffset = localStorage.getItem('savedVerOffset');
+    
+    let shadowValue = `${currentOffset}px ${savedVerOffset}px ${savedIntensity}px ${savedTextShadowValue}`;
+
+    let settingsChannel = new BroadcastChannel("settings");
+    settingsChannel.postMessage({ selectedShadowColor: shadowValue });
+    settingsChannel.close();
+});
+
+
+textShadowVerOffset.addEventListener('input', function () {
+    let currentOffset = textShadowVerOffset.value;
+    localStorage.setItem('savedVerOffset', textShadowVerOffset.value);
+    let savedTextShadowValue = localStorage.getItem('textShadowColor');
+    let savedIntensity = localStorage.getItem('savedTextIntensity');
+    let savedHorOffset = localStorage.getItem('savedHorOffset');
+    
+    let shadowValue = `${savedHorOffset}px ${currentOffset}px ${savedIntensity}px ${savedTextShadowValue}`;
+
+    let settingsChannel = new BroadcastChannel("settings");
+    settingsChannel.postMessage({ selectedShadowColor: shadowValue });
+    settingsChannel.close();
+});
+
+bgMargin.addEventListener("change", function() {
+    let selectedMargin = bgMargin.value;
+    localStorage.setItem('bgMargin', bgMargin.value);
+    
+    let settingsChannel = new BroadcastChannel("settings");
+    settingsChannel.postMessage({ selectedBgMargin: selectedMargin });
+    settingsChannel.close();
+});

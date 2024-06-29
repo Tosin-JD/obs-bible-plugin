@@ -174,13 +174,15 @@ div{
     color: var(--color-fg);
 }
 
-#song-input, #bible-input, select, textarea, button,  p, .tab-button, .song p, .color-picker, .bible-container p{
+#song-input, #bible-input, .input, select, textarea, button, ::-webkit-scrollbar-track,  
+p, .tab-button, .song p, .color-picker,  .settings, .settings-icons, .bible-container p{
     background-color: var(--color-mid-bg);
     color: var(--color-fg);
 }
 
-.slider::-webkit-slider-thumb:hover, 
-.slider:hover, #song-input:hover, #bible-input:hover, select:hover, button:hover,  
+.slider::-webkit-slider-thumb:hover, ::-webkit-scrollbar-thumb:hover,
+.btn-file-upload:hover, #suggestions li:hover, button:active,
+.slider:hover, #song-input:hover, .input:hover, #bible-input:hover, button:hover,  
 p:hover, .tab-button:hover, .song p:hover, .color-picker:hover, 
 .bible-container p:hover{
     background-color: var(--hover-bg-color);
@@ -198,7 +200,7 @@ p:hover, .tab-button:hover, .song p:hover, .color-picker:hover,
     color: var(--chorus-fg);
 }
 
-.slider, .slider::-webkit-slider-thumb{
+.slider, .slider::-webkit-slider-thumb, ::-webkit-scrollbar-thumb{
     background-color: var(--slide-bg);
     color: var(--slide-fg);
 }
@@ -217,3 +219,8 @@ p:hover, .tab-button:hover, .song p:hover, .color-picker:hover,
     background-color: var(--warning-btn-bg);
     color: var(--warning-btn-fg);
 }
+
+input[type="file"] {
+    display: none;
+}
+

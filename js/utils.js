@@ -10,11 +10,8 @@ function hexToRgba(hex, alpha) {
     alpha = 1;
   }
   return `rgba(${red}, ${green}, ${blue}, ${alpha})`;
-<<<<<<< HEAD
 }
 
 function getCustomPropertyValue(property) {
   return getComputedStyle(document.body).getPropertyValue(property).trim();
-=======
->>>>>>> 011b7423a553ca7018aa38c82443b16038a60b75
 }
