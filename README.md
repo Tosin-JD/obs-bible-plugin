@@ -76,6 +76,14 @@ Believe Him, and all will be well:
 Then go to a world that is dying,  
 His perfect salvation to tell!
 
+## Shortcuts
+The following are shortcuts
+1. Ctrl + arrowup **Toggle Display**
+2. Ctrl + arrowdown **Display Text**
+3. Ctrl + B **Color text**
+4. Click on any line to display it.
+
+
 I hope that as time goes on, we would be able to add more translations. Thank you. God bless you.
 
 Made with ❤️.
