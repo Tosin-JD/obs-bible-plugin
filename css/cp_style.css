@@ -30,9 +30,6 @@ body {
 }
 
 .tab-item{
-  /* min-height: 90%;  */
-  /* max-height: 100%; */
-  /* height: inherit; */
   flex-grow: 1;
   display: flex;
   flex-direction: column;
@@ -160,6 +157,18 @@ button, .btn-file-upload{
   border-radius: 8px;
   margin: 5px 0px;
 }
+
+.btn{
+  padding: 5px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  max-width: 100%;
+  border-radius: 8px;
+  margin: 5px 5px;
+  text-decoration: none;
+}
   
 @media (max-width: 600px) {
   .container {
@@ -191,7 +200,6 @@ button, .btn-file-upload{
 }
 
 .input-group{
-  /* margin-bottom: 5px; */
   flex-grow: 1;
   width: 100%;
   flex-grow: 1;
@@ -320,7 +328,6 @@ button, .btn-file-upload{
   width: 20px;
   height: 20px; 
   cursor: pointer;
-  /* background: rgb(134, 134, 134); */
   border-radius: 50%;
   transition: background 0.2s;
 }

@@ -9,8 +9,8 @@ var historyOfBibleVerse = [];
 
 function processMessage(inputMessage) {
   let unEditedMessage = inputMessage;
-  let regexBold = /\*\*(.*?)\*\*/g;
-  let regexItalic = /__(.*?)__/g;
+  let regexBold = /\*(.*?)\*/g;
+  let regexItalic = /_(.*?)_/g;
   unEditedMessage = unEditedMessage.replace(regexBold, '<span>$1</span>');
   result = unEditedMessage.replace(regexItalic, '<em>$1</em>');
   return result;
@@ -62,7 +62,7 @@ let currentSongIndex = 0;
 songVerses.forEach((verse, index) => {
   verse.addEventListener("click", (event) => {
     if (event.target.tagName === "P") {
-      const message = event.target.textContent;
+      const message = processMessage(event.target.textContent);
       channel.postMessage(message);
 
     }
@@ -88,7 +88,7 @@ function displaySongs() {
       currentLineIndex = index;
       
       if (event.target.tagName === "P") {
-        const message = event.target.innerHTML;
+        const message = processMessage(event.target.innerHTML);
         channel.postMessage(message);
         event.target.classList.add("selected");
       }
@@ -309,9 +309,9 @@ function moveToPreviousVerse(event){
 
 document.addEventListener("keydown", function(event) {
   let lastSavedTab = localStorage.getItem("selectedTab");
-  if (event.key === "ArrowDown" && lastSavedTab === "bibleText") {
+  if (event.key === "ArrowRight" && lastSavedTab === "bibleText") {
     moveToNextVerse(event);
-  } else if (event.key === "ArrowUp" && lastSavedTab === "bibleText") {
+  } else if (event.key === "ArrowLeft" && lastSavedTab === "bibleText") {
     moveToPreviousVerse(event);
   }
 });
@@ -335,6 +335,9 @@ var btnCopy = document.getElementById("copyHistoryButton");
 btnCopy.addEventListener("click", function () {
     let textToCopy; 
     textToCopy = historyOfText.join("\n");
+    
+    // Remove HTML tags using a regular expression
+    textToCopy = textToCopy.replace(/<\/?[^>]+>/gi, '');
     
     let textarea = document.getElementById("messageInput");
     textarea.value = textToCopy;

@@ -154,7 +154,6 @@ textAlignElement.addEventListener("change", function() {
 });
 
 
-
 let textShadowColor = document.getElementById("shadow-color");
 let textShadowOpacity = document.getElementById("shadow-opacity");
 let textShadowIntensity = document.getElementById("shadow-intensity");

@@ -52,7 +52,7 @@ let selectedSuggestionIndex = -1;
 function updateInput(index) {
   if (index >= 0 && index < suggestionsList.children.length) {
     for (let item = suggestionsList.children.length - 1; item >= 0; item--) {
-      suggestionsList.children[item].classList.remove("activated");
+      suggestionsList.children[item].classList.remove("activated");;
     }
     
     const selectedSuggestion = suggestionsList.children[index];
@@ -61,13 +61,12 @@ function updateInput(index) {
 
     // Calculate the scroll position to ensure the selected item is visible
     const suggestionHeight = selectedSuggestion.offsetHeight;
-    const scrollTop = selectedSuggestion.offsetTop - (suggestionHeight * 2);
+    const scrollTop = selectedSuggestion.offsetTop - (suggestionHeight * 2);74
     suggestionsList.scrollTop = scrollTop;
-    return bibleInput.value;
   }
 }
 
-bibleInput.addEventListener("keyup", function() {
+bibleInput.addEventListener("input", function() {
   
   const inputValue = bibleInput.value.toLowerCase();
   const filteredBooks = Array.from(bibleIndex.keys()).filter(book =>book.toLowerCase().includes(inputValue));

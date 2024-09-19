@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # obs-bible-plugin  
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -80,4 +79,3 @@ His perfect salvation to tell!
 I hope that as time goes on, we would be able to add more translations. Thank you. God bless you.
 
 Made with ❤️.
-=======

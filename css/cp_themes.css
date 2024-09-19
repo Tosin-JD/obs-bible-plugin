@@ -175,7 +175,7 @@ div{
 }
 
 #song-input, #bible-input, .input, select, textarea, button, ::-webkit-scrollbar-track,  
-p, .tab-button, .song p, .color-picker,  .settings, .settings-icons, .bible-container p{
+p, .tab-button, .song p, .color-picker,  .settings, .settings-icons, .bible-container p, .btn{
     background-color: var(--color-mid-bg);
     color: var(--color-fg);
 }
@@ -184,7 +184,7 @@ p, .tab-button, .song p, .color-picker,  .settings, .settings-icons, .bible-cont
 .btn-file-upload:hover, #suggestions li:hover, button:active,
 .slider:hover, #song-input:hover, .input:hover, #bible-input:hover, button:hover,  
 p:hover, .tab-button:hover, .song p:hover, .color-picker:hover, 
-.bible-container p:hover{
+.bible-container p:hover, .btn:hover{
     background-color: var(--hover-bg-color);
     color: var(--hover-fg-color);
 }
