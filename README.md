@@ -81,8 +81,11 @@ The following are shortcuts
 1. Ctrl + arrowup **Toggle Display**
 2. Ctrl + arrowdown **Display Text**
 3. Ctrl + B **Color text**
-4. Click on any line to display it.
-
+4. Ctrl + I **Italic**
+5. Ctrl + L **Left Align**
+6. Ctrl + R **Right Align**
+7. Ctrl + E **Center Align**
+8. Ctrl + J **Justify Align**
 
 I hope that as time goes on, we would be able to add more translations. Thank you. God bless you.
 
