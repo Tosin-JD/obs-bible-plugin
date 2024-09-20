@@ -82,10 +82,10 @@ The following are shortcuts
 2. Ctrl + arrowdown **Display Text**
 3. Ctrl + B **Color text**
 4. Ctrl + I **Italic**
-5. Ctrl + L **Left Align**
-6. Ctrl + R **Right Align**
-7. Ctrl + E **Center Align**
-8. Ctrl + J **Justify Align**
+5. Shift + L **Left Align**
+6. Shift + R **Right Align**
+7. Shift + E **Center Align**
+8. Shift + J **Justify Align**
 
 I hope that as time goes on, we would be able to add more translations. Thank you. God bless you.
 
