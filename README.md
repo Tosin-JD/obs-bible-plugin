@@ -1,4 +1,4 @@
-# obs-bible-plugin  
+# OBS BIBLE PLUGIN
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
@@ -21,7 +21,7 @@ OBS Bible Plugin is now available in the following versions.
 
 
 # How to Install the plugin
-1. Download the **obs-bible-plugin.zip**, **obs-bible-french.zip**, **obs-bibl-multi-lang.zip**.
+1. Download the **obs_bible_plugin.zip**, **obs_bible_french.zip**, **obs_bible_multi_lang.zip**.
 2. Extract the zip file.
 3. Copy the **obs-bible-plugin** or which ever version folder to a safe location in your computer.
 4. Open the **obs-bible-plugin** folder.
@@ -38,10 +38,24 @@ OBS Bible Plugin is now available in the following versions.
 15. You can type on the textbox to display text and you can click on bible passages to display it.
 
 
+## Shortcuts
+Added some shortcuts in OBS
+The following are shortcuts
+1. Ctrl + arrowup Toggle Display
+2. Ctrl + arrowdown Display Text
+3. Ctrl + B Color text
+4. Ctrl + I Italic
+5. Shift + L Left Align
+6. Shift + R Right Align
+7. Shift + E Center Align
+8. Shift + J Justify Align
+
+
 ## How to Display A Bible Passage
 1. Go to the Bible tap
 2. Search for the Bible Passage with name such is **John 1:1** or with a passage from the scripture as: **Love your neighbor as yourself**
 3. Click on the Bible Verse to display it.
+
 
 ## How to Add Song
 In order to add song
@@ -51,25 +65,21 @@ In order to add song
 4. Click on any line to display it.
 
 ### Your _song.txt_ file should be arranged in this format.
-
 1.
 O soul, are you weary and troubled?  
 No light in the darkness you see?  
 There’s light for a look at the Savior,  
 And life more abundant and free!  
-
 CHORUS  
 Turn your eyes upon Jesus,  
 Look full in His wonderful face,  
 And the things of earth will grow strangely dim,  
 In the light of His glory and grace.  
-
 2.
 Through death into life everlasting  
 He passed, and we follow Him there;  
 O’er us sin no more hath dominion—  
 For more than conqu’rors we are!  
-
 3.
 His Word shall not fail you—He promised;  
 Believe Him, and all will be well:  
