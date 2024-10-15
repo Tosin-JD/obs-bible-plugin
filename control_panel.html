@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -237,3 +238,244 @@ DoubleClick on History erase all previous text"></textarea>
     <script src="js/suggest_bible_books.js"></script>
   </body>
 </html>
+=======
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/cp_style.css">
+    <link rel="stylesheet" href="css/cp_themes.css">
+    <title>Sender</title>
+  </head>
+  <body data-theme="dark">
+    <div class="main">
+      <div class="tab-item">
+        <div id="text" class="tab-area">
+          <div class="container">
+            <textarea class="mid-bg" id="messageInput" placeholder="Type a message
+Click on History to get previous text
+DoubleClick on History erase all previous text"></textarea>
+            <div class="display-btn-group">
+              <button id="sendButton" class="warning">Display Text</button>
+              <button id="copyHistoryButton" class="primary">History</button>
+            </div>
+          </div>
+        </div>
+        <div id="bibleText" class="tab-area" style="display:none;">
+          <div class="container">
+            <div class="bible-search">
+              <div class="input-group row">
+                <div class="search-group">
+                  <input class="input" id="bible-input" placeholder="Psalms 1:1 or Any Verse content">
+                  <div class="mid-bg color-fg" id="suggestions"></div>
+                </div>
+                <div class="row">
+                  <button class="no-border" type="submit" id="bible-submit" value="Search">Search</button>
+                  <button class="no-border primary" id="history">History</button>
+                </div>
+              </div>
+            </div>
+            <div class="grid-item bible-container" id="bible">
+              <div class="bible-verse" id="bible-verse">
+                <!-- This is the area for bible verses -->
+              </div>
+            </div>
+            <div class="next-prev">
+              <button class="prev" id="prev-verse">Previous</button>
+              <button class="next" id="next-verse">Next</button>
+            </div>
+          </div>
+        </div>
+        <div id="songs" class="tab-area" style="display:none;">
+          <div class="container">
+            <div class="input-group row" id="add-song">
+              <div class="search-group">
+                <input class="input" id="lyric-search" placeholder="Search lyrics">
+              </div>
+              <div class="">
+                <label for="song-file-upload" class="btn-file-upload">
+                  Load Song
+                </label>
+                <input type="file" id="song-file-upload" accept=".txt">
+              </div>
+            </div>
+            <div class="song" id="song">
+              <div  class="song-verse" id="song-display">
+                
+                <div class="verse" id="verse1">
+                  <p>Omo to mo yare loju o</p>
+                  <p>Osi yio to mo na paa</p>
+                  <p>Iya to jiya po lori re</p>
+                  <p>Baba to ji ya po lori re</p>
+                  <p>Omo to mo ya re loju o</p>
+                  <p>Osi yio to mo na paa</p>
+                </div>
+                
+                <div class="chorus song-chorus"  id="chorus">
+                  <p>CHORUS</p>
+                  <p>Many things about tomorrow,</p>
+                  <p>I don’t seem to understand;</p>
+                  <p>But I know who holds tomorrow,</p>
+                  <p>And I know who holds my hand.</p>
+                </div>
+
+              </div>
+
+            </div>
+            <div class="next-prev">
+              <button class="prev" id="prev-line">Previous</button>
+              <button class="next" id="next-line">Next</button>
+            </div>
+          </div>
+        </div>
+        <div id="setBg" class="tab-area" style="display:none;">
+          <div class="container column">
+            <div class="row">
+              <div class="row settings-icons bible-version">
+                <label class="">Bible Translation</label>
+                <select name="bible-version" id="bible-version">
+                    <option value="kjv">Authorized KJV</option>
+                    <option value="nkjv">NKJV</option>
+                    <option value="lo_segond">Louis Segond (French)</option>
+                    <option value="spanish">Español</option>
+                </select>
+              </div>
+              <div class="row settings-icons">
+                <span class="font-settings" id="bold">B</span>
+                <span class="font-settings" id="italic">I</span>
+                <span class="font-settings" id="underline">U</span>
+                <select id="textAlign">
+                  <option value="Left">Left</option>
+                  <option value="Right">Right</option>
+                  <option value="Center">Center</option>
+                  <option value="Justify">Justify</option>
+                </select>
+              </div>
+            </div>
+            <div class="row">
+              <div class="settings-icons">
+                <label>Background</label>
+                <input type="color" id="bgColor">
+              </div>
+              <div class="settings-icons">
+                <label>Font</label>
+                <input type="color" id="fontColor">
+              </div>
+              <div class="settings-icons">
+                <label>Title</label>
+                <input type="color" id="titleColor">
+              </div>
+            </div>
+            <div class="row">
+              <div class="settings-icons">
+                <label>Rounded Corners</label>
+                <input type="range" min="0" max="120" value="0" class="slider" id="rounded-corner">
+              </div>
+              <div class="settings-icons">
+                <label>Opacity</label>
+                <input type="range" min="0" max="10" value="10" class="slider" id="bg-opacity">
+              </div>
+            </div>
+            <div class="row">
+              <div class="settings-icons">
+                <label>Margin</label>
+                <input type="range" min="0" max="100" value="10" class="slider" id="bg-margin">
+              </div>
+            </div>
+            <div class="column" id="shadow-editor">
+                  <div class="row">
+                    <div class="row settings-icons">
+                      <label for="shadow-color">Shadow Color:</label>
+                      <input type="color" id="shadow-color" value="#000000">
+                    </div>
+                    <div class="row settings-icons">
+                      <label for="shadow-opacity">Shadow Opacity:</label>
+                      <input type="range" id="shadow-opacity" min="0" max="10" value="1"  class="slider">
+                    </div>
+                    <div class="row settings-icons">
+                      <label for="shadow-intensity">Shadow Intensity:</label>
+                      <input type="range" min="0" max="10" value="10" id="shadow-intensity" class="slider">
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="row settings-icons">
+                      <label for="shadow-opacity">Horizontal Shadow offset:</label>
+                      <input type="range" id="hor-shadow-offset" min="-10" max="10" value="1"  class="slider">
+                    </div>
+                    <div class="row settings-icons">
+                      <label for="shadow-intensity">Vertical Shadow offset:</label>
+                      <input type="range" min="-10" max="10" value="10" id="ver-shadow-offset" class="slider">
+                    </div>
+                  </div>
+            </div>
+            <div class="row">
+              <select id="fontStyle">
+                <option value="Arial">Arial</option>
+                <option value="Courier New">Courier New</option>
+                <option value="Georgia">Georgia</option>
+                <option value="Helvetica">Helvetica</option>
+                <option value="Impact">Impact</option>
+                <option value="Lucida Sans Unicode">Lucida Sans Unicode</option>
+                <option value="sans-serif">Sans Serif</option>
+                <option value="Serif">Serif</option>
+                <option value="Tahoma">Tahoma</option>
+                <option value="Times New Roman">Times New Roman</option>
+                <option value="Trebuchet MS">Trebuchet MS</option>
+                <option value="Verdana">Verdana</option>
+              </select>
+              <select id="panelTheme">
+                <option value="Acri">Acri</option>
+                <option value="Dark">Dark</option>
+                <option value="Grey">Grey</option>
+                <option value="Light">Light</option>
+                <option value="Rachni">Rachni</option>
+                <option value="System">System</option>
+                <option value="default">Yami (Default)</option>
+              </select>
+            </div>
+            <div class="column">
+              <div>This plugin is provided for free with love.</div>
+              <div>Author: Oluwatosin Durodola <a href="https://buymeacoffee.com/tosin789" rel="noopener noreferrer" 
+                class="btn" id="donate" target="_blank">Donate</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="tabs">
+        <button class="tab-button" onclick="openTab('text')">Text</button>
+        <button class="tab-button" onclick="openTab('bibleText')">Bible</button>
+        <button class="tab-button" onclick="openTab('songs')">Songs</button>
+        <button class="tab-button" onclick="openTab('setBg')">Settings</button>
+      </div>
+      <div class="toggle">
+        <button id="toggle-display" class="danger">Toggle Display</button>
+      </div>
+    </div>
+    <script src='bibles/es_rvr/es_rvr.js'></script>
+    <script src='bibles/kjv_json/kjv.js'></script>
+    <script src="bibles/nkjv_json/nkjv.js"></script>
+    <script src="bibles/segond_french/segond_1910.js"></script>
+
+    <script src="js/select_bible_translation.js"></script>
+
+    <!-- <script src='kjv_json/kjv.js'></script> -->
+    <script src="js/utils.js"></script>
+    <script src="js/shortcuts.js"></script>
+    <script src="js/style_text.js"></script>
+    <script src="js/control_app.js"></script>
+    <script src="js/send_message.js"></script>
+    <script src="js/settings.js"></script>
+    <script src="js/toggle_display.js"></script>
+    <script src="js/panel_settings.js"></script>
+    <script src="js/load_panel_settings.js"></script>
+
+
+    <script src="js/load_song.js"></script>
+    <script src="js/search_bible.js"></script>
+    <script src="js/search_lyrics.js"></script>
+    <script src="js/suggest_bible_books.js"></script>
+  </body>
+</html>
+>>>>>>> 7bdaa887cbc72a2c6830d7520e8929adaa87cab8

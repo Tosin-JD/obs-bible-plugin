@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 * {
     margin: 0;
     padding: 0;
@@ -64,3 +65,71 @@ body{
 
 
 
+=======
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+body{
+    background-color: rgba(0, 0, 0, 0);
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+    overflow-y: hidden;
+}
+
+.bg-container{
+    width: 100%;
+    height: 100%;
+    background-color: #525;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    text-align: center;
+    margin: 0;
+    padding: 0.1em;
+    overflow-y: hidden;
+    opacity: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+   
+#messageDisplay {
+    opacity: 1;
+    font-size: 5em;
+    font-weight: bold;
+    text-align: center;
+    margin: 0;
+    padding: 20px 20px;
+    width: 100%;
+    white-space: pre-wrap;
+    overflow: hidden;
+    overflow-wrap: break-word;
+    hyphens: auto;
+}
+
+#messageDisplay span{
+    color: #ff6450;
+    overflow-y: hidden;
+    opacity: 1;
+}
+
+.text-with-shadow {
+    text-shadow: 5px 5px 4px rgba(0, 0, 0, 0.75);
+}
+
+
+
+>>>>>>> 7bdaa887cbc72a2c6830d7520e8929adaa87cab8
