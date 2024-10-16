@@ -105,17 +105,15 @@ if (savedUnderlineState){
     }
 }
 
-if (savedTextAlign){
-    let textAlignOptions = document.getElementById('textAlign');
 
-    for (var i = 0; i <textAlignOptions.options.length; i++) {
-        if (textAlignOptions.options[i].value === savedTextAlign) {
-            textAlignOptions.options[i].selected = true;
-            break;
+if (savedTextAlign) {
+    const radios = document.querySelectorAll('input[name="align"]');
+    radios.forEach(radio => {
+        if (radio.value === savedTextAlign) {
+            radio.checked = true; // Check the radio button if it matches the saved value
         }
-    }
+    });
 }
-
 
 if (savedTextShadowColor) {
     let defaultShadowColor = document.getElementById("shadow-color");
@@ -152,13 +150,6 @@ if (savedToggleDisplay) {
     let toggleCheckbox = document.getElementById('toggle-display');
     if (savedToggleDisplay === "flex"){
         toggleCheckbox.checked = true;
-        // if (toggleDisplay.checked){
-        //     toggleDisplay.checked = false;
-        //     sendSettingsChannel.postMessage({ toggleDisplay: "flex" });
-        // }else{
-        //     toggleDisplay.checked = true;
-        //     sendSettingsChannel.postMessage({ toggleDisplay: "none" });
-        // }
     }else{
         toggleCheckbox.checked = false;
     }

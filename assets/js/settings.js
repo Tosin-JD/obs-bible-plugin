@@ -141,16 +141,17 @@ underlineButton.addEventListener("click", function () {
 });
 
 
-//  setttings for font family
-const textAlignElement = document.getElementById("textAlign");
-const selectedAlignment = textAlignElement.options[textAlignElement.selectedIndex].value;
-
-textAlignElement.addEventListener("change", function() {
-    let selectedValue = textAlignElement.options[textAlignElement.selectedIndex].value;
-
-    let sendSettingsChannel = new BroadcastChannel("settings");
-    sendSettingsChannel.postMessage({ selectedTextAlignment: selectedValue });
-    sendSettingsChannel.close();
+// Function to save the selected radio button to localStorage
+const textAlign = document.querySelectorAll('input[name="align"]');
+textAlign.forEach(radio => {
+    radio.addEventListener('change', () => {
+        if (radio.checked) {
+            let sendSettingsChannel = new BroadcastChannel("settings");
+            sendSettingsChannel.postMessage({ selectedTextAlignment: radio.value });
+            sendSettingsChannel.close();
+            localStorage.setItem('selectedAlign', radio.value); // Save the selected value
+        }
+    });
 });
 
 

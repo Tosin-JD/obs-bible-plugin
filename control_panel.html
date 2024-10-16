@@ -121,7 +121,7 @@ DoubleClick on History erase all previous text"></textarea>
           </div>
         </div>
         <div id="setBg" class="tab-area" style="display:none;">
-          <div class="container column">
+          <div class="container column settings-area">
             <div class="row">
               <div class="row settings-icons bible-version">
                 <label class="">Bible Translation</label>
@@ -133,17 +133,52 @@ DoubleClick on History erase all previous text"></textarea>
                 </select>
               </div>
               <div class="row settings-icons">
-                <span class="font-settings" id="bold">B</span>
-                <span class="font-settings" id="italic">I</span>
-                <span class="font-settings" id="underline">U</span>
-                <select id="textAlign">
-                  <option value="Left">Left</option>
-                  <option value="Right">Right</option>
-                  <option value="Center">Center</option>
-                  <option value="Justify">Justify</option>
-                </select>
+                <div class="row settings-icons">
+                  <span class="font-settings" id="bold">B</span>
+                  <span class="font-settings" id="italic">I</span>
+                  <span class="font-settings" id="underline">U</span>
+                </div>
+                <div id="textAlign" class="row settings-icons">
+
+                  <input name="align" type="radio" class="radio" id="left-align" value="Left">
+                  <label for="left-align" class="toggle-btn">
+                    <span class="toggle-circle">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="12" height="12">
+                          <path class="icons" d="M288 64c0 17.7-14.3 32-32 32L32 96C14.3 96 0 81.7 0 64S14.3 32 32 32l224 0c17.7 0 32 14.3 32 32zm0 256c0 17.7-14.3 32-32 32L32 352c-17.7 0-32-14.3-32-32s14.3-32 32-32l224 0c17.7 0 32 14.3 32 32zM0 192c0-17.7 14.3-32 32-32l384 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 224c-17.7 0-32-14.3-32-32zM448 448c0 17.7-14.3 32-32 32L32 480c-17.7 0-32-14.3-32-32s14.3-32 32-32l384 0c17.7 0 32 14.3 32 32z"/>
+                      </svg>
+                    </span>
+                  </label>
+
+                  <input name="align" type="radio" class="radio" id="center-align" value="Center">
+                  <label for="center-align" class="toggle-btn">
+                    <span class="toggle-circle">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="12" height="12">
+                          <path class="icons" d="M352 64c0-17.7-14.3-32-32-32L128 32c-17.7 0-32 14.3-32 32s14.3 32 32 32l192 0c17.7 0 32-14.3 32-32zm96 128c0-17.7-14.3-32-32-32L32 160c-17.7 0-32 14.3-32 32s14.3 32 32 32l384 0c17.7 0 32-14.3 32-32zM0 448c0 17.7 14.3 32 32 32l384 0c17.7 0 32-14.3 32-32s-14.3-32-32-32L32 416c-17.7 0-32 14.3-32 32zM352 320c0-17.7-14.3-32-32-32l-192 0c-17.7 0-32 14.3-32 32s14.3 32 32 32l192 0c17.7 0 32-14.3 32-32z"/>
+                      </svg>
+                    </span>
+                  </label>
+
+                  <input name="align" type="radio" class="radio" id="right-align" value="Right">
+                  <label for="right-align" class="toggle-btn">
+                    <span class="toggle-circle">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="12" height="12">
+                          <path class="icons" d="M448 64c0 17.7-14.3 32-32 32L192 96c-17.7 0-32-14.3-32-32s14.3-32 32-32l224 0c17.7 0 32 14.3 32 32zm0 256c0 17.7-14.3 32-32 32l-224 0c-17.7 0-32-14.3-32-32s14.3-32 32-32l224 0c17.7 0 32 14.3 32 32zM0 192c0-17.7 14.3-32 32-32l384 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 224c-17.7 0-32-14.3-32-32zM448 448c0 17.7-14.3 32-32 32L32 480c-17.7 0-32-14.3-32-32s14.3-32 32-32l384 0c17.7 0 32 14.3 32 32z"/>
+                      </svg>
+                    </span>
+                  </label>
+
+                  <input name="align" type="radio" class="radio" id="justify-align" value="Justify">
+                  <label for="justify-align" class="toggle-btn">
+                    <span class="toggle-circle">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="12" height="12">
+                          <path class="icons" d="M448 64c0-17.7-14.3-32-32-32L32 32C14.3 32 0 46.3 0 64S14.3 96 32 96l384 0c17.7 0 32-14.3 32-32zm0 256c0-17.7-14.3-32-32-32L32 288c-17.7 0-32 14.3-32 32s14.3 32 32 32l384 0c17.7 0 32-14.3 32-32zM0 192c0 17.7 14.3 32 32 32l384 0c17.7 0 32-14.3 32-32s-14.3-32-32-32L32 160c-17.7 0-32 14.3-32 32zM448 448c0-17.7-14.3-32-32-32L32 416c-17.7 0-32 14.3-32 32s14.3 32 32 32l384 0c17.7 0 32-14.3 32-32z"/>
+                      </svg>
+                    </span>
+                  </label>
+
+                </div>
+                </div>
               </div>
-            </div>
             <div class="row">
               <div class="settings-icons">
                 <label>Background</label>
@@ -235,22 +270,22 @@ DoubleClick on History erase all previous text"></textarea>
         </div>
       </div>
       <div class="tabs">
-        <button class="tab-button" onclick="openTab('text')">
+        <button class="tab-button" value="text">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="17" height="17">
               <path  class="icons" d="M362.7 19.3L314.3 67.7 444.3 197.7l48.4-48.4c25-25 25-65.5 0-90.5L453.3 19.3c-25-25-65.5-25-90.5 0zm-71 71L58.6 323.5c-10.4 10.4-18 23.3-22.2 37.4L1 481.2C-1.5 489.7 .8 498.8 7 505s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L421.7 220.3 291.7 90.3z"/>
           </svg>
         </button>
-        <button class="tab-button" onclick="openTab('bibleText')">
+        <button class="tab-button" value="bibleText">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="17" height="17">
               <path class="icons" d="M96 0C43 0 0 43 0 96L0 416c0 53 43 96 96 96l288 0 32 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l0-64c17.7 0 32-14.3 32-32l0-320c0-17.7-14.3-32-32-32L384 0 96 0zm0 384l256 0 0 64L96 448c-17.7 0-32-14.3-32-32s14.3-32 32-32zM208 80c0-8.8 7.2-16 16-16l32 0c8.8 0 16 7.2 16 16l0 48 48 0c8.8 0 16 7.2 16 16l0 32c0 8.8-7.2 16-16 16l-48 0 0 112c0 8.8-7.2 16-16 16l-32 0c-8.8 0-16-7.2-16-16l0-112-48 0c-8.8 0-16-7.2-16-16l0-32c0-8.8 7.2-16 16-16l48 0 0-48z"/>
           </svg>
         </button>
-        <button class="tab-button" onclick="openTab('songs')">
+        <button class="tab-button" value="songs">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="17" height="17">
               <path class="icons" d="M499.1 6.3c8.1 6 12.9 15.6 12.9 25.7l0 72 0 264c0 44.2-43 80-96 80s-96-35.8-96-80s43-80 96-80c11.2 0 22 1.6 32 4.6L448 147 192 223.8 192 432c0 44.2-43 80-96 80s-96-35.8-96-80s43-80 96-80c11.2 0 22 1.6 32 4.6L128 200l0-72c0-14.1 9.3-26.6 22.8-30.7l320-96c9.7-2.9 20.2-1.1 28.3 5z"/>
           </svg>
         </button>
-        <button class="tab-button" onclick="openTab('setBg')">
+        <button class="tab-button" value="setBg">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="17" height="17">
               <path class="icons" d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6c-4.4 11.9-9.7 23.3-15.8 34.3l-4.7 8.1c-6.6 11-14 21.4-22.1 31.2c-5.9 7.2-15.7 9.6-24.5 6.8l-55.7-17.7c-13.4 10.3-28.2 18.9-44 25.4l-12.5 57.1c-2 9.1-9 16.3-18.2 17.8c-13.8 2.3-28 3.5-42.5 3.5s-28.7-1.2-42.5-3.5c-9.2-1.5-16.2-8.7-18.2-17.8l-12.5-57.1c-15.8-6.5-30.6-15.1-44-25.4L83.1 425.9c-8.8 2.8-18.6 .3-24.5-6.8c-8.1-9.8-15.5-20.2-22.1-31.2l-4.7-8.1c-6.1-11-11.4-22.4-15.8-34.3c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4C64.6 273.1 64 264.6 64 256s.6-17.1 1.7-25.4L22.4 191.2c-6.9-6.2-9.6-15.9-6.4-24.6c4.4-11.9 9.7-23.3 15.8-34.3l4.7-8.1c6.6-11 14-21.4 22.1-31.2c5.9-7.2 15.7-9.6 24.5-6.8l55.7 17.7c13.4-10.3 28.2-18.9 44-25.4l12.5-57.1c2-9.1 9-16.3 18.2-17.8C227.3 1.2 241.5 0 256 0s28.7 1.2 42.5 3.5c9.2 1.5 16.2 8.7 18.2 17.8l12.5 57.1c15.8 6.5 30.6 15.1 44 25.4l55.7-17.7c8.8-2.8 18.6-.3 24.5 6.8c8.1 9.8 15.5 20.2 22.1 31.2l4.7 8.1c6.1 11 11.4 22.4 15.8 34.3zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"/>
           </svg>
@@ -262,7 +297,7 @@ DoubleClick on History erase all previous text"></textarea>
             <input type="checkbox" id="toggle-display" class="toggle-input">
             <label for="toggle-display" class="toggle-label">
                 <span class="toggle-ball"></span>
-            </label> 
+            </label>
             Toggle Display
           </button>
         <!-- </button> -->

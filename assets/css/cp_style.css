@@ -78,12 +78,23 @@ body {
   box-sizing: border-box;
 }
 
+#setBg{
+  overflow-y: scroll;
+}
+.settings-area{
+  padding-right: 5px;
+}
+
 .bible-search{
   font-size: 1.5em;
   display: flex;
   flex-direction: row;
   justify-content: space-around;
   width: 100%;
+}
+
+.mid-bg{
+  flex-grow: 1;
 }
 
 .no-border{
@@ -146,7 +157,7 @@ select{
 }
 
 .settings-icons{
-  font-size: 0.75em;
+  font-size: 0.8em;
   border-radius: 5px;
   padding: 5px;
   align-items: center;
@@ -158,18 +169,18 @@ select{
 }
 
 button, .btn-file-upload{
-  padding: 10px;
-  font-size: 16px;
+  padding: 5px;
+  font-size: 15px;
   border: none;
   cursor: pointer;
   width: 100%;
   max-width: 100%;
   border-radius: 8px;
   margin: 5px 0px;
+  cursor: pointer;
 }
 
 .btn{
-  padding: 5px;
   font-size: 16px;
   border: none;
   cursor: pointer;
@@ -383,6 +394,9 @@ button, .btn-file-upload{
 .font-settings {
   cursor: pointer;
   font-weight: normal;
+  padding: 5px;
+  font-size: 1.5em;
+  border-radius: 5px;
 }
 
 .font-settings #italic{
@@ -446,8 +460,85 @@ button, .btn-file-upload{
     transition: transform 0.3s;
 }
 
-
-
 .toggle-input:checked + .toggle-label .toggle-ball {
-    transform: translateX(30px); /* Move the ball to the right */
+    transform: translateX(30px);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.radio {
+  display: none;
+}
+
+.toggle-btn {
+  width: 25px;
+  height: 25px;
+  border-radius: 5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 2px;
+  transition: background-color 0.3s;
+  background-color: #aaa;
+}
+
+.toggle-circle {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* background-color: white;
+  border-radius: 50%;
+  transition: transform 0.3s; */
+}
+
+.radio:checked + .toggle-btn .toggle-circle {
+    /* transform: translateX(10px); */
+}
+
+.radio:checked + .toggle-btn{
+  background-color: #222;
+  color: white;
+  border-color: #007bff;
 }
