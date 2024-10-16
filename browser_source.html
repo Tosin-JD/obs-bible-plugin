@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="css/browser_style.css">
+  <link rel="stylesheet" href="assets/css/browser_style.css">
   <title>Receiver</title>
-  <script src="js/control_app.js"></script>
+  <script src="assets/js/control_app.js"></script>
 </head>
 <body>
   <div class="bg-container" id="bg-container">
@@ -14,7 +14,7 @@
     </div>
   </div>
 
-  <script src="js/browser_app.js"></script>
+  <script src="assets/js/browser_app.js"></script>
   <script>
     const bgContainer = document.getElementById("bg-container");
     const messageDisplay = document.getElementById("messageDisplay");
@@ -94,7 +94,7 @@
           }
           if (event.data.toggleDisplay){
             let body = document.body;
-            if (body.style.display === "none") {
+            if (event.data.toggleDisplay === "none") {
               body.style.display = "flex";
               localStorage.setItem('toggleDisplay', "flex");
             } else {
@@ -110,8 +110,8 @@
         settingsChannel.close();
     });
   </script>
-  <script src="js/load_settings.js"></script>
-  <script src="js/settings.js"></script>
+  <script src="assets/js/load_settings.js"></script>
+  <script src="assets/js/settings.js"></script>
 </body>
 </html>
 

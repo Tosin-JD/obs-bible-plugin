@@ -129,6 +129,16 @@ textarea{
   margin: 10px;
 }
 
+.svg-icons{
+  height: 15;
+  width: 15;
+}
+
+.icons{
+  width: 10px;
+  height: 10px;
+}
+
 select{
   width: 100%;
   font-size: 0.8em;
@@ -403,4 +413,41 @@ button, .btn-file-upload{
   padding: 5px 7px;
   cursor: pointer;
   white-space: nowrap;
+}
+
+/* toggle button */
+.toggle-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+.toggle-input {
+    display: none; /* Hide the default checkbox */
+}
+
+.toggle-label {
+    width: 60px;
+    height: 30px;
+    border-radius: 15px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    padding: 5px;
+    transition: background-color 0.3s;
+}
+
+.toggle-ball {
+    width: 20px;
+    height: 20px;
+    background-color: white;
+    border-radius: 50%;
+    transition: transform 0.3s;
+}
+
+
+
+.toggle-input:checked + .toggle-label .toggle-ball {
+    transform: translateX(30px); /* Move the ball to the right */
 }

@@ -19,6 +19,7 @@ let savedTextShadowIntensity = localStorage.getItem('savedTextIntensity');
 let savedTextShadowHorOffset = localStorage.getItem('savedHorOffset');
 let savedTextShadowVerOffset = localStorage.getItem('savedVerOffset');
 let savedBgMargin = localStorage.getItem('savedShadowColor');
+let savedToggleDisplay = localStorage.getItem('toggleDisplay');
 
 
 if (savedRawBgColor) {
@@ -146,3 +147,19 @@ if (savedBgMargin) {
     defaultMargin.setAttribute("value", savedBgMargin);
 }
 
+
+if (savedToggleDisplay) {
+    let toggleCheckbox = document.getElementById('toggle-display');
+    if (savedToggleDisplay === "flex"){
+        toggleCheckbox.checked = true;
+        // if (toggleDisplay.checked){
+        //     toggleDisplay.checked = false;
+        //     sendSettingsChannel.postMessage({ toggleDisplay: "flex" });
+        // }else{
+        //     toggleDisplay.checked = true;
+        //     sendSettingsChannel.postMessage({ toggleDisplay: "none" });
+        // }
+    }else{
+        toggleCheckbox.checked = false;
+    }
+}

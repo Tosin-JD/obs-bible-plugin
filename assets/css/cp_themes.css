@@ -180,8 +180,12 @@ p, .tab-button, .song p, .color-picker,  .settings, .settings-icons, .bible-cont
     color: var(--color-fg);
 }
 
+.icons{
+    fill: var(--color-fg);
+}
+
 .slider::-webkit-slider-thumb:hover, ::-webkit-scrollbar-thumb:hover,
-.btn-file-upload:hover, #suggestions li:hover, button:active,
+.btn-file-upload:hover, #suggestions li:hover, button:hover,
 .slider:hover, #song-input:hover, .input:hover, #bible-input:hover, button:hover,
 p:hover, .tab-button:hover, .song p:hover, .color-picker:hover,
 .bible-container p:hover, .btn:hover{
@@ -189,6 +193,18 @@ p:hover, .tab-button:hover, .song p:hover, .color-picker:hover,
     color: var(--hover-fg-color);
 }
 
+.slider::-webkit-slider-thumb:active, ::-webkit-scrollbar-thumb:active,
+.btn-file-upload:active, #suggestions li:active, button:active,
+.slider:active, #song-input:active, .input:active, #bible-input:active,
+p:active, .tab-button:active, .song p:active, .color-picker:active,
+.bible-container p:active, .btn:active{
+    color: var(--selected-fg-color);
+    background-color: var(--selected-bg-color);
+}
+
+.toggle-input:checked + .toggle-label {
+    background-color: var(--selected-bg-color);
+}
 
 .activated, .selected{
     color: var(--selected-fg-color) !important;
@@ -205,9 +221,14 @@ p:hover, .tab-button:hover, .song p:hover, .color-picker:hover,
     color: var(--slide-fg);
 }
 
-.danger{
+.danger, .toggle-label:hover{
     background-color: var(--danger-btn-bg);
     color: var(--danger-btn-fg);
+}
+
+.toggle-label:active{
+    background-color: var(--danger-btn-fg);
+    color: var(--danger-btn-bg);
 }
 
 .primary{
@@ -215,7 +236,7 @@ p:hover, .tab-button:hover, .song p:hover, .color-picker:hover,
     color: var(--primary-btn-fg);
 }
 
-.warning{
+.warning, .toggle-label{
     background-color: var(--warning-btn-bg);
     color: var(--warning-btn-fg);
 }

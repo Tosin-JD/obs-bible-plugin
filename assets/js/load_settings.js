@@ -9,7 +9,7 @@ var savedBoldState = localStorage.getItem('boldState');
 var savedItalicState = localStorage.getItem('italicState');
 var savedUnderlineState = localStorage.getItem('underlineState');
 var savedTextAlign = localStorage.getItem('textAlign');
-var savedDisplay = localStorage.getItem('toggleDisplay');
+var savedToggleDisplay = localStorage.getItem('toggleDisplay');
 var savedShadowColor = localStorage.getItem('savedShadowColor');
 let savedBgMargin = localStorage.getItem('savedShadowColor');
 
@@ -51,8 +51,7 @@ if (savedUnderlineState){
 }
 
 if (savedTextAlign){
-    var body = document.body;
-    body.style.display = savedDisplay;
+    messageDisplay.textAlign = savedTextAlign;
 }
 
 
@@ -62,4 +61,9 @@ if (savedShadowColor) {
 
 if (savedMessage){
     messageDisplay.style.padding = savedBgMargin + "px";
+}
+
+if (savedToggleDisplay){
+    let body = document.body;
+    body.style.display = savedToggleDisplay;
 }
