@@ -76,8 +76,10 @@ DoubleClick on History erase all previous text"></textarea>
               <div class="search-group">
                 <input class="input" id="lyric-search" placeholder="Search lyrics">
               </div>
-              <div class="">
-                <label for="song-file-upload" class="btn-file-upload">
+              <div class="row">
+                <input type="number" class="input" id="song-line-duration">
+                <input type="button" class="input" id="start-song-button" value="Play Lyrics">
+                <label for="song-file-upload" id="song-file-label" class="btn-file-upload">
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="17" height="17">
                       <path class="icons" d="M128 64c0-35.3 28.7-64 64-64L352 0l0 128c0 17.7 14.3 32 32 32l128 0 0 288c0 35.3-28.7 64-64 64l-256 0c-35.3 0-64-28.7-64-64l0-112 174.1 0-39 39c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l80-80c9.4-9.4 9.4-24.6 0-33.9l-80-80c-9.4-9.4-24.6-9.4-33.9 0s-9.4 24.6 0 33.9l39 39L128 288l0-224zm0 224l0 48L24 336c-13.3 0-24-10.7-24-24s10.7-24 24-24l104 0zM512 128l-128 0L384 0 512 128z"/>
                   </svg>
@@ -126,11 +128,30 @@ DoubleClick on History erase all previous text"></textarea>
               <div class="row settings-icons bible-version">
                 <label class="">Bible Translation</label>
                 <select name="bible-version" id="bible-version">
-                    <option value="kjv">Authorized KJV</option>
-                    <option value="nkjv">NKJV</option>
-                    <option value="lo_segond">Louis Segond (French)</option>
-                    <option value="spanish">Español</option>
+                  <option value="assets/bibles/amplified/amplified.js">Amplified Bible</option>
+                  <option value="assets/bibles/crtb/crtb.js">Russian Bible</option>
+                  <option value="assets/bibles/kjv/kjv.js">Authorized KJV</option>
+                  <option value="assets/bibles/esv/esv.js">ESV</option>
+                  <option value="assets/bibles/es_rvr/es_rvr.js">Español (Spanish)</option>
+                  <option value="assets/bibles/nkjv/nkjv.js">NKJV</option>
+                  <option value="assets/bibles/niv/niv.js">NIV</option>
+                  <option value="assets/bibles/segond_1910/segond_1910.js">Louis Segond (French)</option>
+                  <option value="assets/bibles/swahili_bible/swahili_bible.js">Swahili Bible</option>
+                  <option value="assets/bibles/yoruba_bible/yoruba_bible.js">Yoruba Bible</option>
+
                 </select>
+                <!-- <select name="bible-version" id="bible-version">
+                  <option value="amplified">Amplified Bible</option>
+                  <option value="kjv">Authorized KJV</option>
+                  <option value="crtb">Russian Bible</option>
+                  <option value="esv">English Standard Version</option>
+                  <option value="es_rvr">Español (Spanish)</option>
+                  <option value="nkjv">NKJV</option>
+                  <option value="niv">NIV</option>
+                  <option value="segond_1910">Louis Segond (French)</option>
+                  <option value="swahili_bible">Swahili Bible</option>
+                  <option value="yoruba_bible">Yoruba Bible</option>
+                </select> -->
               </div>
               <div class="row settings-icons">
                 <div class="row settings-icons">
@@ -303,12 +324,19 @@ DoubleClick on History erase all previous text"></textarea>
         <!-- </button> -->
       </div>
     </div>
+    <!-- <script src='assets/bibles/amplified/amplified.js'></script>
+    <script src='assets/bibles/crtb/crtb.js'></script>
     <script src='assets/bibles/es_rvr/es_rvr.js'></script>
-    <script src='assets/bibles/kjv_json/kjv.js'></script>
-    <script src="assets/bibles/nkjv_json/nkjv.js"></script>
-    <script src="assets/bibles/segond_french/segond_1910.js"></script>
+    <script src='assets/bibles/esv/esv.js'></script>
+    <script src='assets/bibles/niv/niv.js'></script>
+    <script src='assets/bibles/kjv/kjv.js'></script>
+    <script src="assets/bibles/nkjv/nkjv.js"></script>
+    <script src="assets/bibles/segond_1910/segond_1910.js"></script>
+    <script src='assets/bibles/swahili_bible/swahili_bible.js'></script>
+    <script src='assets/bibles/yoruba_bible/yoruba_bible.js'></script> -->
 
-    <script src="assets/js/select_bible_translation.js"></script>
+    <!-- <script src="assets/js/select_bible_translation.js"></script> -->
+    <script src="assets/js/choose_bible_translation.js"></script>
 
     <!-- <script src='assets/kjv_json/kjv.js'></script> -->
     <script src="assets/js/utils.js"></script>
@@ -325,6 +353,6 @@ DoubleClick on History erase all previous text"></textarea>
     <script src="assets/js/load_song.js"></script>
     <script src="assets/js/search_bible.js"></script>
     <script src="assets/js/search_lyrics.js"></script>
-    <script src="assets/js/suggest_bible_books.js"></script>
+    <script src="assets/js/suggest_bible_books.js" defer></script>
   </body>
 </html>

@@ -23,3 +23,20 @@ toggleButton.addEventListener('click', function(){
         sendSettingsChannel.postMessage({ toggleDisplay: "none" });
     }
 });
+
+document.addEventListener('keydown', function(event) {
+    // Check if the Control key and the Arrow Down key are pressed
+    if (event.ctrlKey && event.key === 'ArrowUp') {
+        // Prevent default behavior if necessary
+        event.preventDefault();
+
+        let sendSettingsChannel = new BroadcastChannel("settings");
+        if (toggleDisplay.checked){
+            toggleDisplay.checked = false;
+            sendSettingsChannel.postMessage({ toggleDisplay: "flex" });
+        }else{
+            toggleDisplay.checked = true;
+            sendSettingsChannel.postMessage({ toggleDisplay: "none" });
+        }
+    }
+});

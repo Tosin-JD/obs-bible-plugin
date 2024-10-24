@@ -18,8 +18,8 @@ const tabButtons = document.getElementsByClassName("tab-button");
 
 Array.from(tabButtons).forEach(button => {
     button.addEventListener("click", () => {
-        openTab(button.value); 
-        
+        openTab(button.value);
+
         // Remove 'selected' class from all buttons
         Array.from(tabButtons).forEach(btn => {
             if (btn !== button) {
@@ -28,7 +28,7 @@ Array.from(tabButtons).forEach(button => {
         });
 
         // Add 'selected' class to the clicked button
-        button.classList.add("selected"); 
+        button.classList.add("selected");
     });
 });
 
@@ -39,7 +39,7 @@ function openSavedTab() {
     openTab(savedTab);
     Array.from(tabButtons).forEach(button => {
       if(button.value === savedTab){
-        button.classList.add("selected"); 
+        button.classList.add("selected");
       }
     });
   } else {
@@ -51,17 +51,14 @@ function openSavedTab() {
 
 // Call the function to open the saved tab when the webpage loads
 window.onload = function() {
-  openSavedTab();
-  for (let i = 0; i < 31; i++) {
-    const name = bible_data[i].name;
-  
-    const cleanedName = name.replace(/:/g, '-').replace(/\s/g, '').toLowerCase();
-    const ariParts = bible_data[i].ari.split(':');
-  
-    const pElement = document.createElement('p');
-    pElement.id = cleanedName;
-    pElement.innerHTML = `<span>${name.toUpperCase()}</span> ${bible_data[i].verse}`;
-    bblVerseDiv.appendChild(pElement);
+  // get the bible Translation
+  const savedScriptFile = localStorage.getItem('selectedScriptFile');
+  if (savedScriptFile) {
+      document.getElementById('bible-version').value = savedScriptFile;
+      loadScriptFile(savedScriptFile).then(() => {
+          getSavedBible();
+          openSavedTab();
+          displayBible();
+      });
   }
-  displayBible();
 };

@@ -1,6 +1,6 @@
 function splitAndOrganizeText(text) {
     const verses = text.split('\r\n\r\n');
-    
+
     const container = document.getElementById('song-display');
     const songDiv = document.getElementById('song');
 
@@ -38,7 +38,7 @@ function splitAndOrganizeText(text) {
     songDiv.appendChild(container);
 }
 
-function handleFileSelect(event) {
+const handleFileSelect = (event) => {
     const file = event.target.files[0];
 
     if (file) {
@@ -54,6 +54,7 @@ function handleFileSelect(event) {
 
             splitAndOrganizeText(content);
             displaySongs();
+            console.log("Handle file called");
         };
 
         reader.readAsText(file);
@@ -61,6 +62,6 @@ function handleFileSelect(event) {
 }
 
 // Add an event listener to the file input element
-document.getElementById('song-file-upload').addEventListener('change', function(event) {
+document.getElementById('song-file-upload').addEventListener('change', (event) =>{
     handleFileSelect(event);
 });

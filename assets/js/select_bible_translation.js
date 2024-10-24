@@ -2,16 +2,23 @@ var bible_data;
 
 // Define your Bible versions
 const bibleVersions = {
-    kjv: kjvBible,
-    nkjv: nkjvBible,
-    lo_segond: lo_segondBible,
-    spanish: spanishBible
+  amplified: amplified,
+  crtb: crtb,
+  esv: esv,
+  kjv: kjv,
+  nkjv: nkjv,
+  niv: niv,
+  segond_1910: segond_1910,
+  es_rvr: es_rvr,
+  swahili_bible: swahili_bible,
+  yoruba_bible: yoruba_bible,
 };
+
 
 // Function to get the selected Bible version
 function getSelectedBibleData() {
     let chosenBibleVersion = localStorage.getItem('saved-bible-version');
-    return bibleVersions[chosenBibleVersion] || kjvBible;
+    return bibleVersions[chosenBibleVersion] || kjv;
 }
 
 // Function to save the selected Bible version

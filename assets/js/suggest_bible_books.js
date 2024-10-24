@@ -1,51 +1,4 @@
 const bibleInput = document.getElementById("bible-input");
-
-//  =========================================
-
-// Function to extract book, chapter, and verse from a reference string
-function extractBookChapterVerse(reference) {
-  // Regular expression pattern to capture book name, chapter, and verse
-  // const regex = /^([\d\s\w]+)\s(\d+):(\d+)$/;
-  const regex = /^([\d\s\w\u00c0-\u017f]+)\s(\d+):(\d+)$/u;
-  const match = reference.match(regex);
-
-  if (match) {
-    const book = match[1].trim();
-    const chapter = match[2];
-    const verse = match[3];
-    return { book, chapter, verse };
-  } else {
-    throw new Error("Invalid reference format");
-  }
-}
-
-// Wait for the window to load completely
-var bibleIndex = new Map();
-window.addEventListener('load', () => {
-  // Your existing code here
-  bible_data.forEach(verse => {
-    try {
-      const { book, chapter, verse: verseNum } = extractBookChapterVerse(verse.name);
-
-      if (!bibleIndex.has(book)) {
-        bibleIndex.set(book, new Map());
-      }
-
-      let bookIndex = bibleIndex.get(book);
-
-      if (!bookIndex.has(chapter)) {
-        bookIndex.set(chapter, new Map());
-      }
-
-      bookIndex.get(chapter).set(verseNum, verse.verse);
-    } catch (error) {
-      console.error(error.message);
-    }
-  });
-});
-//  ===============================================
-
-
 const suggestionsList = document.getElementById("suggestions");
 let selectedSuggestionIndex = -1;
 
@@ -75,12 +28,10 @@ bibleInput.addEventListener("input", function() {
   if(inputValue.length > 0){
     filteredBooks.forEach((book, index) => {
       const listItem = document.createElement("li");
-      // listItem.textContent = book.name;
       listItem.innerHTML = `${book} `;
       // Add a click event listener to each suggestion
       listItem.addEventListener("click", () => {
-        searchBible(updateInput(index));
-        displayBible();
+        updateInput(index);
         suggestionsList.innerHTML = "";
       });
       suggestionsList.appendChild(listItem);

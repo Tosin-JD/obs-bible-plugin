@@ -79,7 +79,7 @@ body {
 }
 
 #setBg{
-  overflow-y: scroll;
+/*  overflow-y: scroll;*/
 }
 .settings-area{
   padding-right: 5px;
