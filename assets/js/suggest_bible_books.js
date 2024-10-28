@@ -2,6 +2,31 @@ const bibleInput = document.getElementById("bible-input");
 const suggestionsList = document.getElementById("suggestions");
 let selectedSuggestionIndex = -1;
 
+
+var bibleIndex = new Map();
+// function generateIndexForBibleBooks(){
+//   console.log("Generate running");
+//   bible_data.forEach(verse => {
+//     try {
+//       const { book, chapter, verse: verseNum } = extractBookChapterVerse(verse.name);
+//       console.log("Generating Ine");
+//
+//       if (!bibleIndex.has(book)) {
+//         bibleIndex.set(book, new Map());
+//       }
+//
+//       let bookIndex = bibleIndex.get(book);
+//
+//       if (!bookIndex.has(chapter)) {
+//         bookIndex.set(chapter, new Map());
+//       }
+//
+//       bookIndex.get(chapter).set(verseNum, verse.verse);
+//     } catch (error) {
+//       console.error(error.message);
+//     }
+//   });
+
 function updateInput(index) {
   if (index >= 0 && index < suggestionsList.children.length) {
     for (let item = suggestionsList.children.length - 1; item >= 0; item--) {
@@ -26,6 +51,7 @@ bibleInput.addEventListener("input", function() {
 
   suggestionsList.innerHTML = "";
   if(inputValue.length > 0){
+
     filteredBooks.forEach((book, index) => {
       const listItem = document.createElement("li");
       listItem.innerHTML = `${book} `;

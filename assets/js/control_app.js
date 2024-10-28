@@ -55,10 +55,11 @@ window.onload = function() {
   const savedScriptFile = localStorage.getItem('selectedScriptFile');
   if (savedScriptFile) {
       document.getElementById('bible-version').value = savedScriptFile;
+      openSavedTab();
       loadScriptFile(savedScriptFile).then(() => {
           getSavedBible();
-          openSavedTab();
           displayBible();
+          generateIndexForBibleBooks();
       });
   }
-};
+}

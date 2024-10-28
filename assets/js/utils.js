@@ -41,43 +41,33 @@ function extractBookChapterVerse(reference) {
 }
 
 
-var bibleIndex = new Map();
 function generateIndexForBibleBooks(){
-  document.addEventListener('DOMContentLoaded', function() {
-    bible_data.forEach(verse => {
-      try {
-        const { book, chapter, verse: verseNum } = extractBookChapterVerse(verse.name);
+  bible_data.forEach(verse => {
+    try {
+      const { book, chapter, verse: verseNum } = extractBookChapterVerse(verse.name);
 
-        if (!bibleIndex.has(book)) {
-          bibleIndex.set(book, new Map());
-        }
-
-        let bookIndex = bibleIndex.get(book);
-
-        if (!bookIndex.has(chapter)) {
-          bookIndex.set(chapter, new Map());
-        }
-
-        bookIndex.get(chapter).set(verseNum, verse.verse);
-      } catch (error) {
-        console.error(error.message);
+      if (!bibleIndex.has(book)) {
+        bibleIndex.set(book, new Map());
       }
-    });
+
+      let bookIndex = bibleIndex.get(book);
+
+      if (!bookIndex.has(chapter)) {
+        bookIndex.set(chapter, new Map());
+      }
+
+      bookIndex.get(chapter).set(verseNum, verse.verse);
+    } catch (error) {
+      console.error(error.message);
+    }
   });
 }
 
 function getSavedBible(){
+  let savedBibleVerse = localStorage.getItem('savedBibleVerse');
+  savedBibleQuery = savedBibleVerse.split(',');
   while (bblVerseDiv.firstChild) {
       bblVerseDiv.removeChild(bblVerseDiv.firstChild);
   }
-  for (let i = 0; i < 31; i++) {
-      const name = bible_data[i].name;
-      const cleanedName = name.replace(/:/g, '-').replace(/\s/g, '').toLowerCase();
-      const ariParts = bible_data[i].ari.split(':');
-
-      const pElement = document.createElement('p');
-      pElement.id = cleanedName;
-      pElement.innerHTML = `<span>${name.toUpperCase()}</span> ${bible_data[i].verse}`;
-      bblVerseDiv.appendChild(pElement);
-  }
+  getBibeAri(savedBibleQuery);
 }

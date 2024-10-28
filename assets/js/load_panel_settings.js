@@ -18,7 +18,7 @@ let savedTextShadowOpacity = localStorage.getItem('savedTextOpacity');
 let savedTextShadowIntensity = localStorage.getItem('savedTextIntensity');
 let savedTextShadowHorOffset = localStorage.getItem('savedHorOffset');
 let savedTextShadowVerOffset = localStorage.getItem('savedVerOffset');
-let savedBgMargin = localStorage.getItem('savedShadowColor');
+let savedBgMargin = localStorage.getItem('savedBgMargin');
 let savedToggleDisplay = localStorage.getItem('toggleDisplay');
 
 
