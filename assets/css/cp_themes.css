@@ -150,15 +150,14 @@
     --color-fg: #ffffff;
 }
 
-body {
+--transparent-color: rgba(0,0,0,0);
+
+
+body, .main-bg {
     background-color: var(--color-bg);
     color: var(--color-fg);
 }
 
-.main-bg {
-    background-color: var(--color-bg);
-    color: var(--color-fg);
-}
 
 .mid-bg {
     background-color: var(--color-mid-bg);
@@ -169,10 +168,20 @@ body {
     color: var(--color-fg);
 }
 
-div{
+div, .selected-setting-tab, .settings-tab-button.selected-setting-tab{
     background-color: var(--color-bg);
     color: var(--color-fg);
 }
+
+.settings-tab-button.selected-setting-tab:before{
+  box-shadow: 5px 0px 0 0 var(--color-bg);
+}
+
+.settings-tab-button.selected-setting-tab:after{
+  box-shadow: -5px 0px 0 0 var(--color-bg);
+}
+
+
 
 #song-input, #bible-input, .input, select, textarea, button, ::-webkit-scrollbar-track,
 p, .tab-button, .song p, .color-picker,  .settings, .settings-icons, .bible-container p, .btn{
@@ -206,7 +215,7 @@ p:active, .tab-button:active, .song p:active, .color-picker:active,
     background-color: var(--selected-bg-color);
 }
 
-.activated, .selected{
+.activated, .selected, .selected-tab, .tab-area, .container{
     color: var(--selected-fg-color) !important;
     background-color: var(--selected-bg-color) !important;
 }
@@ -243,4 +252,21 @@ p:active, .tab-button:active, .song p:active, .color-picker:active,
 
 input[type="file"] {
     display: none;
+}
+
+.tab-button.selected-tab:before,
+.tab-button.selected-tab:after{
+  background-color: var(--color-bg)
+}
+
+.tab-button.selected-tab:before {
+  left: -10px;
+  border-top-right-radius: 50%;
+  box-shadow: 5px -5px 0 0 var(--selected-bg-color);
+}
+
+.tab-button.selected-tab:after {
+  right: -10px;
+  border-top-left-radius: 50%;
+  box-shadow: -5px -5px 0 0 var(--selected-bg-color);
 }

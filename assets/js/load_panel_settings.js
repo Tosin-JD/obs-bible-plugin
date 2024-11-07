@@ -10,7 +10,6 @@ var savedBoldState = localStorage.getItem('boldState');
 var savedItalicState = localStorage.getItem('italicState');
 var savedUnderlineState = localStorage.getItem('underlineState');
 var savedTextAlign = localStorage.getItem('textAlign');
-var savedDisplay = localStorage.getItem('toggleDisplay');
 var savedBibleTranslation = localStorage.getItem('saved-bible-version');
 
 let savedTextShadowColor = localStorage.getItem('rawShadowColor');
@@ -19,8 +18,69 @@ let savedTextShadowIntensity = localStorage.getItem('savedTextIntensity');
 let savedTextShadowHorOffset = localStorage.getItem('savedHorOffset');
 let savedTextShadowVerOffset = localStorage.getItem('savedVerOffset');
 let savedBgMargin = localStorage.getItem('savedBgMargin');
-let savedToggleDisplay = localStorage.getItem('toggleDisplay');
+const savedAnimationData = localStorage.getItem('obs-bible-animationData');
 
+
+let  loadSavedBorder = () => {
+  let savedMainBorder = localStorage.getItem('obs-bible-saved-main-border');
+  let savedMainBorderColor = localStorage.getItem('obs-bible-saved-main-border-color');
+  let savedMainBorderType = localStorage.getItem('obs-bible-saved-main-border-type');
+  let mainBorder = document.getElementById('main-border');
+  let mainBorderColor = document.getElementById('main-border-color');
+  let mainBorderType = document.getElementById('main-border-type');
+
+  if (savedMainBorder !== null) {
+    mainBorder.value = savedMainBorder;
+  }
+  if (savedMainBorderColor !== null) {
+    mainBorderColor.value = savedMainBorderColor;
+  }
+  if (savedMainBorderType !== null) {
+    mainBorderType.value = savedMainBorderType;
+  }
+}
+loadSavedBorder();
+
+let loadFontStroke = () => {
+  let savedStrokeWidth = localStorage.getItem('obs-bible-saved-font-outline');
+  let savedStrokeColor = localStorage.getItem('obs-bible-saved-font-outline-color');
+  let fontOutlineSlider =  document.getElementById("font-outline");
+  textOutlineColorPicker =  document.getElementById("font-outline-color");
+
+  // Apply saved settings if they exist
+  if (savedStrokeWidth !== null) {
+    fontOutlineSlider.value = savedStrokeWidth;
+  }
+  if (savedStrokeColor !== null) {
+    textOutlineColorPicker.value = savedStrokeColor;
+  }
+}
+loadFontStroke();
+
+if (savedAnimationData) {
+    let animationData = JSON.parse(savedAnimationData);
+    animationTypeSelect = document.getElementById('animation-type');
+    durationInput = document.getElementById('animation-duration');
+    easingSelect = document.getElementById('animation-easing');
+
+    // Apply the saved values to the form elements
+    animationTypeSelect.value = animationData.type || animationTypeSelect.value;
+    durationInput.value = animationData.duration || durationInput.value;
+    easingSelect.value = animationData.easing || easingSelect.value;
+
+    let toggleCheckbox = document.getElementById('toggle-display');
+    if (animationData.display) {
+        if (animationData.display === "flex"){
+          toggleCheckbox.checked = true;
+          console.log(toggleCheckbox.checked);
+        }else{
+            toggleCheckbox.checked = false;
+            console.log(toggleCheckbox.checked);
+        }
+    }else{
+      toggleCheckbox.checked = true;
+    }
+}
 
 if (savedRawBgColor) {
     let defaultBgColor = document.getElementById("bgColor");
@@ -143,14 +203,4 @@ if (savedTextShadowVerOffset) {
 if (savedBgMargin) {
     let defaultMargin = document.getElementById("bg-margin");
     defaultMargin.setAttribute("value", savedBgMargin);
-}
-
-
-if (savedToggleDisplay) {
-    let toggleCheckbox = document.getElementById('toggle-display');
-    if (savedToggleDisplay === "flex"){
-        toggleCheckbox.checked = true;
-    }else{
-        toggleCheckbox.checked = false;
-    }
 }

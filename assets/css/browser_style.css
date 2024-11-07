@@ -15,7 +15,7 @@ body{
     margin: 0;
     padding: 0;
     font-family: sans-serif;
-    overflow-y: hidden;
+    overflow: hidden;
 }
 
 .bg-container{
@@ -60,4 +60,230 @@ body{
 
 .text-with-shadow {
     text-shadow: 5px 5px 4px rgba(0, 0, 0, 0.75);
+}
+
+
+
+
+
+
+
+
+/* Fade Animation */
+@keyframes fade {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+.fade {
+    animation: fade forwards;
+}
+
+@keyframes slide-left {
+    from {
+        transform: translateX(100%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+.slide-left {
+    animation: slide-left forwards;
+}
+
+@keyframes slide-right {
+    from {
+        transform: translateX(-100%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+.slide-right {
+    animation: slide-right forwards;
+}
+
+/* Slide Top Animation */
+@keyframes slide-top {
+    from {
+        transform: translateY(100%);
+    }
+    to {
+        transform: translateY(0);
+    }
+}
+.slide-top {
+    animation: slide-top forwards;
+}
+
+/* Slide Bottom Animation */
+@keyframes slide-bottom {
+    from {
+        transform: translateY(-100%);
+    }
+    to {
+        transform: translateY(0);
+    }
+}
+.slide-bottom {
+    animation: slide-bottom forwards;
+}
+
+
+/* Scatter Animation */
+@keyframes slide-top-left {
+    from {
+        transform: translate(100%, 100%);
+        opacity: 0.5;
+    }
+    to {
+        transform: translate(0, 0);
+        opacity: 1;
+    }
+}
+.slide-top-left {
+    animation: slide-top-left forwards;
+}
+
+/* Slide Top Right Animation */
+@keyframes slide-top-right {
+    from {
+        transform: translate(-100%, 100%);
+        opacity: 0.5;
+    }
+    to {
+        transform: translate(0, 0);
+        opacity: 1;
+    }
+}
+.slide-top-right {
+    animation: slide-top-right forwards;
+}
+
+/* Slide Bottom Left Animation */
+@keyframes slide-bottom-left {
+    from {
+        transform: translate(100%, -100%);
+        opacity: 0.5;
+    }
+    to {
+        transform: translate(0, 0);
+        opacity: 1;
+    }
+}
+.slide-bottom-left {
+    animation: slide-bottom-left forwards;
+}
+
+/* Slide Bottom Right Animation */
+@keyframes slide-bottom-right {
+    from {
+        transform: translate(-100%, -100%);
+        opacity: 0.5;
+    }
+    to {
+        transform: translate(0, 0);
+        opacity: 1;
+    }
+}
+.slide-bottom-right {
+    animation: slide-bottom-right forwards;
+}
+
+
+/* Fly Animation */
+@keyframes fly {
+    from {
+        transform: translateY(-100%);
+    }
+    to {
+        transform: translateY(0);
+    }
+}
+.fly {
+    animation: fly forwards;
+}
+
+/* Zoom In Animation */
+@keyframes zoomIn {
+    from {
+        transform: scale(0);
+    }
+    to {
+        transform: scale(1);
+    }
+}
+.zoom-in {
+    animation: zoomIn forwards;
+}
+
+/* Zoom Out Animation */
+@keyframes zoomOut {
+    from {
+        transform: scale(2);
+    }
+    to {
+        transform: scale(1);
+    }
+}
+.zoom-out {
+    animation: zoomOut forwards;
+}
+
+/* Rotate Animation */
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+.rotate {
+    animation: rotate forwards;
+}
+
+/* Flip Animation */
+@keyframes flip {
+    0% {
+        transform: rotateY(0deg);
+    }
+    100% {
+        transform: rotateY(180deg);
+    }
+}
+.flip {
+    animation: flip forwards;
+}
+
+
+/* Bounce Animation */
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-30px);
+    }
+    60% {
+        transform: translateY(-15px);
+    }
+}
+.bounce {
+    animation: bounce 1s forwards;
+}
+
+/* Shake Animation */
+@keyframes shake {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    50% { transform: translateX(10px); }
+    75% { transform: translateX(-10px); }
+    100% { transform: translateX(0); }
+}
+.shake {
+    animation: shake 0.5s forwards;
 }

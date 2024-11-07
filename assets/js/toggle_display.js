@@ -1,42 +1,26 @@
-// // toggle display on and off
 const toggleButton = document.getElementById("toggle-button");
 const toggleDisplay = document.getElementById("toggle-display");
 
-toggleDisplay.addEventListener("change", function() {
-    let sendSettingsChannel = new BroadcastChannel("settings");
-    if (toggleDisplay.checked) {
-        sendSettingsChannel.postMessage({ toggleDisplay: "none" });
-    } else {
-        sendSettingsChannel.postMessage({ toggleDisplay: "flex" });
-    }
-
+const sendToggleMessage = (isChecked) => {
+    const sendSettingsChannel = new BroadcastChannel("settings");
+    sendSettingsChannel.postMessage({ toggleDisplay: isChecked ? "none" : "flex" });
     sendSettingsChannel.close();
+};
+
+const toggleDisplayState = () => {
+    toggleDisplay.checked = !toggleDisplay.checked;
+    sendToggleMessage(toggleDisplay.checked);
+};
+
+toggleDisplay.addEventListener("change", () => {
+    sendToggleMessage(toggleDisplay.checked);
 });
 
-toggleButton.addEventListener('click', function(){
-    let sendSettingsChannel = new BroadcastChannel("settings");
-    if (toggleDisplay.checked){
-        toggleDisplay.checked = false;
-        sendSettingsChannel.postMessage({ toggleDisplay: "flex" });
-    }else{
-        toggleDisplay.checked = true;
-        sendSettingsChannel.postMessage({ toggleDisplay: "none" });
-    }
-});
+toggleButton.addEventListener('click', toggleDisplayState);
 
-document.addEventListener('keydown', function(event) {
-    // Check if the Control key and the Arrow Down key are pressed
+document.addEventListener('keydown', (event) => {
     if (event.ctrlKey && event.key === 'ArrowUp') {
-        // Prevent default behavior if necessary
         event.preventDefault();
-
-        let sendSettingsChannel = new BroadcastChannel("settings");
-        if (toggleDisplay.checked){
-            toggleDisplay.checked = false;
-            sendSettingsChannel.postMessage({ toggleDisplay: "flex" });
-        }else{
-            toggleDisplay.checked = true;
-            sendSettingsChannel.postMessage({ toggleDisplay: "none" });
-        }
+        toggleDisplayState();
     }
 });

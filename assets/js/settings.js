@@ -21,8 +21,12 @@ opacityRange.addEventListener("input", function () {
     let currentOpacity = opacityRange.value / 10;
     localStorage.setItem('savedOpacity', opacityRange.value);
     let bgColor = localStorage.getItem('bgColor');
-
-    let rgbValues = bgColor.match(/\d+/g);
+    let rgbValues
+    if (bgColor){
+      rgbValues = bgColor.match(/\d+/g);
+    }else{
+      rgbValues = 'rgba(85, 34, 85, 0.5)';
+    }
     let newColor = `rgba(${rgbValues[0]}, ${rgbValues[1]}, ${rgbValues[2]}, ${currentOpacity})`;
 
     let settingsChannel = new BroadcastChannel("settings");
@@ -38,6 +42,58 @@ roundedCorner.addEventListener("input", function () {
 
     let settingsChannel = new BroadcastChannel("settings");
     settingsChannel.postMessage({ roundedCorner: currentRoundedCorner });
+    settingsChannel.close();
+});
+
+const mainBorder = document.getElementById("main-border");
+
+mainBorder.addEventListener("input", function () {
+    let currentMainBorder = mainBorder.value;
+
+    let settingsChannel = new BroadcastChannel("settings");
+    settingsChannel.postMessage({ mainBorder: currentMainBorder });
+    settingsChannel.close();
+});
+
+const mainBorderColor = document.getElementById("main-border-color");
+
+mainBorderColor.addEventListener("input", function () {
+    let currentMainBorderColor = mainBorderColor.value;
+
+    let settingsChannel = new BroadcastChannel("settings");
+    settingsChannel.postMessage({ mainBorderColor: currentMainBorderColor });
+    settingsChannel.close();
+});
+
+const mainBorderType = document.getElementById("main-border-type");
+
+mainBorderType.addEventListener("input", function () {
+    let currentMainBorderType = mainBorderType.value;
+
+    let settingsChannel = new BroadcastChannel("settings");
+    settingsChannel.postMessage({ mainBorderType: currentMainBorderType });
+    settingsChannel.close();
+    console.log("Main Type for border sent");
+});
+
+
+const fontOutline = document.getElementById("font-outline");
+
+fontOutline.addEventListener("input", function () {
+    let currentFontOutline = fontOutline.value;
+
+    let settingsChannel = new BroadcastChannel("settings");
+    settingsChannel.postMessage({ fontOutline: currentFontOutline });
+    settingsChannel.close();
+});
+
+const fontOutlineColor = document.getElementById("font-outline-color");
+
+fontOutlineColor.addEventListener("input", function () {
+    let currentFontOutlineColor = fontOutlineColor.value;
+
+    let settingsChannel = new BroadcastChannel("settings");
+    settingsChannel.postMessage({ fontOutlineColor: currentFontOutlineColor });
     settingsChannel.close();
 });
 

@@ -44,4 +44,3 @@ var observer = new MutationObserver(handleMutation);
 
 // Start observing changes in the inner HTML of the <p> element
 observer.observe(document.getElementById('messageDisplay'), { childList: true });
-
