@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="assets/css/browser_style.css">
   <title>Receiver</title>
-  <!-- <script src="assets/js/control_app.js"></script> -->
 </head>
 <body>
   <div class="bg-container" id="bg-container">
@@ -76,7 +75,7 @@
           }
           if (event.data.selectedBgMargin){
             messageDisplay.style.padding = event.data.selectedBgMargin + "px";
-            localStorage.setItem('savedBgMargin', messageDisplay.style.padding);
+            localStorage.setItem('savedBgMargin', event.data.selectedBgMargin);
             adjustFontSizeBasedOnScroll();
           }
           if (event.data.selectedTextAlignment){
@@ -168,6 +167,13 @@
             animationContainer.style.animationDirection = "normal";
             animationContainer.classList.add(type);
             animationContainer.style.display = 'flex';
+            
+            while(animatedElement.offsetHeight > animationContainer.offsetHeight){
+              let tempFontSize = Number(animatedElement.style.fontSize.replace(/px/i, ''));
+              tempFontSize -= 1;
+              animatedElement.style.fontSize = `${tempFontSize}px`;
+            }
+
             setTimeout(() => {
               adjustFontSizeBasedOnScroll();
               animationContainer.classList.remove(type);

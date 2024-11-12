@@ -5,7 +5,7 @@
   }
 
 body{
-    background-color: rgba(0, 0, 0, 0);
+    
     color: #fff;
     display: flex;
     justify-content: center;
@@ -16,6 +16,7 @@ body{
     padding: 0;
     font-family: sans-serif;
     overflow: hidden;
+    background: rgba(0, 0, 0, 0);
 }
 
 .bg-container{
@@ -40,7 +41,7 @@ body{
 
 #messageDisplay {
     opacity: 1;
-    font-size: 5em;
+/*    font-size: 5em;*/
     font-weight: bold;
     text-align: center;
     margin: 0;
@@ -136,11 +137,11 @@ body{
 /* Scatter Animation */
 @keyframes slide-top-left {
     from {
-        transform: translate(100%, 100%);
+        transform: translate(100%, 100%) scale(0);
         opacity: 0.5;
     }
     to {
-        transform: translate(0, 0);
+        transform: translate(0, 0) scale(1);
         opacity: 1;
     }
 }
@@ -151,11 +152,11 @@ body{
 /* Slide Top Right Animation */
 @keyframes slide-top-right {
     from {
-        transform: translate(-100%, 100%);
+        transform: translate(-100%, 100%)  scale(0);
         opacity: 0.5;
     }
     to {
-        transform: translate(0, 0);
+        transform: translate(0, 0)  scale(1);
         opacity: 1;
     }
 }
@@ -166,11 +167,11 @@ body{
 /* Slide Bottom Left Animation */
 @keyframes slide-bottom-left {
     from {
-        transform: translate(100%, -100%);
+        transform: translate(100%, -100%) scale(0);
         opacity: 0.5;
     }
     to {
-        transform: translate(0, 0);
+        transform: translate(0, 0) scale(1);
         opacity: 1;
     }
 }
@@ -181,11 +182,11 @@ body{
 /* Slide Bottom Right Animation */
 @keyframes slide-bottom-right {
     from {
-        transform: translate(-100%, -100%);
+        transform: translate(-100%, -100%) scale(0);
         opacity: 0.5;
     }
     to {
-        transform: translate(0, 0);
+        transform: translate(0, 0) scale(1);
         opacity: 1;
     }
 }
@@ -193,19 +194,85 @@ body{
     animation: slide-bottom-right forwards;
 }
 
+@keyframes fly-left {
+    0% {
+        transform: translateX(-100%) rotateY(-180deg);
+        opacity: 0;
+    }
+    50% {
+        transform: translateX(-50%) rotateY(-90deg);
+        opacity: 0.8;
+    }
+    100% {
+        transform: translateX(0) rotateY(0);
+        opacity: 1;
+    }
+}
+
+.fly-left {
+    animation: fly-left forwards;
+}
+
 
 /* Fly Animation */
-@keyframes fly {
-    from {
-        transform: translateY(-100%);
+@keyframes fly-right {
+    0% {
+        transform: translateX(100%) rotateY(180deg);
+        opacity: 0;
+
     }
-    to {
-        transform: translateY(0);
+    50% {
+        transform: translateX(50%) rotateY(90deg);
+        opacity: 0.8;
+    }
+    100% {
+        transform: translateX(0) rotateY(0);
+        opacity: 1;
     }
 }
-.fly {
-    animation: fly forwards;
+
+.fly-right {
+    animation: fly-right forwards;
 }
+
+@keyframes fly-top {
+    0% {
+        transform: translateY(-100%) rotateX(-180deg);
+        opacity: 0;
+    }
+    50% {
+        transform: translateY(-50%) rotateX(-90deg);
+        opacity: 0.8;
+    }
+    100% {
+        transform: translateY(0) rotateX(0);
+        opacity: 1;
+    }
+}
+
+.fly-top {
+    animation: fly-top forwards;
+}
+
+@keyframes fly-bottom {
+    0% {
+        transform: translateY(100%) rotateX(180deg);
+        opacity: 0;
+    }
+    50% {
+        transform: translateY(50%) rotateX(90deg);
+        opacity: 0.8;
+    }
+    100% {
+        transform: translateY(0) rotateX(0);
+        opacity: 1;
+    }
+}
+
+.fly-bottom {
+    animation: fly-bottom forwards;
+}
+
 
 /* Zoom In Animation */
 @keyframes zoomIn {

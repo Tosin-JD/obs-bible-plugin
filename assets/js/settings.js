@@ -73,7 +73,6 @@ mainBorderType.addEventListener("input", function () {
     let settingsChannel = new BroadcastChannel("settings");
     settingsChannel.postMessage({ mainBorderType: currentMainBorderType });
     settingsChannel.close();
-    console.log("Main Type for border sent");
 });
 
 

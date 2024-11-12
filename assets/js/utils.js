@@ -26,8 +26,7 @@ function extractBookChapterVerse(reference) {
   const match = reference.match(regex);
 
   if (!match) {
-    throw new Error("Invalid reference format"); // Adjust the error message if needed
-    console.log(match);
+    throw new Error("Invalid reference format");
   }
 
   if (match) {

@@ -72,10 +72,8 @@ if (savedAnimationData) {
     if (animationData.display) {
         if (animationData.display === "flex"){
           toggleCheckbox.checked = true;
-          console.log(toggleCheckbox.checked);
         }else{
             toggleCheckbox.checked = false;
-            console.log(toggleCheckbox.checked);
         }
     }else{
       toggleCheckbox.checked = true;
@@ -202,5 +200,5 @@ if (savedTextShadowVerOffset) {
 
 if (savedBgMargin) {
     let defaultMargin = document.getElementById("bg-margin");
-    defaultMargin.setAttribute("value", savedBgMargin);
+    defaultMargin.value = savedBgMargin;
 }

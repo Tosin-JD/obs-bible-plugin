@@ -4,28 +4,6 @@ let selectedSuggestionIndex = -1;
 
 
 var bibleIndex = new Map();
-// function generateIndexForBibleBooks(){
-//   console.log("Generate running");
-//   bible_data.forEach(verse => {
-//     try {
-//       const { book, chapter, verse: verseNum } = extractBookChapterVerse(verse.name);
-//       console.log("Generating Ine");
-//
-//       if (!bibleIndex.has(book)) {
-//         bibleIndex.set(book, new Map());
-//       }
-//
-//       let bookIndex = bibleIndex.get(book);
-//
-//       if (!bookIndex.has(chapter)) {
-//         bookIndex.set(chapter, new Map());
-//       }
-//
-//       bookIndex.get(chapter).set(verseNum, verse.verse);
-//     } catch (error) {
-//       console.error(error.message);
-//     }
-//   });
 
 function updateInput(index) {
   if (index >= 0 && index < suggestionsList.children.length) {

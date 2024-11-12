@@ -54,7 +54,6 @@ const handleFileSelect = (event) => {
 
             splitAndOrganizeText(content);
             displaySongs();
-            console.log("Handle file called");
         };
 
         reader.readAsText(file);

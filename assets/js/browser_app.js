@@ -2,6 +2,7 @@ function hasVerticalScroll() {
   return document.documentElement.clientHeight < document.documentElement.scrollHeight;
 }
 
+
 function adjustFontSizeBasedOnScroll() {
   // Get the message element by its ID
   var message = document.getElementById('messageDisplay');
@@ -26,6 +27,8 @@ function adjustFontSizeBasedOnScroll() {
       }
     }
   }
+
+  return fontSize + "px";
 }
 
 

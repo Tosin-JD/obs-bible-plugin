@@ -180,24 +180,17 @@ function displaySongs() {
   // Event listener for Next button
   document.getElementById("next-line").addEventListener("click", () => {
     moveToNextLine();
-    console.log("Next clicked");
   });
 
   document.getElementById("start-song-button").addEventListener("click", (event) => {
-    console.log("Button was clicked");
-    console.log(event.target)
     let timer = parseInt(document.getElementById("song-line-duration").value, 10);
 
     if(timer > 0){
       if (!isSongRunning) {
-        console.log("Is not running");
-        // Start the interval
         songIntervalId = setInterval(moveToNextLine, timer * 1000);
         document.getElementById("start-song-button").value = "Stop";
         isSongRunning = true;
       } else {
-        console.log("Is Running");
-        // stop the interval
         clearInterval(songIntervalId);
         document.getElementById("start-song-button").value = "Start";
         isSongRunning = false;
