@@ -1,4 +1,4 @@
-const toggleButton = document.getElementById("toggle-button");
+const toggleButton = document.getElementById("toggle-button-display");
 const toggleDisplay = document.getElementById("toggle-display");
 
 const sendToggleMessage = (isChecked) => {
@@ -24,3 +24,5 @@ document.addEventListener('keydown', (event) => {
         toggleDisplayState();
     }
 });
+
+

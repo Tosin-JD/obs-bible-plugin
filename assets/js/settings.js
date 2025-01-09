@@ -1,10 +1,27 @@
 //  setttings for font family
 let colorMidBg = getCustomPropertyValue('--color-mid-bg');
 let colorFg = getCustomPropertyValue('--color-fg');
-
-
+let textShadowColor = document.getElementById("shadow-color");
+let textShadowOpacity = document.getElementById("shadow-opacity");
+let textShadowIntensity = document.getElementById("shadow-intensity");
+let textShadowHorOffset = document.getElementById("hor-shadow-offset");
+let textShadowVerOffset = document.getElementById("ver-shadow-offset");
+let bgMargin = document.getElementById("bg-margin");
 const fontElement = document.getElementById("fontStyle");
 const selectedFont = fontElement.options[fontElement.selectedIndex].value;
+const opacityRange = document.getElementById("bg-opacity");
+const roundedCorner = document.getElementById("rounded-corner");
+const mainBorder = document.getElementById("main-border");
+const fontOutline = document.getElementById("font-outline");
+const fontOutlineColor = document.getElementById("font-outline-color");
+const mainBorderType = document.getElementById("main-border-type");
+const mainBorderColor = document.getElementById("main-border-color");
+const boldButton = document.getElementById("bold");
+const italicButton = document.getElementById("italic");
+const underlineButton = document.getElementById("underline");
+const textAlign = document.querySelectorAll('input[name="align"]');
+const bgColorInput = document.getElementById("bgColor");
+
 
 fontElement.addEventListener("change", function() {
     let selectedValue = fontElement.options[fontElement.selectedIndex].value;
@@ -14,8 +31,6 @@ fontElement.addEventListener("change", function() {
     sendSettingsChannel.close();
 });
 
-//  Dealing with opacity color
-const opacityRange = document.getElementById("bg-opacity");
 
 opacityRange.addEventListener("input", function () {
     let currentOpacity = opacityRange.value / 10;
@@ -34,8 +49,7 @@ opacityRange.addEventListener("input", function () {
     settingsChannel.close();
 });
 
-//  handling rounded corner
-const roundedCorner = document.getElementById("rounded-corner");
+
 
 roundedCorner.addEventListener("input", function () {
     let currentRoundedCorner = roundedCorner.value;
@@ -45,7 +59,6 @@ roundedCorner.addEventListener("input", function () {
     settingsChannel.close();
 });
 
-const mainBorder = document.getElementById("main-border");
 
 mainBorder.addEventListener("input", function () {
     let currentMainBorder = mainBorder.value;
@@ -55,7 +68,7 @@ mainBorder.addEventListener("input", function () {
     settingsChannel.close();
 });
 
-const mainBorderColor = document.getElementById("main-border-color");
+
 
 mainBorderColor.addEventListener("input", function () {
     let currentMainBorderColor = mainBorderColor.value;
@@ -65,7 +78,6 @@ mainBorderColor.addEventListener("input", function () {
     settingsChannel.close();
 });
 
-const mainBorderType = document.getElementById("main-border-type");
 
 mainBorderType.addEventListener("input", function () {
     let currentMainBorderType = mainBorderType.value;
@@ -76,8 +88,6 @@ mainBorderType.addEventListener("input", function () {
 });
 
 
-const fontOutline = document.getElementById("font-outline");
-
 fontOutline.addEventListener("input", function () {
     let currentFontOutline = fontOutline.value;
 
@@ -86,7 +96,6 @@ fontOutline.addEventListener("input", function () {
     settingsChannel.close();
 });
 
-const fontOutlineColor = document.getElementById("font-outline-color");
 
 fontOutlineColor.addEventListener("input", function () {
     let currentFontOutlineColor = fontOutlineColor.value;
@@ -97,8 +106,6 @@ fontOutlineColor.addEventListener("input", function () {
 });
 
 
-// handle backgroundColor
-const bgColorInput = document.getElementById("bgColor");
 bgColorInput.addEventListener("input", function () {
     let selectedColor = bgColorInput.value;
     let collectdBgColor = localStorage.getItem('bgColor');
@@ -137,8 +144,7 @@ titleColorInput.addEventListener("input", function () {
     settingsChannel.close();
 });
 
-// handle Title Color
-const boldButton = document.getElementById("bold");
+
 boldButton.addEventListener("click", function () {
     let currentBoldState = localStorage.getItem('boldState') || 'normal';
     const newBoldState = (currentBoldState === 'bold') ? 'normal' : 'bold';
@@ -156,8 +162,7 @@ boldButton.addEventListener("click", function () {
     settingsChannel.close();
 });
 
-// handle italic state
-const italicButton = document.getElementById("italic");
+
 italicButton.addEventListener("click", function () {
     let currentItalicState = localStorage.getItem('italicState') || 'normal';
     const newItalicState = (currentItalicState === 'italic') ? 'normal' : 'italic';
@@ -176,8 +181,6 @@ italicButton.addEventListener("click", function () {
 });
 
 
-// handle Underline state
-const underlineButton = document.getElementById("underline");
 underlineButton.addEventListener("click", function () {
     let currentUnderlineState = localStorage.getItem('underlineState') || 'none';
     const newUnderlineState = (currentUnderlineState === 'underline') ? 'none' : 'underline';
@@ -196,8 +199,6 @@ underlineButton.addEventListener("click", function () {
 });
 
 
-// Function to save the selected radio button to localStorage
-const textAlign = document.querySelectorAll('input[name="align"]');
 textAlign.forEach(radio => {
     radio.addEventListener('change', () => {
         if (radio.checked) {
@@ -209,13 +210,6 @@ textAlign.forEach(radio => {
     });
 });
 
-
-let textShadowColor = document.getElementById("shadow-color");
-let textShadowOpacity = document.getElementById("shadow-opacity");
-let textShadowIntensity = document.getElementById("shadow-intensity");
-let textShadowHorOffset = document.getElementById("hor-shadow-offset");
-let textShadowVerOffset = document.getElementById("ver-shadow-offset");
-let bgMargin = document.getElementById("bg-margin");
 
 textShadowColor.addEventListener("change", function() {
     let selectedColor = textShadowColor.value;
@@ -254,6 +248,7 @@ textShadowOpacity.addEventListener("input", function () {
     settingsChannel.postMessage({ selectedShadowColor: shadowValue });
     settingsChannel.close();
 });
+
 
 textShadowIntensity.addEventListener('input', function () {
     let currentIntensity = textShadowIntensity.value;
@@ -297,6 +292,7 @@ textShadowVerOffset.addEventListener('input', function () {
     settingsChannel.postMessage({ selectedShadowColor: shadowValue });
     settingsChannel.close();
 });
+
 
 bgMargin.addEventListener("change", function() {
     let selectedMargin = bgMargin.value;

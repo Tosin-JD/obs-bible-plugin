@@ -31,9 +31,9 @@ DoubleClick on History erase all previous text"></textarea>
         </div>
         <div id="bibleText" class="tab-area" style="display:none;">
           <div class="container">
-            <div class="bible-search">
+            <div class="bible-search row">
               <div class="input-group row">
-                <div class="search-group">
+                <div class="search-group row">
                   <input class="input" id="bible-input" placeholder="Psalms 1:1 or Any Verse content">
                   <div class="mid-bg color-fg" id="suggestions"></div>
                 </div>
@@ -48,6 +48,23 @@ DoubleClick on History erase all previous text"></textarea>
                       <path class="icons" d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9L0 168c0 13.3 10.7 24 24 24l110.1 0c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24l0 104c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65 0-94.1c0-13.3-10.7-24-24-24z"/>
                   </svg>
                   </button>
+                </div>
+                <div class="row">
+                  <div class="settings-icons bible-version">
+                    <label class="small-font" id="bible-translation" for="bible-version">Bible Translation</label>
+                    <select name="bible-version" id="bible-version" class="small-font">
+                      <option value="assets/bibles/amplified/amplified.js">Amplified Bible</option>
+                      <option value="assets/bibles/crtb/crtb.js">Russian Bible</option>
+                      <option value="assets/bibles/kjv/kjv.js">Authorized KJV</option>
+                      <option value="assets/bibles/esv/esv.js">ESV</option>
+                      <option value="assets/bibles/es_rvr/es_rvr.js">Español (Spanish)</option>
+                      <option value="assets/bibles/nkjv/nkjv.js">NKJV</option>
+                      <option value="assets/bibles/niv/niv.js">NIV</option>
+                      <option value="assets/bibles/segond_1910/segond_1910.js">Louis Segond (French)</option>
+                      <option value="assets/bibles/swahili_bible/swahili_bible.js">Swahili Bible</option>
+                      <option value="assets/bibles/yoruba_bible/yoruba_bible.js">Yoruba Bible</option>
+                    </select>
+                  </div>
                 </div>
               </div>
             </div>
@@ -133,30 +150,33 @@ DoubleClick on History erase all previous text"></textarea>
            <div class="settings-tab-area" id="settings-general">
              <div class="column settings-area">
                <div class="row">
-                 <div class="settings-icons bible-version">
-                   <label class="">Bible Translation</label>
-                   <select name="bible-version" id="bible-version">
-                     <option value="assets/bibles/amplified/amplified.js">Amplified Bible</option>
-                     <option value="assets/bibles/crtb/crtb.js">Russian Bible</option>
-                     <option value="assets/bibles/kjv/kjv.js">Authorized KJV</option>
-                     <option value="assets/bibles/esv/esv.js">ESV</option>
-                     <option value="assets/bibles/es_rvr/es_rvr.js">Español (Spanish)</option>
-                     <option value="assets/bibles/nkjv/nkjv.js">NKJV</option>
-                     <option value="assets/bibles/niv/niv.js">NIV</option>
-                     <option value="assets/bibles/segond_1910/segond_1910.js">Louis Segond (French)</option>
-                     <option value="assets/bibles/swahili_bible/swahili_bible.js">Swahili Bible</option>
-                     <option value="assets/bibles/yoruba_bible/yoruba_bible.js">Yoruba Bible</option>
-                   </select>
+                  <!-- <div class="settings-icons bible-version">
+                    <label class="">Bible Translation</label>
+                    <select name="bible-version" id="bible-version">
+                    <option value="assets/bibles/amplified/amplified.js">Amplified Bible</option>
+                    <option value="assets/bibles/crtb/crtb.js">Russian Bible</option>
+                    <option value="assets/bibles/kjv/kjv.js">Authorized KJV</option>
+                    <option value="assets/bibles/esv/esv.js">ESV</option>
+                    <option value="assets/bibles/es_rvr/es_rvr.js">Español (Spanish)</option>
+                    <option value="assets/bibles/nkjv/nkjv.js">NKJV</option>
+                    <option value="assets/bibles/niv/niv.js">NIV</option>
+                    <option value="assets/bibles/segond_1910/segond_1910.js">Louis Segond (French)</option>
+                    <option value="assets/bibles/swahili_bible/swahili_bible.js">Swahili Bible</option>
+                    <option value="assets/bibles/yoruba_bible/yoruba_bible.js">Yoruba Bible</option>
+                    </select>
+                  </div> -->
+                 <div class="settings-icons full-width">
+                  <label for="obs-bible-panel-theme">Theme</label>
+                  <select name="panel-theme" id="obs-bible-panel-theme">
+                    <option value="obs-bible-acri">Acri</option>
+                    <option value="obs-bible-dark">Dark</option>
+                    <option value="obs-bible-grey">Grey</option>
+                    <option value="obs-bible-light">Light</option>
+                    <option value="obs-bible-rachni">Rachni</option>
+                    <option value="obs-bible-system">System</option>
+                    <option value="obs-bible-default-yami">Yami (Default)</option>
+                  </select>
                  </div>
-                 <select id="panelTheme">
-                   <option value="Acri">Acri</option>
-                   <option value="Dark">Dark</option>
-                   <option value="Grey">Grey</option>
-                   <option value="Light">Light</option>
-                   <option value="Rachni">Rachni</option>
-                   <option value="System">System</option>
-                   <option value="default">Yami (Default)</option>
-                 </select>
                  </div>
                <div class="row">
                  <div class="settings-icons">
@@ -176,21 +196,21 @@ DoubleClick on History erase all previous text"></textarea>
                </div>
                <div class="column" id="shadow-editor">
                  <div class="row">
-                   <div class="row settings-icons">
+                   <div class="column settings-icons">
                      <label for="shadow-opacity">Shadow Opacity:</label>
                      <input type="range" id="shadow-opacity" min="0" max="10" value="1"  class="slider">
                    </div>
-                   <div class="row settings-icons">
+                   <div class="column settings-icons">
                      <label for="shadow-intensity">Shadow Intensity:</label>
                      <input type="range" min="0" max="10" value="10" id="shadow-intensity" class="slider">
                    </div>
                  </div>
                  <div class="row">
-                   <div class="row settings-icons">
+                   <div class="column settings-icons">
                      <label for="shadow-opacity">Horizontal Shadow offset:</label>
                      <input type="range" id="hor-shadow-offset" min="-10" max="10" value="1"  class="slider">
                    </div>
-                   <div class="row settings-icons">
+                   <div class="column settings-icons">
                      <label for="shadow-intensity">Vertical Shadow offset:</label>
                      <input type="range" min="-10" max="10" value="10" id="ver-shadow-offset" class="slider">
                    </div>
@@ -200,21 +220,41 @@ DoubleClick on History erase all previous text"></textarea>
                      <label for="main-border">Main Border</label>
                      <input type="range" min="0" max="20" value="0" class="slider" id="main-border">
                    </div>
-                   <div class="column settings-icons">
-                     <label for="main-border-type"></label>
-                     <select class="" name="" id="main-border-type">
-                       <option value="solid">Solid</option>
-                       <option value="dashed">Dashed</option>
-                       <option value="dotted">Dotted</option>
-                       <option value="double">Double</option>
-                       <option value="groove">Groove</option>
-                       <option value="ridge">Ridge</option>
-                       <option value="inset">Inset</option>
-                       <option value="outset">Outset</option>
-                       <option value="none">None</option>
-                       <option value="hidden">Hidden</option>
-                     </select>
-                   </div>
+                   <div class="row settings-icons">
+                      <div class="column full-width">
+                       <label for="main-border-type">Border</label>
+                       <select class="" name="" id="main-border-type">
+                         <option value="solid">Solid</option>
+                         <option value="dashed">Dashed</option>
+                         <option value="dotted">Dotted</option>
+                         <option value="double">Double</option>
+                         <option value="groove">Groove</option>
+                         <option value="ridge">Ridge</option>
+                         <option value="inset">Inset</option>
+                         <option value="outset">Outset</option>
+                         <option value="none">None</option>
+                         <option value="hidden">Hidden</option>
+                       </select>
+                     </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="row settings-icons">
+                      <div class="column full-width">
+                        <div class="column">
+                          <label for="spacebar-checkbox">Display With Spacebar</label>
+                          <input type="checkbox" id="spacebar-checkbox" class="checkbox-input">
+                        </div>
+                     </div>
+                    </div>
+                    <div class="row settings-icons">
+                      <div class="column full-width">
+                        <div class="column">
+                          <label for="fade-in-checkbox">Fade In Display</label>
+                          <input type="checkbox" id="fade-in-checkbox" class="checkbox-input">
+                        </div>
+                     </div>
+                    </div>
                  </div>
                </div>
                <div class="column">
@@ -423,7 +463,7 @@ DoubleClick on History erase all previous text"></textarea>
         </button>
       </div>
       <div class="toggle">
-        <button class="toggle-container" id="toggle-button">
+        <button class="toggle-container" id="toggle-button-display">
           <input type="checkbox" id="toggle-display" class="toggle-input">
           <label for="toggle-display" class="toggle-label">
               <span class="toggle-ball"></span>

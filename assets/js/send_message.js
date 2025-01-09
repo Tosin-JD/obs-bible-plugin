@@ -1,12 +1,13 @@
-
-
 const channel = new BroadcastChannel("myChannel");
-
 const btnHistory = document.getElementById("history");
-
 var historyOfText = [];
-
 var historyOfBibleVerse = [];
+const songVerseDiv = document.getElementById("song");
+const songElements = songVerseDiv.querySelectorAll("p");
+let songVerses = Array.from(songElements);
+let currentSongIndex = 0;
+let currentVerseIndex = -1;
+var btnCopy = document.getElementById("copyHistoryButton");
 
 
 function processMessage(inputMessage) {
@@ -18,24 +19,23 @@ function processMessage(inputMessage) {
   return result;
 }
 
+function sendMessage(senderChannel, message){
+  let fadeInCheckbox = document.getElementById("fade-in-checkbox");
+  let messageToSend = {
+    fadein: fadeInCheckbox.checked,
+    messageContent: message
+  };
+  localStorage.setItem("obs-bible-fadein-checkbox", fadeInCheckbox.checked);
+  senderChannel.postMessage(messageToSend);
+}
+
 document.getElementById("sendButton").addEventListener("click", () => {
   let messageInput = document.getElementById("messageInput").value;
   const message = processMessage(messageInput);
-  channel.postMessage(message);
+  sendMessage(channel, message);
   historyOfText.push(message);
 });
 
-function doc_keyUp(e) {
-  let lastSavedTab = localStorage.getItem("selectedTab");
-
-  // this would test for whichever key is 40 (down arrow) and the ctrl key at the same time
-  if (e.ctrlKey && e.code === 'ArrowDown' && lastSavedTab === "text") {
-    let messageInput = document.getElementById("messageInput").value;
-    const message = processMessage(messageInput);
-    channel.postMessage(message);
-    historyOfText.push(message);
-  }
-}
 
 function doc_keyUp(e) {
   let lastSavedTab = localStorage.getItem("selectedTab");
@@ -44,28 +44,32 @@ function doc_keyUp(e) {
   if (e.ctrlKey && e.code === 'ArrowDown' && lastSavedTab === "text") {
     let messageInput = document.getElementById("messageInput").value;
     const message = processMessage(messageInput);
-    channel.postMessage(message);
+    sendMessage(channel, message);
     historyOfText.push(message);
   }
 }
 
 
+function doc_spaceBarUp(e) {
+  let lastSavedTab = localStorage.getItem("selectedTab");
+  let spaceBarCheckBox = document.getElementById("spacebar-checkbox");
+  localStorage.setItem("obs-bible-spacebar-checkbox", spaceBarCheckBox.checked);
 
-document.addEventListener('keyup', doc_keyUp, false);
+  // this would test for whichever key is 40 (down arrow) and the ctrl key at the same time
+  if (e.code === 'Space' && lastSavedTab === "text" && spaceBarCheckBox.checked === true) {
+    let messageInput = document.getElementById("messageInput").value;
+    const message = processMessage(messageInput);
+    sendMessage(channel, message);
+    historyOfText.push(message);
+  }
+}
 
-const songVerseDiv = document.getElementById("song");
-const songElements = songVerseDiv.querySelectorAll("p");
-
-let songVerses = Array.from(songElements);
-
-
-let currentSongIndex = 0;
 
 songVerses.forEach((verse, index) => {
   verse.addEventListener("click", (event) => {
     if (event.target.tagName === "P") {
       const message = processMessage(event.target.textContent);
-      channel.postMessage(message);
+      sendMessage(channel, message);
 
     }
   });
@@ -93,7 +97,7 @@ function displaySongs() {
 
       if (event.target.tagName === "P") {
         const message = processMessage(event.target.innerHTML);
-        channel.postMessage(message);
+        sendMessage(channel, message);
         event.target.classList.add("selected");
       }
       songLines.forEach((v, i) => {
@@ -108,7 +112,7 @@ function displaySongs() {
     if(currentLineIndex > 0){
       currentLineIndex--;
       const message = songLines[currentLineIndex].innerText;
-      channel.postMessage(message);
+      sendMessage(channel, message);
 
       // get the height of the display area
       const displayLine = document.getElementById('song');
@@ -143,7 +147,7 @@ function displaySongs() {
     if(currentLineIndex < songLines.length -1){
       currentLineIndex++;
       const message = songLines[currentLineIndex].innerText;
-      channel.postMessage(message);
+      sendMessage(channel, message);
 
       // get the height of the display area
       const displayLine = document.getElementById('song');
@@ -169,7 +173,7 @@ function displaySongs() {
     }else{
       currentLineIndex = 0;
       const message = songLines[currentLineIndex].innerText;
-      channel.postMessage(message);
+      sendMessage(channel, message);
       const currentLine = songLines[currentLineIndex];
       const previousLine = songLines[songLines.length - 1];
       previousLine.classList.remove("selected");
@@ -210,9 +214,6 @@ function displaySongs() {
 }
 
 
-let currentVerseIndex = -1;
-
-
 function displayBible() {
   let bibleVerseDiv = document.getElementById("bible-verse");
   let pElements = bibleVerseDiv.querySelectorAll("p");
@@ -223,7 +224,7 @@ function displayBible() {
       if (event.target.tagName === "P") {
         currentVerseIndex = index;
         const message = event.target.innerHTML;
-        channel.postMessage(message);
+        sendMessage(channel, message);
         event.target.classList.add("selected");
 
         historyOfBibleVerse.push({name: event.target.id, verse: message});
@@ -266,7 +267,7 @@ function moveToNextVerse(event){
   if(currentVerseIndex < bibleVerses.length - 1){
     currentVerseIndex++;
     const message = bibleVerses[currentVerseIndex].innerHTML;
-    channel.postMessage(message);
+    sendMessage(channel, message);
 
     const displayVerse = document.getElementById('bible');
     const currentVerse = bibleVerses[currentVerseIndex];
@@ -301,7 +302,7 @@ function moveToPreviousVerse(event){
   if(currentVerseIndex > 0){
     currentVerseIndex--;
     const message = bibleVerses[currentVerseIndex].innerHTML;
-    channel.postMessage(message);
+    sendMessage(channel, message);
     const displayVerse = document.getElementById('bible');
     const currentVerse = bibleVerses[currentVerseIndex];
 
@@ -335,8 +336,6 @@ document.addEventListener("keydown", function(event) {
 });
 
 
-displayBible();
-
 btnHistory.addEventListener("click", function () {
   bblVerseDiv.innerHTML = "";
   historyOfBibleVerse.forEach(entry => {
@@ -349,7 +348,6 @@ btnHistory.addEventListener("click", function () {
 });
 
 
-var btnCopy = document.getElementById("copyHistoryButton");
 btnCopy.addEventListener("click", function () {
     let textToCopy;
     textToCopy = historyOfText.join("\n");
@@ -366,10 +364,6 @@ btnCopy.addEventListener("dblclick", function () {
   historyOfText = []
 });
 
-
-var instructions = document.getElementById("instructions");
-
-// // Add event listener for mouseover to show instructions
-// btnCopy.addEventListener("mouseover", function () {
-//     instructions.style.display = "block";
-// });
+displayBible();
+document.addEventListener('keyup', doc_keyUp, false);
+document.addEventListener('keyup', doc_spaceBarUp, false);

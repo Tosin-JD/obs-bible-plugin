@@ -1,3 +1,18 @@
+var updateMessage = (messageId, message) =>{
+  const messageElem = document.getElementById(messageId)
+  if (message.fadein === true){
+    messageElem.classList.remove('fade-in');
+    messageElem.style.display = 'none';
+    messageElem.innerHTML = message.messageContent;;
+    void messageElem.offsetWidth;
+    messageElem.classList.add('fade-in');
+    messageElem.style.display = 'block';
+  }else{
+    messageElem.innerHTML = message.messageContent;
+  }
+  localStorage.setItem('savedMessage', message.messageContent);
+};
+
 function hasVerticalScroll() {
   return document.documentElement.clientHeight < document.documentElement.scrollHeight;
 }

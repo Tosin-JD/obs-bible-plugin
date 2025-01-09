@@ -12,7 +12,7 @@ body {
   margin: 0;
   padding: 0;
   height: 100vh;
-  /* min-width: 400px; */
+  min-width: 400px;
   min-height: 450px !important;
   overflow: hidden;
 }
@@ -105,6 +105,14 @@ body {
   width: 100%;
 }
 
+#bible-translation{
+  font-size: 0.7em;
+}
+
+.small-font{
+  font-size: 0.5em;
+}
+
 .mid-bg{
   flex-grow: 1;
 }
@@ -130,7 +138,7 @@ textarea{
   width: 100%;
   height: 90%;
   padding: 10px;
-  font-size: 20px;
+  font-size: 1.5em;
   border: none;
   resize: none;
   border-radius: 8px;
@@ -172,6 +180,11 @@ select{
   width: 100%;
   font-size: 0.8em;
   border-radius: 5px;
+}
+
+.full-width{
+  width: 100%;
+  text-align: center;
 }
 
 .settings-icons{
@@ -238,7 +251,7 @@ button, .btn-file-upload{
   font-size: 15px;
   border: none;
   cursor: pointer;
-  width: 100x%;
+  width: 100%;
   cursor: pointer;
   border-radius: 10x;
 }
@@ -544,11 +557,6 @@ button, .btn-file-upload{
   width: 30%;
 }
 
-#toggle-display{
-  margin-right: 0px;
-  width: 100%;
-}
-
 .btn-file-upload{
   border: 1px solid #ccc;
   display: inline-block;
@@ -559,10 +567,15 @@ button, .btn-file-upload{
 
 /* toggle button */
 .toggle-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+
+#toggle-display{
+  margin-right: 0px;
+  width: 100%;
 }
 
 .toggle-input {
@@ -593,29 +606,6 @@ button, .btn-file-upload{
 .toggle-input:checked + .toggle-label .toggle-ball {
     transform: translateX(30px);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

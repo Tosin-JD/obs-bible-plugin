@@ -23,8 +23,8 @@
     const channel = new BroadcastChannel("myChannel");
     channel.onmessage = (event) => {
       const message = event.data;
-      messageDisplay.innerHTML = message;
-      localStorage.setItem('savedMessage', message);
+      updateMessage('messageDisplay', message);
+      // messageDisplay.innerHTML = message;
 
       if (savedTitleColor) {
           const dspans = document.querySelectorAll("#messageDisplay span");

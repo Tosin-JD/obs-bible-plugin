@@ -11,6 +11,7 @@ var savedItalicState = localStorage.getItem('italicState');
 var savedUnderlineState = localStorage.getItem('underlineState');
 var savedTextAlign = localStorage.getItem('textAlign');
 var savedBibleTranslation = localStorage.getItem('saved-bible-version');
+var savedObsBibleTheme = localStorage.getItem('obs-bible-panel-theme');
 
 let savedTextShadowColor = localStorage.getItem('rawShadowColor');
 let savedTextShadowOpacity = localStorage.getItem('savedTextOpacity');
@@ -19,6 +20,23 @@ let savedTextShadowHorOffset = localStorage.getItem('savedHorOffset');
 let savedTextShadowVerOffset = localStorage.getItem('savedVerOffset');
 let savedBgMargin = localStorage.getItem('savedBgMargin');
 const savedAnimationData = localStorage.getItem('obs-bible-animationData');
+const savedSpaceBarCheckBox = localStorage.getItem('obs-bible-spacebar-checkbox');
+const savedFadeInCheckBox = localStorage.getItem('obs-bible-fadein-checkbox');
+
+let loadCheckboxes = () => {
+    let spaceBarCheckBox = document.getElementById("spacebar-checkbox");
+    let fadeInCheckBox = document.getElementById("fade-in-checkbox");
+    if (savedSpaceBarCheckBox === "true"){
+        spaceBarCheckBox.checked = true;
+    }else{
+        spaceBarCheckBox.checked = false;
+    }
+    if (savedFadeInCheckBox === "true"){
+        fadeInCheckBox.checked = true;
+    }else{
+        fadeInCheckBox.checked = false;
+    }
+}
 
 
 let  loadSavedBorder = () => {
@@ -39,7 +57,7 @@ let  loadSavedBorder = () => {
     mainBorderType.value = savedMainBorderType;
   }
 }
-loadSavedBorder();
+
 
 let loadFontStroke = () => {
   let savedStrokeWidth = localStorage.getItem('obs-bible-saved-font-outline');
@@ -55,7 +73,7 @@ let loadFontStroke = () => {
     textOutlineColorPicker.value = savedStrokeColor;
   }
 }
-loadFontStroke();
+
 
 if (savedAnimationData) {
     let animationData = JSON.parse(savedAnimationData);
@@ -163,6 +181,18 @@ if (savedUnderlineState){
     }
 }
 
+if (savedObsBibleTheme) {
+    let obsBibleTheme = document.getElementById('obs-bible-panel-theme');
+    
+    // Loop through each option in the select element
+    for (var i = 0; i < obsBibleTheme.options.length; i++) {
+        if (obsBibleTheme.options[i].value === savedObsBibleTheme) {
+            obsBibleTheme.options[i].selected = true;
+            break;
+        }
+    }
+}
+
 
 if (savedTextAlign) {
     const radios = document.querySelectorAll('input[name="align"]');
@@ -202,3 +232,7 @@ if (savedBgMargin) {
     let defaultMargin = document.getElementById("bg-margin");
     defaultMargin.value = savedBgMargin;
 }
+
+loadCheckboxes();
+loadSavedBorder();
+loadFontStroke();
