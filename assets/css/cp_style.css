@@ -91,6 +91,8 @@ body {
 }
 
 #setBg{
+  overflow-y: scroll;
+  height: 50vh;
 /*  overflow-y: scroll;*/
 }
 .settings-area{
