@@ -12,8 +12,8 @@ body {
   margin: 0;
   padding: 0;
   height: 100vh;
-  min-width: 400px;
-  min-height: 450px !important;
+/*  min-width: 400px;*/
+/*  min-height: 450px !important;*/
   overflow: hidden;
 }
 
@@ -116,6 +116,16 @@ body {
 
 .mid-bg{
   flex-grow: 1;
+}
+
+.textarea-container{
+  background-color: inherit;
+  flex-grow: 1;
+  border-radius: 5px;
+}
+
+.fill{
+  height: 100%;
 }
 
 .no-border{
@@ -370,6 +380,7 @@ button, .btn-file-upload{
   flex-grow: 3;
   flex-basis: auto;
   width: 100%;
+  background-color: inherit;
 }
 
 .input{
@@ -674,3 +685,92 @@ input[type="number"]::-webkit-inner-spin-button {
   margin: 0;
   padding: 0px;
 }
+
+
+/* ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
+/* ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
+/* Tooltip container */
+.tooltip {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+/* Tooltip text common styles */
+.tooltip::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  padding: 5px 10px;
+  background-color: #333333d5;
+  color: white;
+  text-align: center;
+  border-radius: 5px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.5s, visibility 0.5s;
+  z-index: 1000;
+}
+
+/* Tooltip visibility on hover */
+.tooltip:hover::after {
+  opacity: 1;
+  visibility: visible;
+  animation: fadeout-tooltip 3s ease-in-out forwards;
+}
+
+/* Tooltip positions for specific classes */
+
+/* Tooltip position for top */
+.tooltip-top::after {
+  bottom: 20px; /* Position it above the button */
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* Tooltip position for bottom */
+.tooltip-bottom::after {
+  top: 20px; /* Position it below the button */
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* Tooltip position for left */
+.tooltip-left::after {
+  top: 50%;
+  right: 20px; /* Position it to the left of the button */
+  transform: translateY(-50%);
+}
+
+/* Tooltip position for right */
+.tooltip-right::after {
+  top: 50%;
+  left: 20px; /* Position it to the right of the button */
+  transform: translateY(-50%);
+}
+
+/* Keyframes for fade-out animation */
+@keyframes fadeout-tooltip {
+  0% {
+    opacity: 0;
+    visibility: hidden;
+  }
+  40% {
+    opacity: 0;
+    visibility: hidden;
+  }
+  50% {
+    opacity: 1;
+    visibility: visible;
+  }
+  90% {
+    opacity: 1;
+    visibility: visible;
+  }
+  100% {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+/* ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
+/* ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */

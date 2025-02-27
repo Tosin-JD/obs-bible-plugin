@@ -21,6 +21,7 @@ const italicButton = document.getElementById("italic");
 const underlineButton = document.getElementById("underline");
 const textAlign = document.querySelectorAll('input[name="align"]');
 const bgColorInput = document.getElementById("bgColor");
+let displayLineByLine = document.getElementById("obs-bible-display-song-line-by-line");
 
 
 fontElement.addEventListener("change", function() {
@@ -301,4 +302,8 @@ bgMargin.addEventListener("change", function() {
     let settingsChannel = new BroadcastChannel("settings");
     settingsChannel.postMessage({ selectedBgMargin: selectedMargin });
     settingsChannel.close();
+});
+
+displayLineByLine.addEventListener("change", function() {
+    localStorage.setItem("obs-bible-display-song-line-by-line", displayLineByLine.checked);
 });

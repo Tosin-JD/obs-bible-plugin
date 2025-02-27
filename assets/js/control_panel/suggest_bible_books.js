@@ -25,7 +25,10 @@ function updateInput(index) {
 bibleInput.addEventListener("input", function() {
 
   const inputValue = bibleInput.value.toLowerCase();
-  const filteredBooks = Array.from(bibleIndex.keys()).filter(book =>book.toLowerCase().includes(inputValue));
+  // const filteredBooks = Array.from(bibleIndex.keys()).filter(book =>book.toLowerCase().includes(inputValue));
+  const filteredBooks = Array.from(bibleIndex.keys()).filter(book => 
+    fuzzySearch(inputValue, book.toLowerCase())
+  );
 
   suggestionsList.innerHTML = "";
   if(inputValue.length > 0){

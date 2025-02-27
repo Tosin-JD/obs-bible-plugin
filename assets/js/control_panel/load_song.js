@@ -1,5 +1,5 @@
 function splitAndOrganizeText(text) {
-    const verses = text.split('\r\n\r\n');
+    const verses = text.split('\n\n');
 
     const container = document.getElementById('song-display');
     const songDiv = document.getElementById('song');
@@ -44,7 +44,7 @@ const handleFileSelect = (event) => {
     if (file) {
         const reader = new FileReader();
 
-        reader.onload = function (e) {
+        reader.onload = (e) => {
             const songDisplay = document.getElementById('song-display');
             const content = e.target.result;
             const lines = content.split('\n');
@@ -53,7 +53,8 @@ const handleFileSelect = (event) => {
             songDisplay.innerHTML = '';
 
             splitAndOrganizeText(content);
-            displaySongs();
+
+            displaySong();
         };
 
         reader.readAsText(file);

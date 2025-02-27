@@ -56,13 +56,13 @@ function searchBible(query) {
     }
   } else if (!/\d/.test(lowercaseQuery)){
     //for searches like "For God so loved the world"
-    savedBibleVerse = [];
-    let cleanedLowercaseQuery = lowercaseQuery.replace(/\s{2,}/g, ' ');
-    cleanedLowercaseQuery = lowercaseQuery.replace(/\s{2,}/g, ' ').trim();
+      savedBibleVerse = [];
+      let cleanedLowercaseQuery = lowercaseQuery.replace(/\s{2,}/g, ' ');
+      cleanedLowercaseQuery = lowercaseQuery.replace(/\s{2,}/g, ' ').trim();
 
-    const searchWords = cleanedLowercaseQuery.split(' ');
+      const searchWords = cleanedLowercaseQuery.split(' ');
 
-    for (let i = 0; i < bible_data.length; i++) {
+      for (let i = 0; i < bible_data.length; i++) {
         const name = bible_data[i].name.toLowerCase();
         const verse = bible_data[i].verse.toLowerCase();
 

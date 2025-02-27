@@ -65,19 +65,138 @@ function doc_spaceBarUp(e) {
 }
 
 
-songVerses.forEach((verse, index) => {
-  verse.addEventListener("click", (event) => {
-    if (event.target.tagName === "P") {
-      const message = processMessage(event.target.textContent);
-      sendMessage(channel, message);
+// songVerses.forEach((verse, index) => {
+//   verse.addEventListener("click", (event) => {
+//     if (event.target.tagName === "P") {
+//       const message = processMessage(event.target.textContent);
+//       sendMessage(channel, message);
 
+//     }
+//   });
+// });
+
+
+
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+let displaySongVerseByVerse = function(){
+    let songDiv = document.getElementById("song-display");
+
+    let divElements = songDiv.querySelectorAll("div");
+
+    let songVerses = Array.from(divElements);
+
+    let currentSongVerse = null;
+    let currentVerseIndex= -1;
+    var songIntervalId;
+    var isSongRunning = false;
+
+    songVerses.forEach((verse, index) => {
+      
+      verse.addEventListener("click", (event) => {
+        let displayLineByLine = document.getElementById("obs-bible-display-song-line-by-line");
+        if (displayLineByLine.checked === false){
+          currentSongVerse = verse;
+          currentVerseIndex = index;
+          
+          let verseMessage = processMessage(verse.innerHTML);
+          sendMessage(channel, verseMessage);
+          verse.classList.add("selected");
+
+          songVerses.forEach((v, i) => {
+            if (i !== index) {
+              v.classList.remove("selected");
+            }
+          });
+        }
+      });
+    });
+
+    let moveToPreviousVerse = ()=>{
+      if(currentVerseIndex > 0){
+        currentVerseIndex--;
+        const message = songVerses[currentVerseIndex].innerHTML;
+        sendMessage(channel, message);
+
+        // get the height of the display area
+        const displayVerse = document.getElementById('song');
+
+        const currentVerse = songVerses[currentVerseIndex];
+        const nextVerse = songVerses[currentVerseIndex + 1];
+
+        const parentNode = currentVerse.parentNode;
+
+        // change the backgroundColor of the current verse
+        nextVerse.classList.remove("selected");
+        currentVerse.classList.add("selected");
+
+        const lineHeight = songVerses[currentVerseIndex].offsetHeight;
+        const parentTop = parentNode.offsetTop;
+
+        // Calculate scrollTop to center the current line in the parent container
+        const scrollTop = parentTop + currentVerse.offsetTop - (lineHeight / 2);
+
+        displayVerse.scrollTop = scrollTop;
+      }else{
+        currentVerseIndex = 0;
+      }
     }
-  });
-});
+
+    // Event listener for Previous button
+    document.getElementById("prev-line").addEventListener("click", () => {
+      moveToPreviousVerse();
+    });
+
+    let moveToNextVerse = ()=>{
+      if(currentVerseIndex < songVerses.length -1){
+        currentVerseIndex++;
+        const message = songVerses[currentVerseIndex].innerHTML;
+        sendMessage(channel, message);
+
+        // get the height of the display area
+        const displayVerse = document.getElementById('song');
+
+        const currentVerse = songVerses[currentVerseIndex];
+        const previousVerse = songVerses[currentVerseIndex - 1];
+
+        const parentNode = currentVerse.parentNode;
+
+        // change the backgroundColor of the current verse
+        if (currentVerseIndex !== 0){
+          previousVerse.classList.remove("selected");
+        }
+        currentVerse.classList.add("selected");
+
+        const lineHeight = songVerses[currentVerseIndex].offsetHeight;
+        const parentTop = parentNode.offsetTop;
+
+        const scrollTop = parentTop + currentVerse.offsetTop - (lineHeight / 2);
+        displayVerse.scrollTop = scrollTop;
+
+
+      }else{
+        currentVerseIndex = 0;
+        const message = songVerses[currentVerseIndex].innerHTML;
+        sendMessage(channel, message);
+        const currentVerse = songVerses[currentVerseIndex];
+        const previousVerse = songVerses[songVerses.length - 1];
+        previousVerse.classList.remove("selected");
+        currentVerse.classList.add("selected");
+      }
+    }
+
+    
+    // document.getElementById("next-line").addEventListener("click", () => {
+    //   moveToNextVerse();
+    // });
+}
+
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
 // Function to display songs
-function displaySongs() {
+const displaySongLineByLine = ()=>{
   let songDiv = document.getElementById("song-display");
 
   let pElements = songDiv.querySelectorAll("p");
@@ -91,24 +210,28 @@ function displaySongs() {
 
   songLines.forEach((line, index) => {
     line.addEventListener("click", (event) => {
+      let displayLineByLine = document.getElementById("obs-bible-display-song-line-by-line");
+      if (displayLineByLine.checked === true){
+        currentLine = line;
+        currentLineIndex = index;
+        console.log("currentlineindex = " + currentLineIndex);
 
-      currentLine = line;
-      currentLineIndex = index;
-
-      if (event.target.tagName === "P") {
-        const message = processMessage(event.target.innerHTML);
-        sendMessage(channel, message);
-        event.target.classList.add("selected");
-      }
-      songLines.forEach((v, i) => {
-        if (i !== index) {
-          v.classList.remove("selected");
+        if (event.target.tagName === "P") {
+          const message = processMessage(event.target.innerHTML);
+          sendMessage(channel, message);
+          event.target.classList.add("selected");
         }
-      });
+        songLines.forEach((v, i) => {
+          if (i !== index) {
+            v.classList.remove("selected");
+          }
+        });
+      }
     });
   });
 
-  function moveToPreviousLine(){
+  const moveToPreviousLine = ()=>{
+    console.log("In Previous " + currentLineIndex);
     if(currentLineIndex > 0){
       currentLineIndex--;
       const message = songLines[currentLineIndex].innerText;
@@ -138,13 +261,9 @@ function displaySongs() {
     }
   }
 
-  // Event listener for Previous button
-  document.getElementById("prev-line").addEventListener("click", () => {
-    moveToPreviousLine();
-  });
-
-  function moveToNextLine(){
-    if(currentLineIndex < songLines.length -1){
+  const moveToNextLine = ()=>{
+    console.log("In Next " + currentLineIndex);
+    if (currentLineIndex < songLines.length -2){
       currentLineIndex++;
       const message = songLines[currentLineIndex].innerText;
       sendMessage(channel, message);
@@ -168,8 +287,6 @@ function displaySongs() {
 
       const scrollTop = parentTop + currentLine.offsetTop - (lineHeight / 2);
       displayLine.scrollTop = scrollTop;
-
-
     }else{
       currentLineIndex = 0;
       const message = songLines[currentLineIndex].innerText;
@@ -179,12 +296,20 @@ function displaySongs() {
       previousLine.classList.remove("selected");
       currentLine.classList.add("selected");
     }
+  
   }
 
-  // Event listener for Next button
+  // Event listener for Previous button
+  document.getElementById("prev-line").addEventListener("click", () => {
+    moveToPreviousLine();
+  });
+
+  // Event listener Next button
   document.getElementById("next-line").addEventListener("click", () => {
     moveToNextLine();
   });
+
+
 
   document.getElementById("start-song-button").addEventListener("click", (event) => {
     let timer = parseInt(document.getElementById("song-line-duration").value, 10);
@@ -213,6 +338,70 @@ function displaySongs() {
   });
 }
 
+
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+// let displaySong = ()=>{
+//   let songElements = document.getElementById("song-display");
+//   songElements.addEventListener('click', ()=>{
+//     console.log("Clicked")
+//     let displayLineByLine = document.getElementById("obs-bible-display-song-line-by-line");
+  
+//     if (displayLineByLine.checked === true){
+//         displaySongLineByLine();
+//         console.log("Clicked and Checked");
+//       }else{
+//         displaySongVerseByVerse();
+//         console.log("Clicked and UnChecked");
+//     }
+//   });
+// }
+
+let activeSongMode = null;
+let songIntervalId = null;
+
+const clearSongListeners = () => {
+    document.getElementById("prev-line")?.replaceWith(document.getElementById("prev-line").cloneNode(true));
+    document.getElementById("next-line")?.replaceWith(document.getElementById("next-line").cloneNode(true));
+    document.getElementById("start-song-button")?.replaceWith(document.getElementById("start-song-button").cloneNode(true));
+
+    if (songIntervalId) {
+        clearInterval(songIntervalId);
+        songIntervalId = null;
+    }
+};
+
+let displaySong = () => {
+    let songElements = document.getElementById("song-display");
+    songElements.addEventListener("click", () => {
+        console.log("Clicked");
+        let displayLineByLine = document.getElementById("obs-bible-display-song-line-by-line");
+
+        if (displayLineByLine.checked === true) {
+            if (activeSongMode !== "line-by-line") {
+                clearSongListeners(); // Remove old listeners
+                activeSongMode = "line-by-line";
+                displaySongLineByLine();
+                console.log("Clicked and Checked");
+            }
+        } else {
+            if (activeSongMode !== "verse-by-verse") {
+                clearSongListeners(); // Remove old listeners
+                activeSongMode = "verse-by-verse";
+                displaySongVerseByVerse();
+                console.log("Clicked and UnChecked");
+            }
+        }
+    });
+};
+
+
+
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 function displayBible() {
   let bibleVerseDiv = document.getElementById("bible-verse");

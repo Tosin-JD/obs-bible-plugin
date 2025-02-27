@@ -107,6 +107,6 @@ if (savedShadowColor) {
 }
 
 if (savedBgMargin){
-    messageDisplay.style.padding = savedBgMargin;
+    messageDisplay.style.padding = savedBgMargin + "px";
 }
 adjustFontSizeBasedOnScroll();

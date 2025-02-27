@@ -3,8 +3,8 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="assets/css/cp_style.css">
-    <link rel="stylesheet" href="assets/css/cp_themes.css">
+    <link rel="stylesheet" href="assets/css/control_panel/cp_style.css">
+    <link rel="stylesheet" href="assets/css/control_panel/cp_themes.css">
     <title>Sender</title>
   </head>
   <body data-theme="dark">
@@ -12,16 +12,18 @@
       <div class="tab-item">
         <div id="text" class="tab-area">
           <div class="container">
-            <textarea class="mid-bg" id="messageInput" placeholder="Type a message
+            <div class="textarea-container tooltip tooltip-bottom"  data-tooltip="Type the text to display">
+              <textarea class="fill" id="messageInput" placeholder="Type a message
 Click on History to get previous text
 DoubleClick on History erase all previous text"></textarea>
+            </div>
             <div class="row">
-              <button id="sendButton" class="warning">
+              <button id="sendButton" class="warning tooltip tooltip-top"  data-tooltip="Send the text to be displayed">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="17" height="17">
                   <path class="icons" d="M498.1 5.6c10.1 7 15.4 19.1 13.5 31.2l-64 416c-1.5 9.7-7.4 18.2-16 23s-18.9 5.4-28 1.6L284 427.7l-68.5 74.1c-8.9 9.7-22.9 12.9-35.2 8.1S160 493.2 160 480l0-83.6c0-4 1.5-7.8 4.2-10.8L331.8 202.8c5.8-6.3 5.6-16-.4-22s-15.7-6.4-22-.7L106 360.8 17.7 316.6C7.1 311.3 .3 300.7 0 288.9s5.9-22.8 16.1-28.7l448-256c10.7-6.1 23.9-5.5 34 1.4z"/>
                 </svg>
               </button>
-              <button id="copyHistoryButton" class="primary">
+              <button id="copyHistoryButton" class="primary tooltip tooltip-left"  data-tooltip="Get all the text you have displayed">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="17" height="17">
                     <path class="icons" d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9L0 168c0 13.3 10.7 24 24 24l110.1 0c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24l0 104c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65 0-94.1c0-13.3-10.7-24-24-24z"/>
                 </svg>
@@ -33,24 +35,24 @@ DoubleClick on History erase all previous text"></textarea>
           <div class="container">
             <div class="bible-search row">
               <div class="input-group row">
-                <div class="search-group row">
+                <div class="search-group">
                   <input class="input" id="bible-input" placeholder="Psalms 1:1 or Any Verse content">
                   <div class="mid-bg color-fg" id="suggestions"></div>
                 </div>
                 <div class="row">
-                  <button class="no-border" type="submit" id="bible-submit">
+                  <button type="submit" id="bible-submit" class="no-border primary bible-version tooltip tooltip-right"  data-tooltip="Search for a bible verse">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="17" height="17">
                         <path class="icons" d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/>
                     </svg>
                   </button>
-                  <button class="no-border primary" id="history">
+                  <button id="history" class="no-border primary bible-version tooltip tooltip-right"  data-tooltip="Get all the bible passages displayed so far">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="17" height="17">
                       <path class="icons" d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9L0 168c0 13.3 10.7 24 24 24l110.1 0c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24l0 104c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65 0-94.1c0-13.3-10.7-24-24-24z"/>
                   </svg>
                   </button>
                 </div>
                 <div class="row">
-                  <div class="settings-icons bible-version">
+                  <div class="settings-icons bible-version tooltip tooltip-bottom"  data-tooltip="Select a bible translation">
                     <label class="small-font" id="bible-translation" for="bible-version">Bible Translation</label>
                     <select name="bible-version" id="bible-version" class="small-font">
                       <option value="assets/bibles/amplified/amplified.js">Amplified Bible</option>
@@ -74,12 +76,12 @@ DoubleClick on History erase all previous text"></textarea>
               </div>
             </div>
             <div class="row">
-              <button class="prev" id="prev-verse">
+              <button id="prev-verse" class="prev tooltip tooltip-top" data-tooltip="Click to move to the previous verse">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="17" height="17">
                     <path class="icons" d="M459.5 440.6c9.5 7.9 22.8 9.7 34.1 4.4s18.4-16.6 18.4-29l0-320c0-12.4-7.2-23.7-18.4-29s-24.5-3.6-34.1 4.4L288 214.3l0 41.7 0 41.7L459.5 440.6zM256 352l0-96 0-128 0-32c0-12.4-7.2-23.7-18.4-29s-24.5-3.6-34.1 4.4l-192 160C4.2 237.5 0 246.5 0 256s4.2 18.5 11.5 24.6l192 160c9.5 7.9 22.8 9.7 34.1 4.4s18.4-16.6 18.4-29l0-64z"/>
                 </svg>
               </button>
-              <button class="next" id="next-verse">
+              <button  id="next-verse" class="next tooltip tooltip-top" data-tooltip="Click to move to the next verse">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="17" height="17">
                     <path class="icons" d="M52.5 440.6c-9.5 7.9-22.8 9.7-34.1 4.4S0 428.4 0 416L0 96C0 83.6 7.2 72.3 18.4 67s24.5-3.6 34.1 4.4L224 214.3l0 41.7 0 41.7L52.5 440.6zM256 352l0-96 0-128 0-32c0-12.4 7.2-23.7 18.4-29s24.5-3.6 34.1 4.4l192 160c7.3 6.1 11.5 15.1 11.5 24.6s-4.2 18.5-11.5 24.6l-192 160c-9.5 7.9-22.8 9.7-34.1 4.4s-18.4-16.6-18.4-29l0-64z"/>
                 </svg>
@@ -94,9 +96,13 @@ DoubleClick on History erase all previous text"></textarea>
                 <input class="input" id="lyric-search" placeholder="Search lyrics">
               </div>
               <div class="row">
-                <input type="number" class="input" id="song-line-duration">
-                <input type="button" class="input" id="start-song-button" value="Play Lyrics">
-                <label for="song-file-upload" id="song-file-label" class="btn-file-upload">
+                <div class="tooltip tooltip-bottom" data-tooltip="Enter the number of seconds before the lyrics move to the next line automatically">
+                  <input type="number" class="input tooltip tooltip-left" id="song-line-duration"  data-tooltip="Enter the number of seconds before the lyrics move to the next line automatically">
+                </div>
+                <div class="tooltip tooltip-bottom" data-tooltip="Select a .txt file with lyrics">
+                  <input type="button" id="start-song-button" value="Play Lyrics" class="input tooltip tooltip-left" data-tooltip="Click to move lyrics to next line after number of seconds">
+                </div>
+                <label for="song-file-upload" id="song-file-label" class="btn-file-upload tooltip tooltip-left" data-tooltip="Select a .txt file with lyrics">
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="17" height="17">
                       <path class="icons" d="M128 64c0-35.3 28.7-64 64-64L352 0l0 128c0 17.7 14.3 32 32 32l128 0 0 288c0 35.3-28.7 64-64 64l-256 0c-35.3 0-64-28.7-64-64l0-112 174.1 0-39 39c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l80-80c9.4-9.4 9.4-24.6 0-33.9l-80-80c-9.4-9.4-24.6-9.4-33.9 0s-9.4 24.6 0 33.9l39 39L128 288l0-224zm0 224l0 48L24 336c-13.3 0-24-10.7-24-24s10.7-24 24-24l104 0zM512 128l-128 0L384 0 512 128z"/>
                   </svg>
@@ -126,12 +132,12 @@ DoubleClick on History erase all previous text"></textarea>
               </div>
             </div>
             <div class="row">
-              <button class="prev" id="prev-line">
+              <button  id="prev-line" class="prev tooltip tooltip-top" data-tooltip="Click to lyrics move to the previous line">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"  width="17" height="17">
                     <path class="icons" d="M459.5 440.6c9.5 7.9 22.8 9.7 34.1 4.4s18.4-16.6 18.4-29l0-320c0-12.4-7.2-23.7-18.4-29s-24.5-3.6-34.1 4.4L288 214.3l0 41.7 0 41.7L459.5 440.6zM256 352l0-96 0-128 0-32c0-12.4-7.2-23.7-18.4-29s-24.5-3.6-34.1 4.4l-192 160C4.2 237.5 0 246.5 0 256s4.2 18.5 11.5 24.6l192 160c9.5 7.9 22.8 9.7 34.1 4.4s18.4-16.6 18.4-29l0-64z"/>
                 </svg>
               </button>
-              <button class="next" id="next-line">
+              <button id="next-line"  class="next tooltip tooltip-top" data-tooltip="Click to lyrics move to the next line">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="17" height="17">
                     <path class="icons" d="M52.5 440.6c-9.5 7.9-22.8 9.7-34.1 4.4S0 428.4 0 416L0 96C0 83.6 7.2 72.3 18.4 67s24.5-3.6 34.1 4.4L224 214.3l0 41.7 0 41.7L52.5 440.6zM256 352l0-96 0-128 0-32c0-12.4 7.2-23.7 18.4-29s24.5-3.6 34.1 4.4l192 160c7.3 6.1 11.5 15.1 11.5 24.6s-4.2 18.5-11.5 24.6l-192 160c-9.5 7.9-22.8 9.7-34.1 4.4s-18.4-16.6-18.4-29l0-64z"/>
                 </svg>
@@ -150,21 +156,12 @@ DoubleClick on History erase all previous text"></textarea>
            <div class="settings-tab-area" id="settings-general">
              <div class="column settings-area">
                <div class="row">
-                  <!-- <div class="settings-icons bible-version">
-                    <label class="">Bible Translation</label>
-                    <select name="bible-version" id="bible-version">
-                    <option value="assets/bibles/amplified/amplified.js">Amplified Bible</option>
-                    <option value="assets/bibles/crtb/crtb.js">Russian Bible</option>
-                    <option value="assets/bibles/kjv/kjv.js">Authorized KJV</option>
-                    <option value="assets/bibles/esv/esv.js">ESV</option>
-                    <option value="assets/bibles/es_rvr/es_rvr.js">Español (Spanish)</option>
-                    <option value="assets/bibles/nkjv/nkjv.js">NKJV</option>
-                    <option value="assets/bibles/niv/niv.js">NIV</option>
-                    <option value="assets/bibles/segond_1910/segond_1910.js">Louis Segond (French)</option>
-                    <option value="assets/bibles/swahili_bible/swahili_bible.js">Swahili Bible</option>
-                    <option value="assets/bibles/yoruba_bible/yoruba_bible.js">Yoruba Bible</option>
-                    </select>
-                  </div> -->
+                  <div class="settings-icons column full-width tooltip tooltip-bottom" data-tooltip="Display a song verse by verse or line by line">
+                    <div class="column">
+                      <label for="obs-bible-display-song-line-by-line">Display Song Line by Line</label>
+                      <input type="checkbox" id="obs-bible-display-song-line-by-line" class="checkbox-input">
+                    </div>
+                  </div>
                  <div class="settings-icons full-width">
                   <label for="obs-bible-panel-theme">Theme</label>
                   <select name="panel-theme" id="obs-bible-panel-theme">
@@ -268,7 +265,7 @@ DoubleClick on History erase all previous text"></textarea>
            <div class="settings-tab-area" id="settings-font" style="display:none;">
              <div class="column">
                <div class="row">
-               <div class="row">
+               <div class="row tooltip tooltip-bottom" data-tooltip="Select the font for text">
                  <select id="fontStyle">
                   <option value="Arial Black">Arial Black</option>
                   <option value="Arial">Arial</option>
@@ -307,18 +304,17 @@ DoubleClick on History erase all previous text"></textarea>
                   <option value="Trebuchet MS">Trebuchet MS</option>
                   <option value="Verdana">Verdana</option>
                  </select>
-
                </div>
                 <div class="row settings-icons">
                  <div class="row settings-icons">
-                   <span class="font-settings" id="bold">B</span>
-                   <span class="font-settings" id="italic">I</span>
-                   <span class="font-settings" id="underline">U</span>
+                   <span id="bold" class="font-settings tooltip tooltip-bottom" data-tooltip="Bolden the text" >B</span>
+                   <span id="italic" class="font-settings tooltip tooltip-bottom" data-tooltip="Italize the text">I</span>
+                   <span id="underline" class="font-settings tooltip tooltip-bottom" data-tooltip="Underline Texts">U</span>
                  </div>
                  <div id="textAlign" class="row settings-icons">
 
                    <input name="align" type="radio" class="radio" id="left-align" value="Left">
-                   <label for="left-align" class="toggle-btn">
+                   <label for="left-align" class="toggle-btn tooltip tooltip-bottom" data-tooltip="Align text to the left">
                      <span class="toggle-circle">
                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="12" height="12">
                            <path class="icons" d="M288 64c0 17.7-14.3 32-32 32L32 96C14.3 96 0 81.7 0 64S14.3 32 32 32l224 0c17.7 0 32 14.3 32 32zm0 256c0 17.7-14.3 32-32 32L32 352c-17.7 0-32-14.3-32-32s14.3-32 32-32l224 0c17.7 0 32 14.3 32 32zM0 192c0-17.7 14.3-32 32-32l384 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 224c-17.7 0-32-14.3-32-32zM448 448c0 17.7-14.3 32-32 32L32 480c-17.7 0-32-14.3-32-32s14.3-32 32-32l384 0c17.7 0 32 14.3 32 32z"/>
@@ -327,7 +323,7 @@ DoubleClick on History erase all previous text"></textarea>
                    </label>
 
                    <input name="align" type="radio" class="radio" id="center-align" value="Center">
-                   <label for="center-align" class="toggle-btn">
+                   <label for="center-align" class="toggle-bt tooltip tooltip-bottom" data-tooltip="center the text">
                      <span class="toggle-circle">
                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="12" height="12">
                            <path class="icons" d="M352 64c0-17.7-14.3-32-32-32L128 32c-17.7 0-32 14.3-32 32s14.3 32 32 32l192 0c17.7 0 32-14.3 32-32zm96 128c0-17.7-14.3-32-32-32L32 160c-17.7 0-32 14.3-32 32s14.3 32 32 32l384 0c17.7 0 32-14.3 32-32zM0 448c0 17.7 14.3 32 32 32l384 0c17.7 0 32-14.3 32-32s-14.3-32-32-32L32 416c-17.7 0-32 14.3-32 32zM352 320c0-17.7-14.3-32-32-32l-192 0c-17.7 0-32 14.3-32 32s14.3 32 32 32l192 0c17.7 0 32-14.3 32-32z"/>
@@ -336,16 +332,18 @@ DoubleClick on History erase all previous text"></textarea>
                    </label>
 
                    <input name="align" type="radio" class="radio" id="right-align" value="Right">
-                   <label for="right-align" class="toggle-btn">
+                   <label for="right-align" class="toggle-btn tooltip tooltip-bottom" data-tooltip="Align text to the right">
                      <span class="toggle-circle">
                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="12" height="12">
                            <path class="icons" d="M448 64c0 17.7-14.3 32-32 32L192 96c-17.7 0-32-14.3-32-32s14.3-32 32-32l224 0c17.7 0 32 14.3 32 32zm0 256c0 17.7-14.3 32-32 32l-224 0c-17.7 0-32-14.3-32-32s14.3-32 32-32l224 0c17.7 0 32 14.3 32 32zM0 192c0-17.7 14.3-32 32-32l384 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 224c-17.7 0-32-14.3-32-32zM448 448c0 17.7-14.3 32-32 32L32 480c-17.7 0-32-14.3-32-32s14.3-32 32-32l384 0c17.7 0 32 14.3 32 32z"/>
                        </svg>
                      </span>
                    </label>
+                   <!-- <div class="tooltip tooltip-bottom" data-tooltip="Background color"> -->
 
+                   <!-- </div> -->
                    <input name="align" type="radio" class="radio" id="justify-align" value="Justify">
-                   <label for="justify-align" class="toggle-btn">
+                   <label for="justify-align" class="toggle-btn tooltip tooltip-bottom" data-tooltip="Justify text fully">
                      <span class="toggle-circle">
                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="12" height="12">
                            <path class="icons" d="M448 64c0-17.7-14.3-32-32-32L32 32C14.3 32 0 46.3 0 64S14.3 96 32 96l384 0c17.7 0 32-14.3 32-32zm0 256c0-17.7-14.3-32-32-32L32 288c-17.7 0-32 14.3-32 32s14.3 32 32 32l384 0c17.7 0 32-14.3 32-32zM0 192c0 17.7 14.3 32 32 32l384 0c17.7 0 32-14.3 32-32s-14.3-32-32-32L32 160c-17.7 0-32 14.3-32 32zM448 448c0-17.7-14.3-32-32-32L32 416c-17.7 0-32 14.3-32 32s14.3 32 32 32l384 0c17.7 0 32-14.3 32-32z"/>
@@ -367,29 +365,29 @@ DoubleClick on History erase all previous text"></textarea>
            <div class="settings-tab-area" id="settings-color" style="display:none;">
              <div class="column">
                <div class="row">
-                 <div class="column settings-icons">
+                 <div class="column settings-icons tooltip tooltip-bottom" data-tooltip="Background color">
                    <label>Background</label>
                    <input type="color" id="bgColor">
                  </div>
-                 <div class="column settings-icons">
+                 <div class="column settings-icons tooltip tooltip-bottom" data-tooltip="Font color">
                    <label>Font</label>
                    <input type="color" id="fontColor">
                  </div>
-                 <div class="column settings-icons">
+                 <div class="column settings-icons tooltip tooltip-bottom" data-tooltip="Color for the title">
                    <label>Title</label>
                    <input type="color" id="titleColor">
                  </div>
                </div>
                <div class="row">
-                 <div class="column settings-icons">
+                 <div class="column settings-icons tooltip tooltip-bottom" data-tooltip="Color for the font shadow">
                    <label for="shadow-color">Font Shadow Color:</label>
                    <input type="color" id="shadow-color" value="#000000">
                  </div>
-                 <div class="column settings-icons">
+                 <div class="column settings-icons tooltip tooltip-bottom" data-tooltip="Font outline color">
                    <label for="font-outline-color">Font Outline Color:</label>
-                   <input type="color" id="font-outline-color" value="#000000">
+                   <input type="color" id="font-outline-color" value="#ffffff">
                  </div>
-                 <div class="column settings-icons">
+                 <div class="column settings-icons tooltip tooltip-bottom" data-tooltip="Border color">
                    <label for="main-border-color">Border Color:</label>
                    <input type="color" id="main-border-color" value="#000000">
                  </div>
@@ -398,8 +396,9 @@ DoubleClick on History erase all previous text"></textarea>
            </div>
            <div class="settings-tab-area" id="settings-animation" style="display:none;">
              <div class="column">
-                 <label for="animation-type">Animation Type:</label>
-                 <select id="animation-type">
+               <div class="tooltip tooltip-bottom" data-tooltip="style of the animation">
+                   <label for="animation-type">Animation Type:</label>
+                  <select id="animation-type">
                     <option value="fade">Fade</option>
                     <option value="slide">Slide</option>
                     <option value="slide-top-left">Slide Top Left</option>
@@ -422,47 +421,53 @@ DoubleClick on History erase all previous text"></textarea>
                     <option value="shake">Shake</option>
                  </select>
 
-                 <label for="animation-duration">Duration (s):</label>
-                 <input type="number" id="animation-duration" min="0.1" step="0.1" value="1">
+                 </div>
+                 
+                 <div class="tooltip tooltip-bottom" data-tooltip="time it takes for the animation">
+                    <label for="animation-duration">Duration (s):</label><br>
+                    <input type="number" id="animation-duration" min="0.1" step="0.1" value="1">
+                  </div>
 
-                 <label for="animation-easing">Easing:</label>
-                 <select id="animation-easing">
-                     <option value="linear">Linear</option>
-                     <option value="ease">Ease</option>
-                     <option value="ease-in">Ease In</option>
-                     <option value="ease-out">Ease Out</option>
-                     <option value="ease-in-out">Ease In-Out</option>
-                     <option value="step-start">Step Start</option>
-                     <option value="step-end">Step End</option>
-                 </select>
+                 <div class="tooltip tooltip-bottom" data-tooltip="How fast or slow you want the enter or leave">
+                  <label for="animation-easing">Easing:</label>
+                  <select id="animation-easing">
+                      <option value="linear">Linear</option>
+                      <option value="ease">Ease</option>
+                      <option value="ease-in">Ease In</option>
+                      <option value="ease-out">Ease Out</option>
+                      <option value="ease-in-out">Ease In-Out</option>
+                      <option value="step-start">Step Start</option>
+                      <option value="step-end">Step End</option>
+                  </select>
+                 </div>
              </div>
            </div>
           </div>
         </div>
       </div>
       <div class="tabs">
-        <button class="tab-button" value="text">
+        <button class="tab-button tooltip tooltip-top" value="text" data-tooltip="Type a text to display">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="17" height="17">
               <path  class="icons" d="M362.7 19.3L314.3 67.7 444.3 197.7l48.4-48.4c25-25 25-65.5 0-90.5L453.3 19.3c-25-25-65.5-25-90.5 0zm-71 71L58.6 323.5c-10.4 10.4-18 23.3-22.2 37.4L1 481.2C-1.5 489.7 .8 498.8 7 505s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L421.7 220.3 291.7 90.3z"/>
           </svg>
         </button>
-        <button class="tab-button" value="bibleText">
+        <button class="tab-button tooltip tooltip-top" value="bibleText" data-tooltip="Display Bible Passages">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="17" height="17">
               <path class="icons" d="M96 0C43 0 0 43 0 96L0 416c0 53 43 96 96 96l288 0 32 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l0-64c17.7 0 32-14.3 32-32l0-320c0-17.7-14.3-32-32-32L384 0 96 0zm0 384l256 0 0 64L96 448c-17.7 0-32-14.3-32-32s14.3-32 32-32zM208 80c0-8.8 7.2-16 16-16l32 0c8.8 0 16 7.2 16 16l0 48 48 0c8.8 0 16 7.2 16 16l0 32c0 8.8-7.2 16-16 16l-48 0 0 112c0 8.8-7.2 16-16 16l-32 0c-8.8 0-16-7.2-16-16l0-112-48 0c-8.8 0-16-7.2-16-16l0-32c0-8.8 7.2-16 16-16l48 0 0-48z"/>
           </svg>
         </button>
-        <button class="tab-button" value="songs">
+        <button class="tab-button tooltip tooltip-top" value="songs" data-tooltip="Display lyrics for songs">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="17" height="17">
               <path class="icons" d="M499.1 6.3c8.1 6 12.9 15.6 12.9 25.7l0 72 0 264c0 44.2-43 80-96 80s-96-35.8-96-80s43-80 96-80c11.2 0 22 1.6 32 4.6L448 147 192 223.8 192 432c0 44.2-43 80-96 80s-96-35.8-96-80s43-80 96-80c11.2 0 22 1.6 32 4.6L128 200l0-72c0-14.1 9.3-26.6 22.8-30.7l320-96c9.7-2.9 20.2-1.1 28.3 5z"/>
           </svg>
         </button>
-        <button class="tab-button" value="setBg">
+        <button class="tab-button tooltip tooltip-top" value="setBg" data-tooltip="Customize the Bible Display">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="17" height="17">
               <path class="icons" d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6c-4.4 11.9-9.7 23.3-15.8 34.3l-4.7 8.1c-6.6 11-14 21.4-22.1 31.2c-5.9 7.2-15.7 9.6-24.5 6.8l-55.7-17.7c-13.4 10.3-28.2 18.9-44 25.4l-12.5 57.1c-2 9.1-9 16.3-18.2 17.8c-13.8 2.3-28 3.5-42.5 3.5s-28.7-1.2-42.5-3.5c-9.2-1.5-16.2-8.7-18.2-17.8l-12.5-57.1c-15.8-6.5-30.6-15.1-44-25.4L83.1 425.9c-8.8 2.8-18.6 .3-24.5-6.8c-8.1-9.8-15.5-20.2-22.1-31.2l-4.7-8.1c-6.1-11-11.4-22.4-15.8-34.3c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4C64.6 273.1 64 264.6 64 256s.6-17.1 1.7-25.4L22.4 191.2c-6.9-6.2-9.6-15.9-6.4-24.6c4.4-11.9 9.7-23.3 15.8-34.3l4.7-8.1c6.6-11 14-21.4 22.1-31.2c5.9-7.2 15.7-9.6 24.5-6.8l55.7 17.7c13.4-10.3 28.2-18.9 44-25.4l12.5-57.1c2-9.1 9-16.3 18.2-17.8C227.3 1.2 241.5 0 256 0s28.7 1.2 42.5 3.5c9.2 1.5 16.2 8.7 18.2 17.8l12.5 57.1c15.8 6.5 30.6 15.1 44 25.4l55.7-17.7c8.8-2.8 18.6-.3 24.5 6.8c8.1 9.8 15.5 20.2 22.1 31.2l4.7 8.1c6.1 11 11.4 22.4 15.8 34.3zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"/>
           </svg>
         </button>
       </div>
-      <div class="toggle">
+      <div class="toggle tooltip tooltip-top" data-tooltip="Display the content on the Screen">
         <button class="toggle-container" id="toggle-button-display">
           <input type="checkbox" id="toggle-display" class="toggle-input">
           <label for="toggle-display" class="toggle-label">
@@ -472,22 +477,23 @@ DoubleClick on History erase all previous text"></textarea>
         </button>
       </div>
     </div>
-    <script src="assets/js/choose_bible_translation.js"></script>
+    <script src="assets/js/control_panel/choose_bible_translation.js"></script>
 
-    <script src="assets/js/utils.js"></script>
-    <script src="assets/js/shortcuts.js"></script>
-    <script src="assets/js/style_text.js"></script>
-    <script src="assets/js/control_app.js"></script>
-    <script src="assets/js/send_message.js"></script>
-    <script src="assets/js/settings.js"></script>
-    <!-- <script src="assets/js/toggle_display.js"></script> -->
-    <script src="assets/js/panel_settings.js"></script>
-    <script src="assets/js/load_panel_settings.js"></script>
-    <script src="assets/js/animate.js"></script>
+    <script src="assets/js/control_panel/utils.js"></script>
+    <script src="assets/js/control_panel/shortcuts.js"></script>
+    <script src="assets/js/control_panel/style_text.js"></script>
+    <script src="assets/js/control_panel/control_app.js"></script>
+    <script src="assets/js/control_panel/send_message.js"></script>
+    <script src="assets/js/control_panel/settings.js"></script>
+    <!-- <script src="assets/js/control_panel/toggle_display.js"></script> -->
+    <script src="assets/js/control_panel/panel_settings.js"></script>
+    <script src="assets/js/control_panel/load_panel_settings.js"></script>
+    <script src="assets/js/control_panel/animate.js"></script>
 
-    <script src="assets/js/load_song.js"></script>
-    <script src="assets/js/search_bible.js"></script>
-    <script src="assets/js/search_lyrics.js"></script>
-    <script src="assets/js/suggest_bible_books.js"></script>
+    <script src="assets/js/control_panel/load_song.js"></script>
+    <script src="assets/js/control_panel/search_bible.js"></script>
+    <script src="assets/js/control_panel/search_lyrics.js"></script>
+    <script src="assets/js/control_panel/suggest_bible_books.js"></script>
+    <script src="assets/js/control_panel/tooltip.js"></script>
   </body>
 </html>

@@ -22,10 +22,12 @@ let savedBgMargin = localStorage.getItem('savedBgMargin');
 const savedAnimationData = localStorage.getItem('obs-bible-animationData');
 const savedSpaceBarCheckBox = localStorage.getItem('obs-bible-spacebar-checkbox');
 const savedFadeInCheckBox = localStorage.getItem('obs-bible-fadein-checkbox');
+const savedDisplayLineByLineCheckBox = localStorage.getItem('obs-bible-display-song-line-by-line');
 
 let loadCheckboxes = () => {
     let spaceBarCheckBox = document.getElementById("spacebar-checkbox");
     let fadeInCheckBox = document.getElementById("fade-in-checkbox");
+    let displayLineByLineCheckBox = document.getElementById("obs-bible-display-song-line-by-line");
     if (savedSpaceBarCheckBox === "true"){
         spaceBarCheckBox.checked = true;
     }else{
@@ -35,6 +37,11 @@ let loadCheckboxes = () => {
         fadeInCheckBox.checked = true;
     }else{
         fadeInCheckBox.checked = false;
+    }
+    if (savedDisplayLineByLineCheckBox === "true"){
+        displayLineByLineCheckBox.checked = true;
+    }else{
+        displayLineByLineCheckBox.checked = false;
     }
 }
 

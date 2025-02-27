@@ -16,8 +16,11 @@ lyricInput.addEventListener('keyup', () => {
             if (verse.classList.contains("selected"))
                 verse.classList.remove("selected");
 
+            // let searchResult = verseText.includes(searchTerm)
+            let searchResult =  fuzzySearch(searchTerm, verseText);
+
             // Check if the verse text contains the search term
-            if (verseText.includes(searchTerm)) {
+            if (searchResult) {
                 const displayLine = document.getElementById('song');
                 let songDiv = document.getElementById("song-display");
                 const parentNode = verse.parentNode;
