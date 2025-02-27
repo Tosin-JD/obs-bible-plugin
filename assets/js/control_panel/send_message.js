@@ -88,7 +88,7 @@ let displaySongVerseByVerse = function(){
     let songVerses = Array.from(divElements);
 
     let currentSongVerse = null;
-    let currentVerseIndex= -1;
+    let currentSongVerseIndex= -1;
     var songIntervalId;
     var isSongRunning = false;
 
@@ -98,7 +98,7 @@ let displaySongVerseByVerse = function(){
         let displayLineByLine = document.getElementById("obs-bible-display-song-line-by-line");
         if (displayLineByLine.checked === false){
           currentSongVerse = verse;
-          currentVerseIndex = index;
+          currentSongVerseIndex = index;
           
           let verseMessage = processMessage(verse.innerHTML);
           sendMessage(channel, verseMessage);
@@ -114,16 +114,16 @@ let displaySongVerseByVerse = function(){
     });
 
     let moveToPreviousVerse = ()=>{
-      if(currentVerseIndex > 0){
-        currentVerseIndex--;
-        const message = songVerses[currentVerseIndex].innerHTML;
+      if(currentSongVerseIndex > 0){
+        currentSongVerseIndex--;
+        const message = songVerses[currentSongVerseIndex].innerHTML;
         sendMessage(channel, message);
 
         // get the height of the display area
         const displayVerse = document.getElementById('song');
 
-        const currentVerse = songVerses[currentVerseIndex];
-        const nextVerse = songVerses[currentVerseIndex + 1];
+        const currentVerse = songVerses[currentSongVerseIndex];
+        const nextVerse = songVerses[currentSongVerseIndex + 1];
 
         const parentNode = currentVerse.parentNode;
 
@@ -131,7 +131,7 @@ let displaySongVerseByVerse = function(){
         nextVerse.classList.remove("selected");
         currentVerse.classList.add("selected");
 
-        const lineHeight = songVerses[currentVerseIndex].offsetHeight;
+        const lineHeight = songVerses[currentSongVerseIndex].offsetHeight;
         const parentTop = parentNode.offsetTop;
 
         // Calculate scrollTop to center the current line in the parent container
@@ -139,7 +139,7 @@ let displaySongVerseByVerse = function(){
 
         displayVerse.scrollTop = scrollTop;
       }else{
-        currentVerseIndex = 0;
+        currentSongVerseIndex = 0;
       }
     }
 
@@ -149,26 +149,26 @@ let displaySongVerseByVerse = function(){
     });
 
     let moveToNextVerse = ()=>{
-      if(currentVerseIndex < songVerses.length -1){
-        currentVerseIndex++;
-        const message = songVerses[currentVerseIndex].innerHTML;
+      if(currentSongVerseIndex < songVerses.length -1){
+        currentSongVerseIndex++;
+        const message = songVerses[currentSongVerseIndex].innerHTML;
         sendMessage(channel, message);
 
         // get the height of the display area
         const displayVerse = document.getElementById('song');
 
-        const currentVerse = songVerses[currentVerseIndex];
-        const previousVerse = songVerses[currentVerseIndex - 1];
+        const currentVerse = songVerses[currentSongVerseIndex];
+        const previousVerse = songVerses[currentSongVerseIndex - 1];
 
         const parentNode = currentVerse.parentNode;
 
         // change the backgroundColor of the current verse
-        if (currentVerseIndex !== 0){
+        if (currentSongVerseIndex !== 0){
           previousVerse.classList.remove("selected");
         }
         currentVerse.classList.add("selected");
 
-        const lineHeight = songVerses[currentVerseIndex].offsetHeight;
+        const lineHeight = songVerses[currentSongVerseIndex].offsetHeight;
         const parentTop = parentNode.offsetTop;
 
         const scrollTop = parentTop + currentVerse.offsetTop - (lineHeight / 2);
@@ -176,10 +176,10 @@ let displaySongVerseByVerse = function(){
 
 
       }else{
-        currentVerseIndex = 0;
-        const message = songVerses[currentVerseIndex].innerHTML;
+        currentSongVerseIndex = 0;
+        const message = songVerses[currentSongVerseIndex].innerHTML;
         sendMessage(channel, message);
-        const currentVerse = songVerses[currentVerseIndex];
+        const currentVerse = songVerses[currentSongVerseIndex];
         const previousVerse = songVerses[songVerses.length - 1];
         previousVerse.classList.remove("selected");
         currentVerse.classList.add("selected");
