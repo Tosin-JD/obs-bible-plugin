@@ -187,9 +187,9 @@ let displaySongVerseByVerse = function(){
     }
 
     
-    // document.getElementById("next-line").addEventListener("click", () => {
-    //   moveToNextVerse();
-    // });
+    document.getElementById("next-line").addEventListener("click", () => {
+      moveToNextVerse();
+    });
 }
 
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

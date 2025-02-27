@@ -1,5 +1,5 @@
 function splitAndOrganizeText(text) {
-    const verses = text.split('\n\n');
+    const verses = text.split('\r\n\r\n');
 
     const container = document.getElementById('song-display');
     const songDiv = document.getElementById('song');
