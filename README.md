@@ -8,7 +8,7 @@ You can modify it for your use.
 
 # ANNOUNCEMENT
 ## BIBLE DISPLAY  SOFTWARE
-I have made a software for displaying Bible. It is called Bible Display Software. You can download it at bibleds.vercel.app  
+I have made a software for displaying Bible. It is called Bible Display Software. You can download it at bibleds.vercel.app  [bibleds.vercel.app](https://bibleds.vercel.app).
 I will like feed back from it. The trial version lasts for 30 days while the paid version is free for life. You are also entitled to minor updates for free.
 
 Please contribute to my project. It is what helps me to continue developing this plugin for free. God bless yoiu.
