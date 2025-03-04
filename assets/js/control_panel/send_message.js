@@ -190,6 +190,32 @@ let displaySongVerseByVerse = function(){
     document.getElementById("next-line").addEventListener("click", () => {
       moveToNextVerse();
     });
+
+    document.getElementById("start-song-button").addEventListener("click", (event) => {
+    let timer = parseInt(document.getElementById("song-line-duration").value, 10);
+
+    if(timer > 0){
+      if (!isSongRunning) {
+        songIntervalId = setInterval(moveToNextVerse, timer * 1000);
+        document.getElementById("start-song-button").value = "Stop";
+        isSongRunning = true;
+      } else {
+        clearInterval(songIntervalId);
+        document.getElementById("start-song-button").value = "Start";
+        isSongRunning = false;
+      }
+    }
+
+  });
+
+  document.addEventListener("keydown", function(event) {
+    let lastSavedTab = localStorage.getItem("selectedTab");
+    if (event.key === "ArrowDown" && lastSavedTab === "songs") {
+      moveToNextVerse();
+    } else if (event.key === "ArrowUp" && lastSavedTab === "songs") {
+      moveToPreviousVerse();
+    }
+  });
 }
 
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

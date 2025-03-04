@@ -240,6 +240,69 @@ if (savedBgMargin) {
     defaultMargin.value = savedBgMargin;
 }
 
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Function to set the theme
+    function setTheme() {
+      const savedBdsBibleTheme = localStorage.getItem('obs-bible-panel-theme');
+      const bdsBibleTheme = document.getElementById('obs-bible-panel-theme');
+      
+      console.log('Saved theme from localStorage:', savedBdsBibleTheme);
+      
+      if (savedBdsBibleTheme && bdsBibleTheme) {
+        console.log('Select element found, setting value to:', savedBdsBibleTheme);
+        
+        // Try both approaches - setting value directly and selecting the option
+        bdsBibleTheme.value = savedBdsBibleTheme;
+        
+        // Also try to select the option by looping through options
+        for (let i = 0; i < bdsBibleTheme.options.length; i++) {
+          if (bdsBibleTheme.options[i].value === savedBdsBibleTheme) {
+            bdsBibleTheme.options[i].selected = true;
+            console.log('Option selected:', bdsBibleTheme.options[i].value);
+            break;
+          }
+        }
+        
+        // Verify the value was set
+        console.log('Final select value:', bdsBibleTheme.value);
+        
+        // Trigger a change event in case any listeners need to know
+        const event = new Event('change');
+        bdsBibleTheme.dispatchEvent(event);
+      } else {
+        console.log('Either theme not found in localStorage or select element not found');
+      }
+    }
+    
+    // Try setting the theme when DOM is loaded
+    setTheme();
+    
+    // In case the select is loaded dynamically, try again after a short delay
+    setTimeout(setTheme, 500);
+    
+    // Add event listener to save theme when changed
+    const bdsBibleTheme = document.getElementById('bds-panel-theme');
+    if (bdsBibleTheme) {
+      bdsBibleTheme.addEventListener('change', function() {
+        console.log('Saving theme:', this.value);
+        localStorage.setItem('bds-panel-theme', this.value);
+      });
+    }
+  });
+  
+  // Also try running the theme setter directly (in case DOMContentLoaded already fired)
+  (function() {
+    const savedBdsBibleTheme = localStorage.getItem('bds-panel-theme');
+    const bdsBibleTheme = document.getElementById('bds-panel-theme');
+    
+    if (savedBdsBibleTheme && bdsBibleTheme) {
+      bdsBibleTheme.value = savedBdsBibleTheme;
+    }
+  })();
+
+
 loadCheckboxes();
 loadSavedBorder();
 loadFontStroke();

@@ -60,6 +60,7 @@
             const spans = document.querySelectorAll("#messageDisplay span");
             spans.forEach(span => span.style.color = event.data.selectedTitleColor);
             localStorage.setItem('titleColor', event.data.selectedTitleColor);
+            location.reload();
           }
           if (event.data.currentBoldState){
             messageDisplay.style.fontWeight = event.data.currentBoldState;

@@ -98,7 +98,7 @@ if (savedUnderlineState){
 }
 
 if (savedTextAlign){
-    messageDisplay.textAlign = savedTextAlign;
+    messageDisplay.style.textAlign = savedTextAlign;
 }
 
 
