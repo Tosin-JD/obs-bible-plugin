@@ -33,6 +33,7 @@ OBS Bible Plugin is now available in the following versions.
 10. Click on Add Source or the **+** button.
 11. Click on **Browser**.
 12. Paste the URL or PATH of the **browser_source.html** in the input box for URL.
+_Please, make sure that you do not check **checkbox** for **Local file**._ (Leave it off.)
 13. Specify the width and height of the Browser to your preference.
 14. Click on **OK**.
 15. You can type on the textbox to display text and you can click on bible passages to display it.
