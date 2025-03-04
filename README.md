@@ -4,11 +4,18 @@
 
 This is a free bible plugin that you can use to display bible passages in Open Broadcasting Studio.
 I made it with the intention of helping me to display Bible passages since I could not find a free plugin to display Bible.
-You can modify it for your use.  
+You can modify it for your use.
+
+# ANNOUNCEMENT
+## BIBLE DISPLAY  SOFTWARE
+I have made a software for displaying Bible. It is called Bible Display Software. You can download it at bibleds.vercel.app  
+I will like feed back from it. The trial version lasts for 30 days while the paid version is free for life. You are also entitled to minor updates for free.
+
+Please contribute to my project. It is what helps me to continue developing this plugin for free. God bless yoiu.
 
 [!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/tosin789)  
 
-I am available for work.
+I am available for hire. I am skilled in python, Javascript, HTML and CSS. Thank you for your assistance.
 
 OBS Bible Plugin is now available in the following versions.
 
