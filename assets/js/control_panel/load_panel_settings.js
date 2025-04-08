@@ -248,11 +248,7 @@ document.addEventListener('DOMContentLoaded', function() {
       const savedBdsBibleTheme = localStorage.getItem('obs-bible-panel-theme');
       const bdsBibleTheme = document.getElementById('obs-bible-panel-theme');
       
-      console.log('Saved theme from localStorage:', savedBdsBibleTheme);
-      
       if (savedBdsBibleTheme && bdsBibleTheme) {
-        console.log('Select element found, setting value to:', savedBdsBibleTheme);
-        
         // Try both approaches - setting value directly and selecting the option
         bdsBibleTheme.value = savedBdsBibleTheme;
         
@@ -260,13 +256,9 @@ document.addEventListener('DOMContentLoaded', function() {
         for (let i = 0; i < bdsBibleTheme.options.length; i++) {
           if (bdsBibleTheme.options[i].value === savedBdsBibleTheme) {
             bdsBibleTheme.options[i].selected = true;
-            console.log('Option selected:', bdsBibleTheme.options[i].value);
             break;
           }
         }
-        
-        // Verify the value was set
-        console.log('Final select value:', bdsBibleTheme.value);
         
         // Trigger a change event in case any listeners need to know
         const event = new Event('change');
@@ -286,7 +278,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const bdsBibleTheme = document.getElementById('bds-panel-theme');
     if (bdsBibleTheme) {
       bdsBibleTheme.addEventListener('change', function() {
-        console.log('Saving theme:', this.value);
         localStorage.setItem('bds-panel-theme', this.value);
       });
     }

@@ -80,7 +80,7 @@ function doc_spaceBarUp(e) {
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-let displaySongVerseByVerse = function(){
+const displaySongVerseByVerse = () => {
     let songDiv = document.getElementById("song-display");
 
     let divElements = songDiv.querySelectorAll("div");
@@ -96,6 +96,7 @@ let displaySongVerseByVerse = function(){
       
       verse.addEventListener("click", (event) => {
         let displayLineByLine = document.getElementById("obs-bible-display-song-line-by-line");
+        console.log("displayLineByLine.checked: ", displayLineByLine.checked);
         if (displayLineByLine.checked === false){
           currentSongVerse = verse;
           currentSongVerseIndex = index;
@@ -235,8 +236,25 @@ const displaySongLineByLine = ()=>{
   var isSongRunning = false;
 
   songLines.forEach((line, index) => {
+
+    // line.addEventListener("click", (event) => {
+    //   var evt = event || window.event;
+    //   evt.stopPropagation ? evt.stopPropagation() : evt.cancelBubble = true;
+    //   console.log("event.target: ", event.target);
+    //   console.log(line);
+    // });
+
     line.addEventListener("click", (event) => {
-      let displayLineByLine = document.getElementById("obs-bible-display-song-line-by-line");
+      try {
+        console.log(event);
+      } catch (error) {
+        console.error("Error in event handler:", error);
+      }
+      console.log(event);
+      const displayLineByLine = document.getElementById("obs-bible-display-song-line-by-line");
+      
+      console.log("displayLineByLine.checked", displayLineByLine.checked)
+      
       if (displayLineByLine.checked === true){
         currentLine = line;
         currentLineIndex = index;
@@ -253,7 +271,7 @@ const displaySongLineByLine = ()=>{
           }
         });
       }
-    });
+    }, true);
   });
 
   const moveToPreviousLine = ()=>{
@@ -288,7 +306,6 @@ const displaySongLineByLine = ()=>{
   }
 
   const moveToNextLine = ()=>{
-    console.log("In Next " + currentLineIndex);
     if (currentLineIndex < songLines.length -2){
       currentLineIndex++;
       const message = songLines[currentLineIndex].innerText;
@@ -369,22 +386,6 @@ const displaySongLineByLine = ()=>{
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-// let displaySong = ()=>{
-//   let songElements = document.getElementById("song-display");
-//   songElements.addEventListener('click', ()=>{
-//     console.log("Clicked")
-//     let displayLineByLine = document.getElementById("obs-bible-display-song-line-by-line");
-  
-//     if (displayLineByLine.checked === true){
-//         displaySongLineByLine();
-//         console.log("Clicked and Checked");
-//       }else{
-//         displaySongVerseByVerse();
-//         console.log("Clicked and UnChecked");
-//     }
-//   });
-// }
-
 let activeSongMode = null;
 let songIntervalId = null;
 
@@ -399,26 +400,18 @@ const clearSongListeners = () => {
     }
 };
 
-let displaySong = () => {
-    let songElements = document.getElementById("song-display");
+const displaySong = () => {
+    const songElements = document.getElementById("song-display");
     songElements.addEventListener("click", () => {
-        console.log("Clicked");
-        let displayLineByLine = document.getElementById("obs-bible-display-song-line-by-line");
-
+        const displayLineByLine = document.getElementById("obs-bible-display-song-line-by-line");
+        clearSongListeners();
+        
         if (displayLineByLine.checked === true) {
-            if (activeSongMode !== "line-by-line") {
-                clearSongListeners(); // Remove old listeners
-                activeSongMode = "line-by-line";
-                displaySongLineByLine();
-                console.log("Clicked and Checked");
-            }
+            activeSongMode = "line-by-line";
+            displaySongLineByLine();
         } else {
-            if (activeSongMode !== "verse-by-verse") {
-                clearSongListeners(); // Remove old listeners
-                activeSongMode = "verse-by-verse";
-                displaySongVerseByVerse();
-                console.log("Clicked and UnChecked");
-            }
+            activeSongMode = "verse-by-verse";
+            displaySongVerseByVerse();
         }
     });
 };
@@ -582,3 +575,19 @@ btnCopy.addEventListener("dblclick", function () {
 displayBible();
 document.addEventListener('keyup', doc_keyUp, false);
 document.addEventListener('keyup', doc_spaceBarUp, false);
+
+
+
+
+
+
+
+
+
+
+
+document.addEventListener("click", function(event) {
+    // Get the element that was clicked
+    const clickedElement = event.target;
+    console.log("You clicked on:", clickedElement);
+});

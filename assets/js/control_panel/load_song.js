@@ -1,4 +1,4 @@
-function splitAndOrganizeText(text) {
+const  splitAndOrganizeText = (text) => {
     const verses = text.split('\r\n\r\n');
 
     const container = document.getElementById('song-display');
@@ -36,9 +36,10 @@ function splitAndOrganizeText(text) {
         }
     });
     songDiv.appendChild(container);
+    displaySong();
 }
 
-const handleFileSelect = (event) => {
+const handleFileSelect =  async (event) => {
     const file = event.target.files[0];
 
     if (file) {
@@ -53,8 +54,6 @@ const handleFileSelect = (event) => {
             songDisplay.innerHTML = '';
 
             splitAndOrganizeText(content);
-
-            displaySong();
         };
 
         reader.readAsText(file);
@@ -65,3 +64,6 @@ const handleFileSelect = (event) => {
 document.getElementById('song-file-upload').addEventListener('change', (event) =>{
     handleFileSelect(event);
 });
+
+
+
