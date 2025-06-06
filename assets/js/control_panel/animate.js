@@ -1,5 +1,3 @@
-const getElementById = (id) => document.getElementById(id);
-
 const createAnimationData = (type, duration, easing, isVisible) => ({
     type,
     duration,
