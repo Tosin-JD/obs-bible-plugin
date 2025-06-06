@@ -16,7 +16,6 @@ const sendAnimationMessage = (animationData) => {
 
 const toggle = (checked) => !checked;
 
-// Stateful wrapper for updating UI and messaging
 const updateStateAndSendMessage = ({ toggleDisplay, animationType, duration, easing }) => {
     const updatedVisibility = toggle(toggleDisplay.checked);
     const animationData = createAnimationData(
@@ -30,7 +29,6 @@ const updateStateAndSendMessage = ({ toggleDisplay, animationType, duration, eas
     toggleDisplay.checked = updatedVisibility;
 };
 
-// Event handlers as curried functions
 const createButtonHandler = (elements) => () => updateStateAndSendMessage(elements);
 
 const createKeyHandler = (elements) => (event) => {
@@ -40,7 +38,6 @@ const createKeyHandler = (elements) => (event) => {
     }
 };
 
-// App initialization
 const initializeApp = () => {
     const elements = {
         animationType: getElementById('animation-type'),
@@ -54,5 +51,4 @@ const initializeApp = () => {
     document.addEventListener('keydown', createKeyHandler(elements));
 };
 
-// Run the app
 initializeApp();
