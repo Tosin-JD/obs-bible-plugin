@@ -1,41 +1,48 @@
-function loadScriptFile(scriptFile) {
-    return new Promise((resolve, reject) => {
-        // Remove any previously loaded script
-        const existingScript = document.getElementById('dynamicScript');
-        if (existingScript) {
-            existingScript.remove();
-        }
+const getElementById = (id) => document.getElementById(id);
 
-        // Create a new script element
-        const script = document.createElement('script');
-        script.src = scriptFile;
-        script.id = 'dynamicScript';
+const createScriptElement = (src, id = 'dynamicScript') => {
+    const script = document.createElement('script');
+    script.src = src;
+    script.id = id;
+    return script;
+};
 
-        // Append the script to the body
-        document.body.appendChild(script);
+const removeExistingScript = (id = 'dynamicScript') => {
+    const existingScript = getElementById(id);
+    if (existingScript) existingScript.remove();
+};
 
-        // Save the selected script to localStorage
-        localStorage.setItem('selectedScriptFile', scriptFile);
+const saveScriptPath = (path) => localStorage.setItem('selectedScriptFile', path);
 
-        // Resolve the promise when the script loads successfully
-        script.onload = function() {
-            resolve();
-        };
+const loadScriptFile = (scriptFile) => new Promise((resolve, reject) => {
+    removeExistingScript();
 
-        // Reject the promise if there's an error loading the script
-        script.onerror = function() {
-            reject(new Error("Failed to load Bible file"));
-        };
-    });
-}
+    const script = createScriptElement(scriptFile);
+    document.body.appendChild(script);
+    saveScriptPath(scriptFile);
 
-// Listen for changes in the selected Bible version
-document.getElementById("bible-version").addEventListener("change", function() {
-    const selectedScriptFile = this.value;
-
-    loadScriptFile(selectedScriptFile).then(() => {
-        getSavedBible();
-        generateIndexForBibleBooks();
-        displayBible();
-    });
+    script.onload = () => resolve();
+    script.onerror = () => reject(new Error("Failed to load Bible file"));
 });
+
+const onScriptLoadSuccess = () => {
+    getSavedBible();
+    generateIndexForBibleBooks();
+    displayBible();
+};
+
+const extractSelectedValue = (event) => event.target.value;
+
+const handleBibleVersionChange = (event) => {
+    const selectedScriptFile = extractSelectedValue(event);
+    loadScriptFile(selectedScriptFile)
+        .then(onScriptLoadSuccess)
+        .catch(console.error); // Optional: handle error gracefully
+};
+
+const initializeBibleVersionListener = () => {
+    const bibleVersionSelect = getElementById("bible-version");
+    bibleVersionSelect.addEventListener("change", handleBibleVersionChange);
+};
+
+initializeBibleVersionListener();
