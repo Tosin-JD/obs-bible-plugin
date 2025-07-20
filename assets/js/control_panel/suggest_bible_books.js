@@ -13,6 +13,7 @@ function updateInput(index) {
 
     const selectedSuggestion = suggestionsList.children[index];
     bibleInput.value = selectedSuggestion.textContent;
+    bibleInput.focus();
     selectedSuggestion.classList.add("activated");
 
     // Calculate the scroll position to ensure the selected item is visible
