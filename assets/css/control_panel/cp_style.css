@@ -809,3 +809,40 @@ input[type="number"]::-webkit-inner-spin-button {
 
 /* +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
 /* ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
+
+
+.input-container {
+  position: relative;
+  display: inline-block;
+  flex-grow: 1;
+  width: 100%;
+}
+
+.input {
+  padding-right: 25px; /* space for the clear button */
+  height: 100%;
+}
+
+.clear-button {
+  position: absolute;
+  right: 5px;
+  top: 0%;
+  width: 20px;
+  height: 80%;
+  background: rgba(0, 0, 0, 0.3);
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  display: none;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.input-container:hover .clear-button,
+.input:focus + .clear-button {
+  display: block;
+}
+
+
+/* +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
+/* ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */

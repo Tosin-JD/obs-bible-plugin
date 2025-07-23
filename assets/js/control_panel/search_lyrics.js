@@ -1,5 +1,8 @@
 // Get the input field
 const lyricInput = document.getElementById('lyric-search');
+const bibleSearchInput = document.getElementById('bible-input');
+const clearLyricsBtn = document.getElementById('clear-lyrics-btn');
+const clearBibleBtn = document.getElementById('clear-bible-btn');
 
 // Get all the <p> elements inside the verses
 
@@ -33,4 +36,26 @@ lyricInput.addEventListener('keyup', () => {
             }
         });
     }
+});
+
+
+clearLyricsBtn.addEventListener('click', () => {
+    lyricInput.value = '';
+    lyricInput.focus();
+    clearLyricsBtn.style.display = 'none';
+});
+
+clearBibleBtn.addEventListener('click', () => {
+    bibleInput.value = '';
+    bibleInput.focus();
+    clearBibleBtn.style.display = 'none';
+});
+
+
+lyricInput.addEventListener('input', () => {
+    clearLyricsBtn.style.display = lyricInput.value ? 'block' : 'none';
+});
+
+bibleSearchInput.addEventListener('input', () => {
+    clearBibleBtn.style.display = bibleSearchInput.value ? 'block' : 'none';
 });
