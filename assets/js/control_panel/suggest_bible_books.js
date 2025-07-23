@@ -8,11 +8,12 @@ var bibleIndex = new Map();
 function updateInput(index) {
   if (index >= 0 && index < suggestionsList.children.length) {
     for (let item = suggestionsList.children.length - 1; item >= 0; item--) {
-      suggestionsList.children[item].classList.remove("activated");;
+      suggestionsList.children[item].classList.remove("activated");
     }
 
     const selectedSuggestion = suggestionsList.children[index];
     bibleInput.value = selectedSuggestion.textContent;
+    bibleInput.focus();
     selectedSuggestion.classList.add("activated");
 
     // Calculate the scroll position to ensure the selected item is visible
