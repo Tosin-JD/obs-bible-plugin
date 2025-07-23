@@ -28,7 +28,7 @@ OBS Bible Plugin is now available in the following versions.
 
 
 # How to Install the plugin
-1. Download the **obs_bible_plugin.zip**, **obs_bible_french.zip**, **obs_bible_multi_lang.zip**.
+1. Download the **[obs_bible_plugin.zip] (https://github.com/Tosin-JD/obs-bible-plugin/releases)** from the release page.
 2. Extract the zip file.
 3. Copy the **obs-bible-plugin** or which ever version folder to a safe location in your computer.
 4. Open the **obs-bible-plugin** folder.
