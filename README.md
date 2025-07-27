@@ -67,7 +67,7 @@ The following are shortcuts
 ## How to Display A Song
 You can display song in two ways.
 a. Line by line
-b. verse by verse
+b. verse by verse 
 
 ### How to display a song line by line
 1. Go to the **Song** Tab
