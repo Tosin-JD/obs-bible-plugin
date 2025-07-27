@@ -65,7 +65,7 @@ The following are shortcuts
 3. Click on the Bible Verse to display it.
 
 ## How to Display A Song
-You can display song in two ways.
+You can display song in two ways.  
 a. Line by line  
 b. verse by verse   
 
