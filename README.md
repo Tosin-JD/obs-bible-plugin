@@ -60,10 +60,24 @@ The following are shortcuts
 
 
 ## How to Display A Bible Passage
-1. Go to the Bible tap
+1. Go to the Bible tab
 2. Search for the Bible Passage with name such is **John 1:1** or with a passage from the scripture as: **Love your neighbor as yourself**
 3. Click on the Bible Verse to display it.
 
+## How to Display A Song
+You can display song in two ways.
+a. Line by line
+b. verse by verse
+
+### How to display a song line by line
+1. Go to the **Song** Tab
+2. Upload the song that you want to display. See the section below on how to upload a song.
+3. In order to display a song line by line, go to the **Settings** Tab, under **General** Check **Display Song Line by Line**.  
+4. Then go to the **Songs** Tab and click on the line that you want to display.  
+
+### How to display a song verse by verse
+1. In order to display a song verse by verse, go to the **Settings** Tab, under **General** Uncheck **Display Song Line by Line**.  
+2. Then go to the **Songs** Tab and click on the verse that you want to display.
 
 ## How to Add Song
 In order to add song
