@@ -850,3 +850,23 @@ input[type="number"]::-webkit-inner-spin-button {
 
 /* +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
 /* ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
+
+#song-line-duration {
+  text-align: right;
+}
+
+.countdown-timer {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: #fff;
+  border-radius: 3px;
+  font-size: 0.6em;
+  padding: 2px 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  white-space: nowrap;
+  pointer-events: none;
+}

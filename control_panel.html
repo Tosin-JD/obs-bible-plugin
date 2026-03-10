@@ -110,8 +110,9 @@ DoubleClick on History erase all previous text"></textarea>
                 <button type="button" class="clear-button" id="clear-lyrics-btn">&times;</button>
               </div>
               <div class="row">
-                <div class="rounded tooltip tooltip-bottom" data-tooltip="Enter the number of seconds before the lyrics move to the next line automatically">
+                <div class="rounded tooltip tooltip-bottom" style="position: relative;" data-tooltip="Enter the number of seconds before the lyrics move to the next line automatically">
                   <input type="number" class="input tooltip tooltip-left" id="song-line-duration"  data-tooltip="Enter the number of seconds before the lyrics move to the next line automatically">
+                  <div id="countdown-timer" class="countdown-timer">0s</div>
                 </div>
                 <div class="rounded tooltip tooltip-bottom" data-tooltip="Click to move lyrics to next line after number of seconds">
                   <input type="button" id="start-song-button" value="Play Lyrics" class="input">

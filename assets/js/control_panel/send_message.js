@@ -197,12 +197,25 @@ const displaySongVerseByVerse = () => {
 
     if(timer > 0){
       if (!isSongRunning) {
-        songIntervalId = setInterval(moveToNextVerse, timer * 1000);
+        let timerValue = timer;
+        const timerElement = document.getElementById("countdown-timer");
+        if (timerElement) timerElement.innerText = timerValue + "s";
+        
+        songIntervalId = setInterval(() => {
+          timerValue--;
+          if (timerValue <= 0) {
+            moveToNextVerse();
+            timerValue = parseInt(document.getElementById("song-line-duration").value, 10) || timer;
+          }
+          if (timerElement) timerElement.innerText = timerValue + "s";
+        }, 1000);
         document.getElementById("start-song-button").value = "Stop";
         isSongRunning = true;
       } else {
         clearInterval(songIntervalId);
         document.getElementById("start-song-button").value = "Start";
+        const timerElement = document.getElementById("countdown-timer");
+        if (timerElement) timerElement.innerText = "0s";
         isSongRunning = false;
       }
     }
@@ -342,12 +355,25 @@ const displaySongLineByLine = ()=>{
 
     if(timer > 0){
       if (!isSongRunning) {
-        songIntervalId = setInterval(moveToNextLine, timer * 1000);
+        let timerValue = timer;
+        const timerElement = document.getElementById("countdown-timer");
+        if (timerElement) timerElement.innerText = timerValue + "s";
+        
+        songIntervalId = setInterval(() => {
+          timerValue--;
+          if (timerValue <= 0) {
+            moveToNextLine();
+            timerValue = parseInt(document.getElementById("song-line-duration").value, 10) || timer;
+          }
+          if (timerElement) timerElement.innerText = timerValue + "s";
+        }, 1000);
         document.getElementById("start-song-button").value = "Stop";
         isSongRunning = true;
       } else {
         clearInterval(songIntervalId);
         document.getElementById("start-song-button").value = "Start";
+        const timerElement = document.getElementById("countdown-timer");
+        if (timerElement) timerElement.innerText = "0s";
         isSongRunning = false;
       }
     }
@@ -380,6 +406,10 @@ const clearSongListeners = () => {
     if (songIntervalId) {
         clearInterval(songIntervalId);
         songIntervalId = null;
+    }
+    const timerElement = document.getElementById("countdown-timer");
+    if (timerElement) {
+        timerElement.innerText = "0s";
     }
 };
 
