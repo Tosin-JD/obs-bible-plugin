@@ -104,14 +104,35 @@ function levenshteinDistance(a, b) {
   return matrix[b.length][a.length];
 }
 
-function fuzzySearch(word, text, threshold = 2) {
+function fuzzySearchWeight(word, text, threshold = 2) {
   word = word.toLowerCase(); // Normalize input
   const words = text.toLowerCase().split(/\s+/); // Normalize and split text
+  
+  if (text.toLowerCase().includes(word)) {
+      return 100; // Exact substring match gets highest score
+  }
 
-  return words.some(t => {
+  let bestWeight = 0;
+  
+  words.forEach(t => {
     const maxThreshold = Math.ceil(t.length * 0.4); // Allow 40% of the word length as errors
-    return t.includes(word) || levenshteinDistance(word, t) <= Math.max(threshold, maxThreshold);
+    const dist = levenshteinDistance(word, t);
+    const allowed = Math.max(threshold, maxThreshold);
+    
+    if (dist <= allowed) {
+        // Calculate weight: lower distance = higher weight
+        // If distance is 0 (exact word), weight is 100
+        // Weight decreases as dist increases
+        let weight = Math.max(10, 100 - (dist * (100 / allowed)));
+        if (weight > bestWeight) bestWeight = weight;
+    }
   });
+  
+  return bestWeight;
+}
+
+function fuzzySearch(word, text, threshold = 2) {
+  return fuzzySearchWeight(word, text, threshold) > 0;
 }
 
 
