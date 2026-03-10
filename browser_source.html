@@ -44,6 +44,15 @@
             bgContainer.style.backgroundColor = event.data.opacityColor;
             localStorage.setItem('bgColor', event.data.opacityColor);
           }
+          if (event.data.gradientBackground){
+            bgContainer.style.backgroundImage = event.data.gradientBackground;
+            bgContainer.style.backgroundColor = "transparent";
+            localStorage.setItem('obs-bible-gradient-css', event.data.gradientBackground);
+          }
+          if (event.data.clearGradient){
+            bgContainer.style.backgroundImage = "none";
+            localStorage.removeItem('obs-bible-gradient-css');
+          }
           if (event.data.roundedCorner){
             bgContainer.style.borderRadius = event.data.roundedCorner + "px";
             localStorage.setItem('borderRadius', event.data.roundedCorner);

@@ -24,6 +24,7 @@ All notable changes to this project will be documented in this file.
  ## [4.0.4] - 2025-08-17
 ### Added
 * Added countdown timer to song line duration.
+* Added color gradient
 
 ### Fixed
 * song lyrics search improved.

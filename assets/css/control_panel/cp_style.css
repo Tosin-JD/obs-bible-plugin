@@ -519,6 +519,197 @@ button, .btn-file-upload{
   transition: background 0.2s;
 }
 
+/* Gradient editor */
+.gradient-preview {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  max-width: 36px;
+  padding: 0;
+  margin: 0;
+  border-radius: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  background-size: cover;
+}
+
+.gradient-modal {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.gradient-modal.is-open {
+  display: flex;
+}
+
+.gradient-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+}
+
+.gradient-dialog {
+  position: relative;
+  z-index: 1;
+  width: min(520px, 92vw);
+  max-height: 85vh;
+  overflow: hidden;
+  border-radius: 14px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  background-color: var(--color-bg);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.gradient-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px 6px;
+}
+
+.gradient-title {
+  font-weight: 600;
+  font-size: 0.95em;
+}
+
+.gradient-close {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  padding: 0;
+}
+
+.gradient-body {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 0 14px 16px;
+}
+
+.gradient-color-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.gradient-swatch,
+.gradient-add-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  max-width: 36px;
+  border-radius: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  padding: 0;
+  margin: 0;
+}
+
+.gradient-swatch {
+  position: relative;
+  overflow: visible;
+}
+
+.gradient-swatch-remove {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  padding: 0;
+  font-size: 12px;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+  background-color: rgba(255, 255, 255, 0.9);
+  color: #991111;
+}
+
+.gradient-swatch:hover .gradient-swatch-remove {
+  opacity: 1;
+}
+
+.gradient-swatch-remove:hover {
+  background-color: #b00020;
+  color: #ffffff;
+}
+
+.gradient-add-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gradient-section-title {
+  font-size: 0.85em;
+  margin-bottom: 6px;
+}
+
+.gradient-opacity-track {
+  position: relative;
+  width: 100%;
+  height: 18px;
+  border-radius: 999px;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  background-size: 10px 10px;
+  background-image: linear-gradient(45deg, rgba(0,0,0,0.18) 25%, transparent 25%),
+                    linear-gradient(-45deg, rgba(0,0,0,0.18) 25%, transparent 25%),
+                    linear-gradient(45deg, transparent 75%, rgba(0,0,0,0.18) 75%),
+                    linear-gradient(-45deg, transparent 75%, rgba(0,0,0,0.18) 75%);
+  background-position: 0 0, 0 5px, 5px -5px, -5px 0px;
+  overflow: hidden;
+}
+
+.gradient-opacity-track::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(to right, var(--opacity-color-solid, rgba(255,255,255,1)), var(--opacity-color-transparent, rgba(255,255,255,0)));
+}
+
+.gradient-opacity-handle {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px solid #ffffff;
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.4);
+  background-color: #111111;
+}
+
+.gradient-direction-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.gradient-direction-option {
+  width: 36px;
+  height: 36px;
+  max-width: 36px;
+  padding: 0;
+  border-radius: 10px;
+  font-size: 0.75em;
+  background-size: cover;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+}
+
+.gradient-direction-option.active {
+  font-weight: 600;
+  box-shadow: 0 0 0 2px var(--selected-bg-color);
+}
+
 .slider::-webkit-slider-thumb:hover {
 }
 

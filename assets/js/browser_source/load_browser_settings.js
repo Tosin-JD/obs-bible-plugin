@@ -1,5 +1,6 @@
 // Check if a background color is saved in localStorage
 const savedBgColor = localStorage.getItem('bgColor');
+const savedGradientCss = localStorage.getItem('obs-bible-gradient-css');
 const savedFontFamily = localStorage.getItem('fontFamily');
 const savedFontColor = localStorage.getItem('fontColor');
 const savedBorderRadius = localStorage.getItem('borderRadius');
@@ -64,7 +65,10 @@ if (savedMessage){
     messageDisplay.innerHTML = savedMessage;
 }
 
-if (savedBgColor) {
+if (savedGradientCss) {
+    bgContainer.style.backgroundImage = savedGradientCss;
+    bgContainer.style.backgroundColor = "transparent";
+} else if (savedBgColor) {
     bgContainer.style.backgroundColor = savedBgColor;
 }
 

@@ -22,6 +22,233 @@ const underlineButton = document.getElementById("underline");
 const textAlign = document.querySelectorAll('input[name="align"]');
 const bgColorInput = document.getElementById("bgColor");
 let displayLineByLine = document.getElementById("obs-bible-display-song-line-by-line");
+const gradientPreview = document.getElementById("bg-gradient-preview");
+const gradientModal = document.getElementById("gradient-modal");
+const gradientBackdrop = document.getElementById("gradient-backdrop");
+const gradientClose = document.getElementById("gradient-close");
+const gradientColorGrid = document.getElementById("gradient-color-grid");
+const gradientOpacityTrack = document.getElementById("gradient-opacity-track");
+const gradientOpacityHandle = document.getElementById("gradient-opacity-handle");
+const gradientDirectionOptions = document.querySelectorAll(".gradient-direction-option");
+
+const gradientStorageKeys = {
+    colors: "obs-bible-gradient-colors",
+    type: "obs-bible-gradient-type",
+    direction: "obs-bible-gradient-direction",
+    opacity: "obs-bible-gradient-opacity",
+    css: "obs-bible-gradient-css",
+};
+
+let gradientColors = [];
+let gradientType = "linear";
+let gradientDirection = "to-right";
+let selectedGradientIndex = 0;
+
+const gradientAddSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="14" height="14"><path class="icons" d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 112-112 0c-17.7 0-32 14.3-32 32s14.3 32 32 32l112 0 0 112c0 17.7 14.3 32 32 32s32-14.3 32-32l0-112 112 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-112 0 0-112z"/></svg>`;
+
+function getDefaultGradientColors() {
+    const savedRaw = localStorage.getItem("rawBgColor");
+    const firstColor = savedRaw || "#553355";
+    return [
+        { color: firstColor, opacity: 1 },
+        { color: "#000000", opacity: 1 }
+    ];
+}
+
+function buildGradientCss(colors, typeValue, directionValue) {
+    const rgbaColors = colors.map(colorItem => hexToRgba(colorItem.color, colorItem.opacity));
+    if (typeValue === "radial") {
+        return `radial-gradient(circle at center, ${rgbaColors.join(", ")})`;
+    }
+    if (typeValue === "conic") {
+        return `conic-gradient(from 0deg at center, ${rgbaColors.join(", ")})`;
+    }
+    if (directionValue === "to-bottom-right") {
+        return `linear-gradient(135deg, ${rgbaColors.join(", ")})`;
+    }
+    return `linear-gradient(to right, ${rgbaColors.join(", ")})`;
+}
+
+function setGradientPreview(cssValue) {
+    if (gradientPreview) {
+        gradientPreview.style.backgroundImage = cssValue ? cssValue : "none";
+    }
+}
+
+function broadcastGradient(cssValue) {
+    const settingsChannel = new BroadcastChannel("settings");
+    settingsChannel.postMessage({ gradientBackground: cssValue });
+    settingsChannel.close();
+}
+
+function clearGradient() {
+    localStorage.removeItem(gradientStorageKeys.css);
+    const settingsChannel = new BroadcastChannel("settings");
+    settingsChannel.postMessage({ clearGradient: true });
+    settingsChannel.close();
+}
+
+function saveGradientState(cssValue) {
+    localStorage.setItem(gradientStorageKeys.colors, JSON.stringify(gradientColors));
+    localStorage.setItem(gradientStorageKeys.type, gradientType);
+    localStorage.setItem(gradientStorageKeys.direction, gradientDirection);
+    localStorage.setItem(gradientStorageKeys.css, cssValue);
+}
+
+function applyGradient() {
+    const gradientCss = buildGradientCss(gradientColors, gradientType, gradientDirection);
+    setGradientPreview(gradientCss);
+    saveGradientState(gradientCss);
+    broadcastGradient(gradientCss);
+    updateGradientDirectionPreviews();
+}
+
+function updateGradientDirectionUI() {
+    gradientDirectionOptions.forEach(option => {
+        const isActive = option.dataset.gradient === gradientType && option.dataset.direction === gradientDirection;
+        option.classList.toggle("active", isActive);
+    });
+}
+
+function updateGradientDirectionPreviews() {
+    gradientDirectionOptions.forEach(option => {
+        const optionType = option.dataset.gradient;
+        const optionDirection = option.dataset.direction;
+        const optionCss = buildGradientCss(gradientColors, optionType, optionDirection);
+        option.style.backgroundImage = optionCss;
+    });
+}
+
+function updateOpacityTrack() {
+    if (!gradientOpacityTrack || !gradientOpacityHandle) {
+        return;
+    }
+    const selected = gradientColors[selectedGradientIndex] || gradientColors[0];
+    if (!selected) {
+        return;
+    }
+    const solid = hexToRgba(selected.color, 1);
+    const transparent = hexToRgba(selected.color, 0);
+    gradientOpacityTrack.style.setProperty("--opacity-color-solid", solid);
+    gradientOpacityTrack.style.setProperty("--opacity-color-transparent", transparent);
+    const percent = Math.round((selected.opacity || 0) * 100);
+    gradientOpacityHandle.style.left = `${percent}%`;
+    gradientOpacityTrack.setAttribute("aria-valuenow", `${percent}`);
+}
+
+function setSelectedGradientIndex(index) {
+    selectedGradientIndex = Math.max(0, Math.min(index, gradientColors.length - 1));
+    updateOpacityTrack();
+}
+
+function renderGradientSwatches() {
+    if (!gradientColorGrid) {
+        return;
+    }
+    gradientColorGrid.innerHTML = "";
+
+    gradientColors.forEach((colorItem, index) => {
+        const swatch = document.createElement("button");
+        swatch.type = "button";
+        swatch.className = "gradient-swatch";
+        swatch.style.backgroundColor = colorItem.color;
+
+        const colorInput = document.createElement("input");
+        colorInput.type = "color";
+        colorInput.value = colorItem.color;
+        colorInput.style.display = "none";
+
+        swatch.addEventListener("click", () => {
+            setSelectedGradientIndex(index);
+            colorInput.click();
+        });
+
+        colorInput.addEventListener("input", () => {
+            gradientColors[index].color = colorInput.value;
+            swatch.style.backgroundColor = colorInput.value;
+            applyGradient();
+            updateOpacityTrack();
+        });
+
+        swatch.appendChild(colorInput);
+
+        const removeButton = document.createElement("button");
+        removeButton.type = "button";
+        removeButton.className = "gradient-swatch-remove";
+        removeButton.textContent = "×";
+        removeButton.addEventListener("click", (event) => {
+            event.stopPropagation();
+            if (gradientColors.length <= 1) {
+                return;
+            }
+            gradientColors.splice(index, 1);
+            renderGradientSwatches();
+            applyGradient();
+            setSelectedGradientIndex(Math.min(selectedGradientIndex, gradientColors.length - 1));
+        });
+        swatch.appendChild(removeButton);
+
+        gradientColorGrid.appendChild(swatch);
+    });
+
+    const addButton = document.createElement("button");
+    addButton.type = "button";
+    addButton.className = "gradient-add-btn";
+    addButton.innerHTML = gradientAddSvg;
+    addButton.addEventListener("click", () => {
+        gradientColors.push({ color: "#ffffff", opacity: 1 });
+        renderGradientSwatches();
+        setSelectedGradientIndex(gradientColors.length - 1);
+        applyGradient();
+    });
+    gradientColorGrid.appendChild(addButton);
+}
+
+function openGradientModal() {
+    if (!gradientModal) {
+        return;
+    }
+    gradientModal.classList.add("is-open");
+    gradientModal.setAttribute("aria-hidden", "false");
+}
+
+function closeGradientModal() {
+    if (!gradientModal) {
+        return;
+    }
+    gradientModal.classList.remove("is-open");
+    gradientModal.setAttribute("aria-hidden", "true");
+}
+
+function loadGradientState() {
+    const savedColors = localStorage.getItem(gradientStorageKeys.colors);
+    const savedType = localStorage.getItem(gradientStorageKeys.type);
+    const savedDirection = localStorage.getItem(gradientStorageKeys.direction);
+    const savedCss = localStorage.getItem(gradientStorageKeys.css);
+
+    if (savedColors) {
+        const parsed = JSON.parse(savedColors);
+        if (parsed.length && typeof parsed[0] === "string") {
+            gradientColors = parsed.map(color => ({ color, opacity: 1 }));
+        } else {
+            gradientColors = parsed.map(item => ({
+                color: item.color || "#000000",
+                opacity: typeof item.opacity === "number" ? item.opacity : 1
+            }));
+        }
+    } else {
+        gradientColors = getDefaultGradientColors();
+    }
+    gradientType = savedType || "linear";
+    gradientDirection = savedDirection || "to-right";
+
+    const previewCss = savedCss || buildGradientCss(gradientColors, gradientType, gradientDirection);
+    setGradientPreview(previewCss);
+    renderGradientSwatches();
+    updateGradientDirectionUI();
+    updateGradientDirectionPreviews();
+    setSelectedGradientIndex(0);
+}
 
 
 fontElement.addEventListener("change", function() {
@@ -48,6 +275,7 @@ opacityRange.addEventListener("input", function () {
     let settingsChannel = new BroadcastChannel("settings");
     settingsChannel.postMessage({ opacityColor: newColor });
     settingsChannel.close();
+    clearGradient();
 });
 
 
@@ -119,6 +347,7 @@ bgColorInput.addEventListener("input", function () {
     let settingsChannel = new BroadcastChannel("settings");
     settingsChannel.postMessage({ selectedBgColor: newColor });
     settingsChannel.close();
+    clearGradient();
 
 });
 
@@ -306,4 +535,80 @@ bgMargin.addEventListener("change", function() {
 
 displayLineByLine.addEventListener("change", function() {
     localStorage.setItem("obs-bible-display-song-line-by-line", displayLineByLine.checked);
+});
+
+loadGradientState();
+
+if (gradientPreview) {
+    gradientPreview.addEventListener("click", openGradientModal);
+}
+
+if (gradientBackdrop) {
+    gradientBackdrop.addEventListener("click", closeGradientModal);
+}
+
+if (gradientClose) {
+    gradientClose.addEventListener("click", closeGradientModal);
+}
+
+function handleOpacityPointer(event) {
+    if (!gradientOpacityTrack) {
+        return;
+    }
+    const rect = gradientOpacityTrack.getBoundingClientRect();
+    const clientX = event.touches ? event.touches[0].clientX : event.clientX;
+    const x = Math.min(Math.max(clientX - rect.left, 0), rect.width);
+    const percent = rect.width ? x / rect.width : 0;
+    const opacity = Math.min(Math.max(percent, 0), 1);
+    if (gradientColors[selectedGradientIndex]) {
+        gradientColors[selectedGradientIndex].opacity = opacity;
+        updateOpacityTrack();
+        applyGradient();
+    }
+}
+
+if (gradientOpacityTrack) {
+    gradientOpacityTrack.addEventListener("mousedown", (event) => {
+        handleOpacityPointer(event);
+        const move = (moveEvent) => handleOpacityPointer(moveEvent);
+        const up = () => {
+            window.removeEventListener("mousemove", move);
+            window.removeEventListener("mouseup", up);
+        };
+        window.addEventListener("mousemove", move);
+        window.addEventListener("mouseup", up);
+    });
+
+    gradientOpacityTrack.addEventListener("touchstart", (event) => {
+        handleOpacityPointer(event);
+    }, { passive: true });
+    gradientOpacityTrack.addEventListener("touchmove", (event) => {
+        handleOpacityPointer(event);
+    }, { passive: true });
+
+    gradientOpacityTrack.addEventListener("keydown", (event) => {
+        const step = event.shiftKey ? 0.1 : 0.02;
+        if (!gradientColors[selectedGradientIndex]) {
+            return;
+        }
+        if (event.key === "ArrowLeft" || event.key === "ArrowDown") {
+            gradientColors[selectedGradientIndex].opacity = Math.max(0, gradientColors[selectedGradientIndex].opacity - step);
+            updateOpacityTrack();
+            applyGradient();
+        }
+        if (event.key === "ArrowRight" || event.key === "ArrowUp") {
+            gradientColors[selectedGradientIndex].opacity = Math.min(1, gradientColors[selectedGradientIndex].opacity + step);
+            updateOpacityTrack();
+            applyGradient();
+        }
+    });
+}
+
+gradientDirectionOptions.forEach(option => {
+    option.addEventListener("click", () => {
+        gradientType = option.dataset.gradient;
+        gradientDirection = option.dataset.direction;
+        updateGradientDirectionUI();
+        applyGradient();
+    });
 });

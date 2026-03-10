@@ -203,10 +203,6 @@ DoubleClick on History erase all previous text"></textarea>
                    <label>Rounded Corners</label>
                    <input type="range" min="0" max="120" value="0" class="slider" id="rounded-corner">
                  </div>
-                 <div class="settings-icons">
-                   <label>Opacity</label>
-                   <input type="range" min="0" max="10" value="10" class="slider" id="bg-opacity">
-                 </div>
                </div>
                <div class="row">
                  <div class="settings-icons">
@@ -392,6 +388,10 @@ DoubleClick on History erase all previous text"></textarea>
                    <label>Background</label>
                    <input type="color" id="bgColor">
                  </div>
+                 <div class="column settings-icons tooltip tooltip-bottom" data-tooltip="Background gradient">
+                   <label>Gradient</label>
+                   <button type="button" id="bg-gradient-preview" class="gradient-preview" aria-haspopup="dialog" aria-controls="gradient-modal"></button>
+                 </div>
                  <div class="column settings-icons tooltip tooltip-bottom" data-tooltip="Font color">
                    <label>Font</label>
                    <input type="color" id="fontColor">
@@ -399,6 +399,12 @@ DoubleClick on History erase all previous text"></textarea>
                  <div class="column settings-icons tooltip tooltip-bottom" data-tooltip="Color for the title">
                    <label>Title</label>
                    <input type="color" id="titleColor">
+                 </div>
+               </div>
+               <div class="row">
+                 <div class="column settings-icons tooltip tooltip-bottom" data-tooltip="Background opacity">
+                   <label>Background Opacity</label>
+                   <input type="range" min="0" max="10" value="10" class="slider" id="bg-opacity">
                  </div>
                </div>
                <div class="row">
@@ -465,6 +471,37 @@ DoubleClick on History erase all previous text"></textarea>
                  </div>
              </div>
            </div>
+          </div>
+          <div id="gradient-modal" class="gradient-modal" aria-hidden="true" role="dialog">
+            <div class="gradient-backdrop" id="gradient-backdrop"></div>
+            <div class="gradient-dialog" role="document">
+              <div class="gradient-header">
+                <div class="gradient-title">Background Gradient</div>
+                <button type="button" class="gradient-close" id="gradient-close" aria-label="Close gradient editor">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="12" height="12">
+                    <path class="icons" d="M312.1 375c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0L160 289.9 41.9 408.9c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9L126.1 256 8 137.9c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0L160 222.1 278.1 104c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9L193.9 256 312.1 375z"/>
+                  </svg>
+                </button>
+              </div>
+              <div class="gradient-body">
+                <div class="gradient-color-grid" id="gradient-color-grid"></div>
+                <div class="gradient-section">
+                  <div class="gradient-section-title">Direction</div>
+                  <div class="gradient-direction-row">
+                    <button type="button" class="gradient-direction-option" data-gradient="linear" data-direction="to-right" aria-label="Left to right gradient preview"></button>
+                    <button type="button" class="gradient-direction-option" data-gradient="linear" data-direction="to-bottom-right" aria-label="Top left to bottom right gradient preview"></button>
+                    <button type="button" class="gradient-direction-option" data-gradient="radial" data-direction="center" aria-label="Radial gradient preview"></button>
+                    <button type="button" class="gradient-direction-option" data-gradient="conic" data-direction="center" aria-label="Conic gradient preview"></button>
+                  </div>
+                </div>
+                <div class="gradient-section">
+                  <div class="gradient-section-title">Opacity</div>
+                  <div class="gradient-opacity-track" id="gradient-opacity-track" role="slider" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100" tabindex="0">
+                    <div class="gradient-opacity-handle" id="gradient-opacity-handle"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
