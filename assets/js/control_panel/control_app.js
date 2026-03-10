@@ -74,9 +74,12 @@ function openSavedTab() {
       }
     });
   } else {
-    // If no tab is saved, open a default tab here
-    // For example:
-    // openTab("defaultTabName");
+    openTab("text");
+    tabButtons.forEach(button => {
+      if(button.value === "text"){
+        button.classList.add("selected-tab");
+      }
+    });
   }
   if (savedSettingsTab) {
     openSettingTab(savedSettingsTab);
@@ -85,16 +88,23 @@ function openSavedTab() {
         settingsButton.classList.add("selected-setting-tab");
       }
     });
+  } else {
+    openSettingTab("settings-general");
+    settingsTabButtons.forEach(settingsButton => {
+      if(settingsButton.dataset.settings === "settings-general"){
+        settingsButton.classList.add("selected-setting-tab");
+      }
+    });
   }
 }
 
 // Call the function to open the saved tab when the webpage loads
 window.onload = function() {
+  openSavedTab();
   // get the bible Translation
   const savedScriptFile = localStorage.getItem('selectedScriptFile');
   if (savedScriptFile) {
       document.getElementById('bible-version').value = savedScriptFile;
-      openSavedTab();
       loadScriptFile(savedScriptFile).then(() => {
           getSavedBible();
           displayBible();

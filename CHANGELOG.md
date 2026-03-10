@@ -28,6 +28,7 @@ All notable changes to this project will be documented in this file.
 
 ### Fixed
 * song lyrics search improved.
+* Fix ui and ux issues
 
 ---
 

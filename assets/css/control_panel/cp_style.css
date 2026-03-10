@@ -226,6 +226,21 @@ select{
 /*  background: yellow !important; */
 }
 
+.settings-tab-area .row{
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+.settings-tab-area .row > .settings-icons,
+.settings-tab-area .row > .column{
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.settings-tab-area .column{
+  width: 100%;
+}
+
 #listItems{
   flex-grow: 1;
 }
