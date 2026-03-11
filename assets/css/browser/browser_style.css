@@ -26,6 +26,7 @@ body{
     display: flex;
     justify-content: center;
     align-items: center;
+    position: relative;
 }
 
 .container {
@@ -61,6 +62,18 @@ body{
 
 .text-with-shadow {
     text-shadow: 5px 5px 4px rgba(0, 0, 0, 0.75);
+}
+
+.route-bible-qr {
+    position: absolute;
+    right: 16px;
+    bottom: 16px;
+    width: 112px;
+    height: 112px;
+    display: none;
+    background: #fff;
+    border-radius: 8px;
+    padding: 4px;
 }
 
 

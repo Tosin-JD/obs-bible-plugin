@@ -11,6 +11,19 @@ var updateMessage = (messageId, message) =>{
     messageElem.innerHTML = message.messageContent;
   }
   localStorage.setItem('savedMessage', message.messageContent);
+  localStorage.setItem('obs-bible-saved-message-type', message.contentType || '');
+  localStorage.setItem('obs-bible-saved-route-bible-reference', message.referenceLabel || '');
+
+  if (window.ObsBibleRouteBible) {
+    const routeBibleQr = document.getElementById('route-bible-qr');
+    window.ObsBibleRouteBible.renderQrOverlay(routeBibleQr, {
+      enabled: localStorage.getItem('obs-bible-show-route-bible-qr') === 'true',
+      messageContent: message.messageContent,
+      contentType: message.contentType || '',
+      referenceLabel: message.referenceLabel || '',
+      translationCode: window.ObsBibleRouteBible.getSelectedTranslationCode(localStorage),
+    });
+  }
 };
 
 // function hasVerticalScroll() {

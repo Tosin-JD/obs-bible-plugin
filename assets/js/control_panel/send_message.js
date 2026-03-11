@@ -19,11 +19,23 @@ function processMessage(inputMessage) {
   return result;
 }
 
-function sendMessage(senderChannel, message){
+function getBibleMessageMetadata(message) {
+  if (!window.ObsBibleRouteBible) {
+    return { contentType: "bible" };
+  }
+
+  return {
+    contentType: "bible",
+    referenceLabel: window.ObsBibleRouteBible.extractReferenceLabelFromMessage(message),
+  };
+}
+
+function sendMessage(senderChannel, message, metadata = {}){
   let fadeInCheckbox = document.getElementById("fade-in-checkbox");
   let messageToSend = {
     fadein: fadeInCheckbox.checked,
-    messageContent: message
+    messageContent: message,
+    ...metadata
   };
   localStorage.setItem("obs-bible-fadein-checkbox", fadeInCheckbox.checked);
   senderChannel.postMessage(messageToSend);
@@ -415,7 +427,7 @@ function displayBible() {
       if (event.target.tagName === "P") {
         currentVerseIndex = index;
         const message = event.target.innerHTML;
-        sendMessage(channel, message);
+        sendMessage(channel, message, getBibleMessageMetadata(message));
         event.target.classList.add("selected");
 
         historyOfBibleVerse.push({name: event.target.id, verse: message});
@@ -458,7 +470,7 @@ function moveToNextVerse(event){
   if(currentVerseIndex < bibleVerses.length - 1){
     currentVerseIndex++;
     const message = bibleVerses[currentVerseIndex].innerHTML;
-    sendMessage(channel, message);
+    sendMessage(channel, message, getBibleMessageMetadata(message));
 
     const displayVerse = document.getElementById('bible');
     const currentVerse = bibleVerses[currentVerseIndex];
@@ -493,7 +505,7 @@ function moveToPreviousVerse(event){
   if(currentVerseIndex > 0){
     currentVerseIndex--;
     const message = bibleVerses[currentVerseIndex].innerHTML;
-    sendMessage(channel, message);
+    sendMessage(channel, message, getBibleMessageMetadata(message));
     const displayVerse = document.getElementById('bible');
     const currentVerse = bibleVerses[currentVerseIndex];
 

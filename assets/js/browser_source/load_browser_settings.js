@@ -109,4 +109,10 @@ if (savedShadowColor) {
 if (savedBgMargin){
     messageDisplay.style.padding = savedBgMargin + "px";
 }
+
+if (window.ObsBibleRouteBible) {
+    const routeBibleQr = document.getElementById('route-bible-qr');
+    window.ObsBibleRouteBible.renderSavedQrOverlay(routeBibleQr, localStorage);
+}
+
 adjustFontSizeBasedOnScroll();

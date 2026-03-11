@@ -23,11 +23,13 @@ const savedAnimationData = localStorage.getItem('obs-bible-animationData');
 const savedSpaceBarCheckBox = localStorage.getItem('obs-bible-spacebar-checkbox');
 const savedFadeInCheckBox = localStorage.getItem('obs-bible-fadein-checkbox');
 const savedDisplayLineByLineCheckBox = localStorage.getItem('obs-bible-display-song-line-by-line');
+const savedRouteBibleQrCheckBox = localStorage.getItem('obs-bible-show-route-bible-qr');
 
 let loadCheckboxes = () => {
     let spaceBarCheckBox = document.getElementById("spacebar-checkbox");
     let fadeInCheckBox = document.getElementById("fade-in-checkbox");
     let displayLineByLineCheckBox = document.getElementById("obs-bible-display-song-line-by-line");
+    let routeBibleQrCheckBox = document.getElementById("show-route-bible-qr");
     if (savedSpaceBarCheckBox === "true"){
         spaceBarCheckBox.checked = true;
     }else{
@@ -42,6 +44,11 @@ let loadCheckboxes = () => {
         displayLineByLineCheckBox.checked = true;
     }else{
         displayLineByLineCheckBox.checked = false;
+    }
+    if (savedRouteBibleQrCheckBox === "true"){
+        routeBibleQrCheckBox.checked = true;
+    }else{
+        routeBibleQrCheckBox.checked = false;
     }
 }
 

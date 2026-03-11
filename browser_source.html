@@ -6,18 +6,21 @@
   <link rel="stylesheet" href="assets/css/browser/browser_style.css">
   <title>Receiver</title>
 </head>
-<body>
-  <div class="bg-container" id="bg-container">
-    <div class="container" id="container">
-      <p id="messageDisplay" class=""></p>
-    </div>
-  </div>
+	<body>
+	  <div class="bg-container" id="bg-container">
+	    <div class="container" id="container">
+	      <p id="messageDisplay" class=""></p>
+	    </div>
+	    <img id="route-bible-qr" class="route-bible-qr" alt="Route Bible QR code" hidden>
+	  </div>
 
-  <script src="assets/js/browser_source/browser_app.js"></script>
-  <script>
-    const bgContainer = document.getElementById("bg-container");
-    const messageDisplay = document.getElementById("messageDisplay");
-    // const messageTitle = document.getElementById("messageTitle");
+	  <script src="assets/js/shared/route_bible.js"></script>
+	  <script src="assets/js/browser_source/browser_app.js"></script>
+	  <script>
+	    const bgContainer = document.getElementById("bg-container");
+	    const messageDisplay = document.getElementById("messageDisplay");
+	    const routeBibleQr = document.getElementById("route-bible-qr");
+	    // const messageTitle = document.getElementById("messageTitle");
 
     // Text channel
     const channel = new BroadcastChannel("myChannel");
@@ -127,21 +130,25 @@
             bgContainer.style.border = `${savedMainBorder}px ${event.data.mainBorderColor} ${savedMainBorderType}`;
             localStorage.setItem('obs-bible-saved-main-border-color', event.data.mainBorderColor);
           }
-          if (event.data.mainBorderType){
-            let savedMainBorder = Number(localStorage.getItem('obs-bible-saved-main-border'));
-            let savedMainBorderColor = localStorage.getItem('obs-bible-saved-main-border-color');
-            if(!savedMainBorder){
+	          if (event.data.mainBorderType){
+	            let savedMainBorder = Number(localStorage.getItem('obs-bible-saved-main-border'));
+	            let savedMainBorderColor = localStorage.getItem('obs-bible-saved-main-border-color');
+	            if(!savedMainBorder){
               savedMainBorder = 0;
             }
             if(!savedMainBorderColor){
               savedMainBorderColor = '#000000';
             }
-            bgContainer.style.border = `${savedMainBorder}px ${savedMainBorderColor} ${event.data.mainBorderType}`;
-            localStorage.setItem('obs-bible-saved-main-border-type', event.data.mainBorderType);
-          }
-          adjustFontSizeBasedOnScroll();
-        }
-    };
+	            bgContainer.style.border = `${savedMainBorder}px ${savedMainBorderColor} ${event.data.mainBorderType}`;
+	            localStorage.setItem('obs-bible-saved-main-border-type', event.data.mainBorderType);
+	          }
+	          if (event.data.showRouteBibleQr !== undefined){
+	            localStorage.setItem('obs-bible-show-route-bible-qr', event.data.showRouteBibleQr);
+	            window.ObsBibleRouteBible.renderSavedQrOverlay(routeBibleQr, localStorage);
+	          }
+	          adjustFontSizeBasedOnScroll();
+	        }
+	    };
 
     window.addEventListener('beforeunload', () => {
         settingsChannel.close();

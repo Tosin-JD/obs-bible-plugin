@@ -1,0 +1,7 @@
+{
+  "name": "obs-bible-plugin",
+  "private": true,
+  "scripts": {
+    "test": "node --test tests/route_bible_qr.test.cjs"
+  }
+}

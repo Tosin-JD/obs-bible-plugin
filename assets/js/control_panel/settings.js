@@ -22,6 +22,7 @@ const underlineButton = document.getElementById("underline");
 const textAlign = document.querySelectorAll('input[name="align"]');
 const bgColorInput = document.getElementById("bgColor");
 let displayLineByLine = document.getElementById("obs-bible-display-song-line-by-line");
+const routeBibleQrToggle = document.getElementById("show-route-bible-qr");
 
 
 fontElement.addEventListener("change", function() {
@@ -209,6 +210,14 @@ textAlign.forEach(radio => {
             localStorage.setItem('selectedAlign', radio.value); // Save the selected value
         }
     });
+});
+
+routeBibleQrToggle.addEventListener("change", function () {
+    localStorage.setItem('obs-bible-show-route-bible-qr', routeBibleQrToggle.checked);
+
+    let settingsChannel = new BroadcastChannel("settings");
+    settingsChannel.postMessage({ showRouteBibleQr: routeBibleQrToggle.checked });
+    settingsChannel.close();
 });
 
 
