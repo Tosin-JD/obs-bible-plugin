@@ -64,12 +64,12 @@ The following are shortcuts
 2. Search for the Bible Passage with name such is **John 1:1** or with a passage from the scripture as: **Love your neighbor as yourself**
 3. Click on the Bible Verse to display it.
 
-## Optional Route Bible QR overlay
+## Optional route.bible QR overlay
 1. Go to the **Settings** tab.
-2. Under **General**, check **Show Route Bible QR**.
-3. Display a Bible passage to render a Route Bible QR in the bottom-right of the browser source.
+2. Under **General**, check **Show route.bible QR**.
+3. Display a Bible passage to render a route.bible QR in the bottom-right of the browser source.
 
-![Route Bible QR enabled browser source](./Screenshot_route_bible_qr.png)
+![route.bible QR enabled browser source](./Screenshot_route_bible_qr.png)
 
 ## How to Display A Song
 You can display song in two ways.  

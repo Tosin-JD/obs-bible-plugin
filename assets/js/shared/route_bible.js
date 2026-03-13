@@ -84,7 +84,7 @@
     return {
       referenceLabel: resolvedReferenceLabel,
       url: buildRouteBibleQrUrl(resolvedReferenceLabel, translationCode),
-      alt: `Route Bible QR for ${resolvedReferenceLabel}`,
+      alt: `route.bible QR for ${resolvedReferenceLabel}`,
     };
   }
 

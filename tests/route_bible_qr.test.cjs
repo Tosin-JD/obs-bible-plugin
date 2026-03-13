@@ -7,7 +7,7 @@ const {
   renderQrOverlay,
 } = require("../assets/js/shared/route_bible.js");
 
-test("builds the expected Route Bible QR URL", () => {
+test("builds the expected route.bible QR URL", () => {
   const url = buildRouteBibleQrUrl("Psalm 23", "kjv");
 
   assert.equal(
