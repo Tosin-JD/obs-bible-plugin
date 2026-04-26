@@ -1,10 +1,9 @@
 function splitSongVerses(text) {
-  const navigatorAgentData = navigator.userAgentData 
-    || navigator.userAgentData.platform;
-    
-  const delimiter = /Win/i.test(navigatorAgentData) || navigatorAgentData.platform.toLowerCase() == "windows" ? "\r\n\r\n" : "\n\n";
-  console.log(navigatorAgentData, delimiter);
-  return text.split(delimiter);
+  // Handles:
+  // Windows: \r\n\r\n
+  // Unix/Linux/macOS: \n\n
+  // Old Mac (rare): \r\r
+  return text.split(/\r\n\r\n|\n\n|\r\r/);
 }
 
 const  splitAndOrganizeText = (text) => {
@@ -19,7 +18,7 @@ const  splitAndOrganizeText = (text) => {
 
     verses.forEach((verse, index) => {
         const div = document.createElement('div');
-        const paragraph = verse.split('\n'); // Split each verse by single newline
+        const paragraph = verse.split(/\r\n|\n|\r/);
 
         // Assign an id based on content
         if (paragraph[0].includes('CHORUS')) {
