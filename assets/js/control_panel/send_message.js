@@ -413,21 +413,32 @@ const clearSongListeners = () => {
     }
 };
 
-const displaySong = () => {
+const initializeSongDisplayMode = () => {
     const songElements = document.getElementById("song-display");
-    songElements.addEventListener("click", () => {
-        const displayLineByLine = document.getElementById("obs-bible-display-song-line-by-line");
-        clearSongListeners();
-        
-        if (displayLineByLine.checked === true) {
-            activeSongMode = "line-by-line";
-            displaySongLineByLine();
-        } else {
-            activeSongMode = "verse-by-verse";
-            displaySongVerseByVerse();
-        }
-    });
+    const displayLineByLine = document.getElementById("obs-bible-display-song-line-by-line");
+
+    if (!songElements || !displayLineByLine || songElements.children.length === 0) {
+        return;
+    }
+
+    clearSongListeners();
+
+    if (displayLineByLine.checked === true) {
+        activeSongMode = "line-by-line";
+        displaySongLineByLine();
+    } else {
+        activeSongMode = "verse-by-verse";
+        displaySongVerseByVerse();
+    }
 };
+
+const displaySong = () => {
+    initializeSongDisplayMode();
+};
+
+document.getElementById("obs-bible-display-song-line-by-line")?.addEventListener("change", () => {
+    initializeSongDisplayMode();
+});
 
 
 
