@@ -1059,6 +1059,12 @@ input[type="number"]::-webkit-inner-spin-button {
 
 #song-line-duration {
   text-align: right;
+  padding: 2px;
+  width: 6ch;
+  max-width: 100%;
+  resize: horizontal;
+  cursor: text;
+  height: 100%;
 }
 
 .countdown-timer {
