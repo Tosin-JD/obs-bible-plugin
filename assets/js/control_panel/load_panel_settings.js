@@ -147,6 +147,7 @@ if (savedBorderRadius) {
 if (savedOpacity) {
     let defaultOpacity = document.getElementById("bg-opacity");
     defaultOpacity.setAttribute("value", savedOpacity);
+    defaultOpacity.setAttribute("max", "20");
 }
 
 if (savedRawTitleColor) {

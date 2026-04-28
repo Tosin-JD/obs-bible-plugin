@@ -382,44 +382,35 @@ DoubleClick on History erase all previous text"></textarea>
              </div>
            </div>
            <div class="settings-tab-area" id="settings-color" style="display:none;">
-             <div class="column">
-               <div class="row">
-                 <div class="column settings-icons tooltip tooltip-bottom" data-tooltip="Background color">
-                   <label>Background</label>
-                   <input type="color" id="bgColor">
+             <div class="column color-settings-panel">
+               <div class="row color-settings-grid">
+                 <div id="background-setting-trigger" class="column settings-icons color-setting-item color-setting-button tooltip tooltip-bottom" data-tooltip="Background color or gradient" role="button" tabindex="0" aria-haspopup="dialog" aria-controls="background-mode-modal">
+                   <span id="background-style-preview" class="background-style-preview" aria-hidden="true"></span>
+                   <span class="color-setting-label">Background</span>
+                   <input type="color" id="bgColor" class="color-picker-native" aria-hidden="true" tabindex="-1">
                  </div>
-                 <div class="column settings-icons tooltip tooltip-bottom" data-tooltip="Background gradient">
-                   <label>Gradient</label>
-                   <button type="button" id="bg-gradient-preview" class="gradient-preview" aria-haspopup="dialog" aria-controls="gradient-modal"></button>
-                 </div>
-                 <div class="column settings-icons tooltip tooltip-bottom" data-tooltip="Font color">
-                   <label>Font</label>
+                 <label class="column settings-icons color-setting-item color-setting-trigger tooltip tooltip-bottom" for="fontColor" data-tooltip="Font color">
                    <input type="color" id="fontColor">
-                 </div>
-                 <div class="column settings-icons tooltip tooltip-bottom" data-tooltip="Color for the title">
-                   <label>Title</label>
+                   <span class="color-setting-label">Font</span>
+                 </label>
+                 <label class="column settings-icons color-setting-item color-setting-trigger tooltip tooltip-bottom" for="titleColor" data-tooltip="Color for the title">
                    <input type="color" id="titleColor">
-                 </div>
+                   <span class="color-setting-label">Title</span>
+                 </label>
                </div>
-               <div class="row">
-                 <div class="column settings-icons tooltip tooltip-bottom" data-tooltip="Background opacity">
-                   <label>Background Opacity</label>
-                   <input type="range" min="0" max="10" value="10" class="slider" id="bg-opacity">
-                 </div>
-               </div>
-               <div class="row">
-                 <div class="column settings-icons tooltip tooltip-bottom" data-tooltip="Color for the font shadow">
-                   <label for="shadow-color">Font Shadow Color:</label>
+               <div class="row color-settings-grid">
+                 <label class="column settings-icons color-setting-item color-setting-trigger tooltip tooltip-bottom" for="shadow-color" data-tooltip="Color for the font shadow">
                    <input type="color" id="shadow-color" value="#000000">
-                 </div>
-                 <div class="column settings-icons tooltip tooltip-bottom" data-tooltip="Font outline color">
-                   <label for="font-outline-color">Font Outline Color:</label>
+                   <span class="color-setting-label">Font Shadow Color</span>
+                 </label>
+                 <label class="column settings-icons color-setting-item color-setting-trigger tooltip tooltip-bottom" for="font-outline-color" data-tooltip="Font outline color">
                    <input type="color" id="font-outline-color" value="#ffffff">
-                 </div>
-                 <div class="column settings-icons tooltip tooltip-bottom" data-tooltip="Border color">
-                   <label for="main-border-color">Border Color:</label>
+                   <span class="color-setting-label">Font Outline Color</span>
+                 </label>
+                 <label class="column settings-icons color-setting-item color-setting-trigger tooltip tooltip-bottom" for="main-border-color" data-tooltip="Border color">
                    <input type="color" id="main-border-color" value="#000000">
-                 </div>
+                   <span class="color-setting-label">Border Color</span>
+                 </label>
                </div>
              </div>
            </div>
@@ -472,10 +463,41 @@ DoubleClick on History erase all previous text"></textarea>
              </div>
            </div>
           </div>
+          <div id="background-mode-modal" class="gradient-modal" aria-hidden="true" role="dialog">
+            <div class="gradient-backdrop" id="background-mode-backdrop"></div>
+            <div class="gradient-dialog background-mode-dialog" role="document">
+              <div class="gradient-header column">
+                <div class="gradient-title">Background Style</div>
+                <button type="button" class="gradient-close" id="background-mode-close" aria-label="Close background style selector">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="12" height="12">
+                    <path class="icons" d="M312.1 375c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0L160 289.9 41.9 408.9c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9L126.1 256 8 137.9c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0L160 222.1 278.1 104c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9L193.9 256 312.1 375z"/>
+                  </svg>
+                </button>
+              </div>
+              <div class="background-mode-body">
+                <label class="background-mode-option" for="background-mode-color">
+                  <input type="radio" id="background-mode-color" name="background-mode" value="plain" class="background-mode-radio">
+                  <span id="background-color-option-preview" class="background-mode-swatch" aria-hidden="true"></span>
+                  <span>Plain Color</span>
+                </label>
+                <label class="background-mode-option" for="background-mode-gradient">
+                  <input type="radio" id="background-mode-gradient" name="background-mode" value="gradient" class="background-mode-radio">
+                  <span id="background-gradient-option-preview" class="background-mode-swatch" aria-hidden="true"></span>
+                  <span>Gradient</span>
+                </label>
+              </div>
+              <div class="gradient-body">
+                <div class="gradient-section">
+                  <div class="gradient-section-title">Background Opacity</div>
+                  <input type="range" min="0" max="20" value="20" class="slider background-opacity-slider" id="bg-opacity" data-bg-opacity-control="plain">
+                </div>
+              </div>
+            </div>
+          </div>
           <div id="gradient-modal" class="gradient-modal" aria-hidden="true" role="dialog">
             <div class="gradient-backdrop" id="gradient-backdrop"></div>
             <div class="gradient-dialog" role="document">
-              <div class="gradient-header">
+              <div class="gradient-header column">
                 <div class="gradient-title">Background Gradient</div>
                 <button type="button" class="gradient-close" id="gradient-close" aria-label="Close gradient editor">
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="12" height="12">
@@ -489,7 +511,9 @@ DoubleClick on History erase all previous text"></textarea>
                   <div class="gradient-section-title">Direction</div>
                   <div class="gradient-direction-row">
                     <button type="button" class="gradient-direction-option" data-gradient="linear" data-direction="to-right" aria-label="Left to right gradient preview"></button>
+                    <button type="button" class="gradient-direction-option" data-gradient="linear" data-direction="to-bottom" aria-label="Top to bottom gradient preview"></button>
                     <button type="button" class="gradient-direction-option" data-gradient="linear" data-direction="to-bottom-right" aria-label="Top left to bottom right gradient preview"></button>
+                    <button type="button" class="gradient-direction-option" data-gradient="linear" data-direction="to-bottom-left" aria-label="Top right to bottom left gradient preview"></button>
                     <button type="button" class="gradient-direction-option" data-gradient="radial" data-direction="center" aria-label="Radial gradient preview"></button>
                     <button type="button" class="gradient-direction-option" data-gradient="conic" data-direction="center" aria-label="Conic gradient preview"></button>
                   </div>

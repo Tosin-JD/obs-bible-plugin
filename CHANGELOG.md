@@ -32,6 +32,7 @@ All notable changes to this project will be documented in this file.
 * Fix songs not displaying porperly on Mac and Linux
 * Fix selection and flyout tool not showing properly
 * Fix the look of timer input
+* made background color and gradient user friendly
 ---
 
 

@@ -215,6 +215,100 @@ select{
   width: 100%;
 }
 
+.color-settings-panel{
+  gap: 10px;
+}
+
+.color-settings-grid{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  gap: 8px;
+}
+
+.color-setting-item{
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  min-height: 96px;
+  padding: 8px;
+  gap: 8px;
+  text-align: center;
+}
+
+.color-setting-trigger{
+  cursor: pointer;
+}
+
+.color-setting-item.tooltip{
+  display: flex;
+  width: 100%;
+}
+
+.color-setting-button{
+  cursor: pointer;
+}
+
+.color-setting-label{
+  display: block;
+  width: 100%;
+  text-align: center;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+  text-wrap: balance;
+}
+
+.color-setting-item input[type="color"],
+.color-setting-item .gradient-preview{
+  align-self: center;
+}
+
+.color-setting-item input[type="color"]{
+  display: block;
+  width: 44px;
+  min-width: 44px;
+  height: 44px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.color-setting-item input[type="color"]::-webkit-color-swatch-wrapper{
+  padding: 0;
+}
+
+.color-setting-item input[type="color"]::-webkit-color-swatch{
+  border: none;
+  border-radius: 10px;
+}
+
+.color-setting-item input[type="color"]::-moz-color-swatch{
+  border: none;
+  border-radius: 10px;
+}
+
+.color-picker-native{
+  position: absolute;
+  width: 0;
+  height: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.background-style-preview{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  border-radius: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  background-size: cover;
+  background-position: center;
+}
+
 .settings-tab-button{
   margin-bottom: 0px;
 }
@@ -539,12 +633,12 @@ button, .btn-file-upload{
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
-  max-width: 36px;
+  width: 44px;
+  height: 44px;
+  max-width: 44px;
   padding: 0;
   margin: 0;
-  border-radius: 8px;
+  border-radius: 10px;
   border: 1px solid rgba(0, 0, 0, 0.2);
   background-size: cover;
 }
@@ -595,10 +689,14 @@ button, .btn-file-upload{
 }
 
 .gradient-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   width: 28px;
   height: 28px;
   border-radius: 8px;
   padding: 0;
+  margin: 0;
 }
 
 .gradient-body {
@@ -606,6 +704,49 @@ button, .btn-file-upload{
   flex-direction: column;
   gap: 14px;
   padding: 0 14px 16px;
+}
+
+.background-mode-dialog{
+  width: min(340px, 92vw);
+}
+
+.background-mode-body{
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  padding: 0 14px 16px;
+}
+
+.background-mode-option{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 120px;
+  margin: 0;
+  padding: 12px 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.background-mode-radio{
+  margin: 0;
+}
+
+.background-mode-option:has(.background-mode-radio:checked){
+  box-shadow: 0 0 0 2px var(--selected-bg-color);
+}
+
+.background-mode-swatch{
+  display: inline-flex;
+  width: 52px;
+  height: 52px;
+  border-radius: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  background-size: cover;
+  background-position: center;
 }
 
 .gradient-color-grid {
@@ -688,7 +829,7 @@ button, .btn-file-upload{
   position: absolute;
   inset: 0;
   border-radius: inherit;
-  background: linear-gradient(to right, var(--opacity-color-solid, rgba(255,255,255,1)), var(--opacity-color-transparent, rgba(255,255,255,0)));
+  background: linear-gradient(to right, var(--opacity-color-transparent, rgba(255,255,255,0)), var(--opacity-color-solid, rgba(255,255,255,1)));
 }
 
 .gradient-opacity-handle {

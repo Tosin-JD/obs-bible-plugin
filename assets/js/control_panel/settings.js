@@ -10,6 +10,7 @@ let bgMargin = document.getElementById("bg-margin");
 const fontElement = document.getElementById("fontStyle");
 const selectedFont = fontElement.options[fontElement.selectedIndex].value;
 const opacityRange = document.getElementById("bg-opacity");
+const backgroundOpacityControls = document.querySelectorAll("[data-bg-opacity-control]");
 const roundedCorner = document.getElementById("rounded-corner");
 const mainBorder = document.getElementById("main-border");
 const fontOutline = document.getElementById("font-outline");
@@ -22,7 +23,15 @@ const underlineButton = document.getElementById("underline");
 const textAlign = document.querySelectorAll('input[name="align"]');
 const bgColorInput = document.getElementById("bgColor");
 let displayLineByLine = document.getElementById("obs-bible-display-song-line-by-line");
-const gradientPreview = document.getElementById("bg-gradient-preview");
+const backgroundSettingTrigger = document.getElementById("background-setting-trigger");
+const backgroundStylePreview = document.getElementById("background-style-preview");
+const backgroundModeModal = document.getElementById("background-mode-modal");
+const backgroundModeBackdrop = document.getElementById("background-mode-backdrop");
+const backgroundModeClose = document.getElementById("background-mode-close");
+const backgroundModeColor = document.getElementById("background-mode-color");
+const backgroundModeGradient = document.getElementById("background-mode-gradient");
+const backgroundColorOptionPreview = document.getElementById("background-color-option-preview");
+const backgroundGradientOptionPreview = document.getElementById("background-gradient-option-preview");
 const gradientModal = document.getElementById("gradient-modal");
 const gradientBackdrop = document.getElementById("gradient-backdrop");
 const gradientClose = document.getElementById("gradient-close");
@@ -30,8 +39,10 @@ const gradientColorGrid = document.getElementById("gradient-color-grid");
 const gradientOpacityTrack = document.getElementById("gradient-opacity-track");
 const gradientOpacityHandle = document.getElementById("gradient-opacity-handle");
 const gradientDirectionOptions = document.querySelectorAll(".gradient-direction-option");
+const BACKGROUND_OPACITY_STEPS = 20;
 
 const gradientStorageKeys = {
+    mode: "obs-bible-background-mode",
     colors: "obs-bible-gradient-colors",
     type: "obs-bible-gradient-type",
     direction: "obs-bible-gradient-direction",
@@ -63,16 +74,91 @@ function buildGradientCss(colors, typeValue, directionValue) {
     if (typeValue === "conic") {
         return `conic-gradient(from 0deg at center, ${rgbaColors.join(", ")})`;
     }
+    if (directionValue === "to-bottom") {
+        return `linear-gradient(to bottom, ${rgbaColors.join(", ")})`;
+    }
     if (directionValue === "to-bottom-right") {
         return `linear-gradient(135deg, ${rgbaColors.join(", ")})`;
+    }
+    if (directionValue === "to-bottom-left") {
+        return `linear-gradient(225deg, ${rgbaColors.join(", ")})`;
     }
     return `linear-gradient(to right, ${rgbaColors.join(", ")})`;
 }
 
-function setGradientPreview(cssValue) {
-    if (gradientPreview) {
-        gradientPreview.style.backgroundImage = cssValue ? cssValue : "none";
+function getBackgroundMode() {
+    const savedMode = localStorage.getItem(gradientStorageKeys.mode);
+    if (savedMode === "plain" || savedMode === "gradient") {
+        return savedMode;
     }
+    return localStorage.getItem(gradientStorageKeys.css) ? "gradient" : "plain";
+}
+
+function syncBackgroundModeRadios() {
+    const currentMode = getBackgroundMode();
+    if (backgroundModeColor) {
+        backgroundModeColor.checked = currentMode === "plain";
+    }
+    if (backgroundModeGradient) {
+        backgroundModeGradient.checked = currentMode === "gradient";
+    }
+}
+
+function getBackgroundOpacityValue() {
+    const savedOpacity = Number(localStorage.getItem("savedOpacity"));
+    if (Number.isFinite(savedOpacity) && savedOpacity >= 0) {
+        return savedOpacity / BACKGROUND_OPACITY_STEPS;
+    }
+    return 1;
+}
+
+function syncBackgroundOpacityControls(rawValue) {
+    backgroundOpacityControls.forEach(control => {
+        control.max = String(BACKGROUND_OPACITY_STEPS);
+        control.value = rawValue;
+    });
+}
+
+function updateBackgroundOpacityPreview() {
+    const rawColor = localStorage.getItem("rawBgColor") || bgColorInput?.value || "#553355";
+    const transparent = hexToRgba(rawColor, 0);
+    const solid = hexToRgba(rawColor, 1);
+
+    backgroundOpacityControls.forEach(control => {
+        control.style.backgroundImage = `linear-gradient(to right, ${transparent}, ${solid})`;
+    });
+}
+
+function getSolidBackgroundCss() {
+    const rawColor = localStorage.getItem("rawBgColor") || bgColorInput?.value || "#553355";
+    return hexToRgba(rawColor, getBackgroundOpacityValue());
+}
+
+function setBackgroundSurface(element, backgroundColor, backgroundImage) {
+    if (!element) {
+        return;
+    }
+    element.style.backgroundColor = backgroundColor || "transparent";
+    element.style.backgroundImage = backgroundImage || "none";
+}
+
+function updateBackgroundPreviews() {
+    const savedGradientCss = localStorage.getItem(gradientStorageKeys.css);
+    const solidBackgroundCss = getSolidBackgroundCss();
+    const gradientCss = savedGradientCss || buildGradientCss(gradientColors, gradientType, gradientDirection);
+    const currentMode = getBackgroundMode();
+
+    setBackgroundSurface(backgroundColorOptionPreview, solidBackgroundCss, "none");
+    setBackgroundSurface(backgroundGradientOptionPreview, "transparent", gradientCss);
+
+    if (currentMode === "gradient" && savedGradientCss) {
+        setBackgroundSurface(backgroundStylePreview, solidBackgroundCss, savedGradientCss);
+    } else {
+        setBackgroundSurface(backgroundStylePreview, solidBackgroundCss, "none");
+    }
+
+    syncBackgroundModeRadios();
+    updateBackgroundOpacityPreview();
 }
 
 function broadcastGradient(cssValue) {
@@ -86,6 +172,44 @@ function clearGradient() {
     const settingsChannel = new BroadcastChannel("settings");
     settingsChannel.postMessage({ clearGradient: true });
     settingsChannel.close();
+    updateBackgroundPreviews();
+}
+
+function broadcastPlainBackground() {
+    const settingsChannel = new BroadcastChannel("settings");
+    settingsChannel.postMessage({ selectedBgColor: getSolidBackgroundCss() });
+    settingsChannel.close();
+}
+
+function setBackgroundMode(mode, options = {}) {
+    const { preserveGradient = false, broadcast = true } = options;
+    localStorage.setItem(gradientStorageKeys.mode, mode);
+
+    if (mode === "plain") {
+        if (broadcast) {
+            clearGradient();
+            broadcastPlainBackground();
+        } else if (!preserveGradient) {
+            localStorage.removeItem(gradientStorageKeys.css);
+        }
+    } else if (mode === "gradient") {
+        const gradientCss = localStorage.getItem(gradientStorageKeys.css) || buildGradientCss(gradientColors, gradientType, gradientDirection);
+        saveGradientState(gradientCss);
+        if (broadcast) {
+            broadcastGradient(gradientCss);
+        }
+    }
+
+    updateBackgroundPreviews();
+}
+
+function openPlainBackgroundPicker() {
+    bgColorInput?.click();
+}
+
+function openGradientEditor() {
+    closeBackgroundModeModal();
+    openGradientModal();
 }
 
 function saveGradientState(cssValue) {
@@ -97,10 +221,10 @@ function saveGradientState(cssValue) {
 
 function applyGradient() {
     const gradientCss = buildGradientCss(gradientColors, gradientType, gradientDirection);
-    setGradientPreview(gradientCss);
     saveGradientState(gradientCss);
     broadcastGradient(gradientCss);
     updateGradientDirectionPreviews();
+    updateBackgroundPreviews();
 }
 
 function updateGradientDirectionUI() {
@@ -220,6 +344,23 @@ function closeGradientModal() {
     gradientModal.setAttribute("aria-hidden", "true");
 }
 
+function openBackgroundModeModal() {
+    if (!backgroundModeModal) {
+        return;
+    }
+    syncBackgroundModeRadios();
+    backgroundModeModal.classList.add("is-open");
+    backgroundModeModal.setAttribute("aria-hidden", "false");
+}
+
+function closeBackgroundModeModal() {
+    if (!backgroundModeModal) {
+        return;
+    }
+    backgroundModeModal.classList.remove("is-open");
+    backgroundModeModal.setAttribute("aria-hidden", "true");
+}
+
 function loadGradientState() {
     const savedColors = localStorage.getItem(gradientStorageKeys.colors);
     const savedType = localStorage.getItem(gradientStorageKeys.type);
@@ -242,12 +383,11 @@ function loadGradientState() {
     gradientType = savedType || "linear";
     gradientDirection = savedDirection || "to-right";
 
-    const previewCss = savedCss || buildGradientCss(gradientColors, gradientType, gradientDirection);
-    setGradientPreview(previewCss);
     renderGradientSwatches();
     updateGradientDirectionUI();
     updateGradientDirectionPreviews();
     setSelectedGradientIndex(0);
+    updateBackgroundPreviews();
 }
 
 
@@ -260,22 +400,24 @@ fontElement.addEventListener("change", function() {
 });
 
 
-opacityRange.addEventListener("input", function () {
-    let currentOpacity = opacityRange.value / 10;
-    localStorage.setItem('savedOpacity', opacityRange.value);
-    let bgColor = localStorage.getItem('bgColor');
-    let rgbValues
-    if (bgColor){
-      rgbValues = bgColor.match(/\d+/g);
-    }else{
-      rgbValues = 'rgba(85, 34, 85, 0.5)';
-    }
-    let newColor = `rgba(${rgbValues[0]}, ${rgbValues[1]}, ${rgbValues[2]}, ${currentOpacity})`;
+function applyBackgroundOpacity(rawValue) {
+    let currentOpacity = Number(rawValue) / BACKGROUND_OPACITY_STEPS;
+    localStorage.setItem('savedOpacity', rawValue);
+    syncBackgroundOpacityControls(String(rawValue));
+    const rawColor = localStorage.getItem("rawBgColor") || bgColorInput?.value || "#553355";
+    let newColor = hexToRgba(rawColor, currentOpacity);
 
     let settingsChannel = new BroadcastChannel("settings");
     settingsChannel.postMessage({ opacityColor: newColor });
     settingsChannel.close();
+    setBackgroundMode("plain", { broadcast: false });
     clearGradient();
+}
+
+backgroundOpacityControls.forEach(control => {
+    control.addEventListener("input", () => {
+        applyBackgroundOpacity(control.value);
+    });
 });
 
 
@@ -337,18 +479,15 @@ fontOutlineColor.addEventListener("input", function () {
 
 bgColorInput.addEventListener("input", function () {
     let selectedColor = bgColorInput.value;
-    let collectdBgColor = localStorage.getItem('bgColor');
     localStorage.setItem('rawBgColor', bgColorInput.value);
-
-    const rgbaParts = collectdBgColor.split(",");
-    const alphaValue = rgbaParts.length === 4 ? parseFloat(rgbaParts[3]) : 1;
+    const alphaValue = getBackgroundOpacityValue();
     let newColor = hexToRgba(selectedColor, alphaValue);
 
     let settingsChannel = new BroadcastChannel("settings");
     settingsChannel.postMessage({ selectedBgColor: newColor });
     settingsChannel.close();
+    setBackgroundMode("plain", { broadcast: false });
     clearGradient();
-
 });
 
 
@@ -538,9 +677,56 @@ displayLineByLine.addEventListener("change", function() {
 });
 
 loadGradientState();
+syncBackgroundOpacityControls(String(localStorage.getItem("savedOpacity") || String(BACKGROUND_OPACITY_STEPS)));
 
-if (gradientPreview) {
-    gradientPreview.addEventListener("click", openGradientModal);
+if (backgroundSettingTrigger) {
+    backgroundSettingTrigger.addEventListener("click", openBackgroundModeModal);
+    backgroundSettingTrigger.addEventListener("keydown", (event) => {
+        if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            openBackgroundModeModal();
+        }
+    });
+}
+
+if (backgroundModeBackdrop) {
+    backgroundModeBackdrop.addEventListener("click", closeBackgroundModeModal);
+}
+
+if (backgroundModeClose) {
+    backgroundModeClose.addEventListener("click", closeBackgroundModeModal);
+}
+
+if (backgroundModeColor) {
+    backgroundModeColor.addEventListener("change", () => {
+        if (!backgroundModeColor.checked) {
+            return;
+        }
+        setBackgroundMode("plain");
+        openPlainBackgroundPicker();
+    });
+
+    backgroundModeColor.closest("label")?.addEventListener("click", () => {
+        if (getBackgroundMode() === "plain") {
+            openPlainBackgroundPicker();
+        }
+    });
+}
+
+if (backgroundModeGradient) {
+    backgroundModeGradient.addEventListener("change", () => {
+        if (!backgroundModeGradient.checked) {
+            return;
+        }
+        setBackgroundMode("gradient");
+        openGradientEditor();
+    });
+
+    backgroundModeGradient.closest("label")?.addEventListener("click", () => {
+        if (getBackgroundMode() === "gradient") {
+            openGradientEditor();
+        }
+    });
 }
 
 if (gradientBackdrop) {
@@ -550,6 +736,13 @@ if (gradientBackdrop) {
 if (gradientClose) {
     gradientClose.addEventListener("click", closeGradientModal);
 }
+
+document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+        closeBackgroundModeModal();
+        closeGradientModal();
+    }
+});
 
 function handleOpacityPointer(event) {
     if (!gradientOpacityTrack) {
