@@ -43,20 +43,96 @@ OBS Bible Plugin is now available in the following versions.
 _Please, make sure that you do not check **checkbox** for **Local file**._ (Leave it off.)
 13. Specify the width and height of the Browser to your preference.
 14. Click on **OK**.
-15. You can type on the textbox to display text and you can click on bible passages to display it.
+   15. You can type on the textbox to display text and you can click on bible passages to display it.
+
+## How to add Shortcut through LUA
+### Before you start
+
+Make sure you already added:
+
+1. `control_panel.html` as a Custom Browser Dock
+2. `browser_source.html` as a Browser Source
+
+The Lua script sends commands through the browser source, so the browser source must exist in your OBS scene collection.
+
+### How to install the Lua script
+
+1. In OBS, go to `Tools -> Scripts`.
+2. Click the `+` button.
+3. Select `obs_bible_shortcuts.lua`.
+4. In the script settings, enter the exact name of your OBS Bible browser source.
+   Example: `OBS Bible Browser`
+
+### How to assign shortcuts
+
+1. In OBS, go to `Settings -> Hotkeys`.
+2. Search for `OBS Bible Plugin:`.
+3. Assign the keys you want for each action.
+4. Click `Apply`, then `OK`.
 
 
-## Shortcuts
-Added some shortcuts in OBS
-The following are shortcuts
-1. Ctrl + arrowup Toggle Display
-2. Ctrl + arrowdown Display Text
-3. Ctrl + B Color text
-4. Ctrl + I Italic
-5. Shift + L Left Align
-6. Shift + R Right Align
-7. Shift + E Center Align
-8. Shift + J Justify Align
+## Keyboard shortcuts inside the plugin
+
+These work directly inside the OBS Bible Plugin panel:
+
+1. `Ctrl/Cmd + Up` toggles display.
+2. `Ctrl/Cmd + Down` sends the current text to the browser source.
+3. `Ctrl/Cmd + Shift + L` aligns text left.
+4. `Ctrl/Cmd + Shift + E` aligns text center.
+5. `Ctrl/Cmd + Shift + R` aligns text right.
+6. `Ctrl/Cmd + Shift + J` justifies text.
+7. `Alt + 1` opens the Edit tab.
+8. `Alt + 2` opens the Bible tab.
+9. `Alt + 3` opens the Song tab.
+10. `Alt + 4` opens the Settings tab.
+
+Clipboard shortcuts such as `Cmd/Ctrl + A`, `C`, `V`, and `X` are also handled for focused text inputs inside the plugin panel.
+
+## How to use OBS hotkeys with the plugin
+
+If you want OBS-level hotkeys that work even when the dock is not focused, use the included Lua script.
+
+### Step 1. Add the Lua script to OBS
+
+1. Open OBS.
+2. Go to `Tools -> Scripts`.
+3. Click the `+` button.
+4. Select `obs_bible_shortcuts.lua` from this project folder.
+
+### Step 2. Tell the script which browser source to control
+
+1. In the script panel, find the field named `OBS Bible browser source name`.
+2. Enter the exact name of the browser source you created for `browser_source.html`.
+3. Make sure the name matches exactly, including spaces.
+
+### Step 3. Assign your hotkeys
+
+1. Go to `Settings -> Hotkeys`.
+2. Search for `OBS Bible Plugin:`.
+3. Set the keys you want for each action.
+4. Click `Apply`, then `OK`.
+
+### Step 4. Use the Lua hotkeys
+
+The Lua script exposes these actions:
+
+1. Send current text
+2. Toggle display
+3. Open Edit tab
+4. Open Bible tab
+5. Open Song tab
+6. Open Settings tab
+7. Align left
+8. Align center
+9. Align right
+10. Align justify
+11. Previous song line or verse
+12. Next song line or verse
+13. Toggle song autoplay
+14. Previous Bible verse
+15. Next Bible verse
+
+For more details, see [docs/lua-shortcuts.md](docs/lua-shortcuts.md).
 
 
 ## How to Display A Bible Passage

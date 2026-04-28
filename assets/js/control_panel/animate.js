@@ -38,14 +38,6 @@ const handleButtonClick = (toggleDisplay, animationTypeSelect, durationInput, ea
     updateStateAndSendMessage(toggleDisplay, animationTypeSelect, durationInput, easingSelect);
 };
 
-// Functional event handler for keydown (Ctrl + ArrowUp)
-const handleKeydown = (toggleDisplay, animationTypeSelect, durationInput, easingSelect) => (event) => {
-    if (event.ctrlKey && event.key === 'ArrowUp') {
-        event.preventDefault();
-        updateStateAndSendMessage(toggleDisplay, animationTypeSelect, durationInput, easingSelect);
-    }
-};
-
 // Main function to initialize the app
 const initializeApp = () => {
     const animationTypeSelect = getElementById('animation-type');
@@ -53,9 +45,13 @@ const initializeApp = () => {
     const easingSelect = getElementById('animation-easing');
     const toggleButton = getElementById("toggle-button-display");
     const toggleDisplay = getElementById("toggle-display");
+    const triggerToggleDisplay = () => {
+        updateStateAndSendMessage(toggleDisplay, animationTypeSelect, durationInput, easingSelect);
+    };
 
     toggleButton.addEventListener('click', handleButtonClick(toggleDisplay, animationTypeSelect, durationInput, easingSelect));
-    document.addEventListener('keydown', handleKeydown(toggleDisplay, animationTypeSelect, durationInput, easingSelect));
+    window.obsBibleControl = window.obsBibleControl || {};
+    window.obsBibleControl.toggleDisplay = triggerToggleDisplay;
 };
 
 // Run the app

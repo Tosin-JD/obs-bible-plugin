@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 
 
 ---
+## [4.0.7] - 2026-04-28
+### Added
+* Added `obs_bible_shortcuts.lua` for configurable OBS hotkeys.
+* Added Lua shortcut setup documentation.
+
+### Fixed
+* Fixed `Cmd/Ctrl + Up` and `Cmd/Ctrl + Down` shortcuts in the plugin panel.
+* Added `Alt + 1`, `Alt + 2`, `Alt + 3`, and `Alt + 4` tab switching shortcuts.
+* Added remote command handling so OBS Lua hotkeys can control the plugin.
+
+---
 ## [4.0.3] - 2025-08-17
 ### Added
 * Added CHANGELOG.md file to the project root.
@@ -44,4 +55,3 @@ All notable changes to this project will be documented in this file.
 ### Added
 
 ### Fixed
-

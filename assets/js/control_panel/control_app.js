@@ -32,71 +32,49 @@ function openSettingTab(tabName) {
 
 tabButtons.forEach(button => {
     button.addEventListener("click", () => {
-        openTab(button.value);
-
-        // Remove 'selected' class from all buttons
-        Array.from(tabButtons).forEach(btn => {
-            if (btn !== button) {
-                btn.classList.remove("selected-tab");
-            }
-        });
-
-        // Add 'selected' class to the clicked button
-        button.classList.add("selected-tab");
+        activatePrimaryTab(button.value);
     });
 });
 
 settingsTabButtons.forEach(button => {
     button.addEventListener("click", () => {
-        openSettingTab(button.dataset.settings);
-
-        // Remove 'selected' class from all buttons
-        settingsTabButtons.forEach(btn => {
-            if (btn !== button) {
-                btn.classList.remove("selected-setting-tab");
-            }
-        });
-
-        // Add 'selected' class to the clicked button
-        button.classList.add("selected-setting-tab");
+        activateSettingsTab(button.dataset.settings);
     });
 });
+
+function activatePrimaryTab(tabName) {
+  openTab(tabName);
+  tabButtons.forEach(button => {
+    button.classList.toggle("selected-tab", button.value === tabName);
+  });
+}
+
+function activateSettingsTab(tabName) {
+  openSettingTab(tabName);
+  settingsTabButtons.forEach(button => {
+    button.classList.toggle("selected-setting-tab", button.dataset.settings === tabName);
+  });
+}
 
 // Function to retrieve and open the previously selected tab from local storage
 function openSavedTab() {
   var savedTab = localStorage.getItem("selectedTab");
   var savedSettingsTab = localStorage.getItem("obs-bible-selectedSettingTab");
   if (savedTab) {
-    openTab(savedTab);
-    tabButtons.forEach(button => {
-      if(button.value === savedTab){
-        button.classList.add("selected-tab");
-      }
-    });
+    activatePrimaryTab(savedTab);
   } else {
-    openTab("text");
-    tabButtons.forEach(button => {
-      if(button.value === "text"){
-        button.classList.add("selected-tab");
-      }
-    });
+    activatePrimaryTab("text");
   }
   if (savedSettingsTab) {
-    openSettingTab(savedSettingsTab);
-    settingsTabButtons.forEach(settingsButton => {
-      if(settingsButton.dataset.settings === savedSettingsTab){
-        settingsButton.classList.add("selected-setting-tab");
-      }
-    });
+    activateSettingsTab(savedSettingsTab);
   } else {
-    openSettingTab("settings-general");
-    settingsTabButtons.forEach(settingsButton => {
-      if(settingsButton.dataset.settings === "settings-general"){
-        settingsButton.classList.add("selected-setting-tab");
-      }
-    });
+    activateSettingsTab("settings-general");
   }
 }
+
+window.obsBibleControl = window.obsBibleControl || {};
+window.obsBibleControl.activatePrimaryTab = activatePrimaryTab;
+window.obsBibleControl.activateSettingsTab = activateSettingsTab;
 
 // Call the function to open the saved tab when the webpage loads
 window.onload = function() {

@@ -36,17 +36,11 @@ document.getElementById("sendButton").addEventListener("click", () => {
   historyOfText.push(message);
 });
 
-
-function doc_keyUp(e) {
-  let lastSavedTab = localStorage.getItem("selectedTab");
-
-  // this would test for whichever key is 40 (down arrow) and the ctrl key at the same time
-  if (e.ctrlKey && e.code === 'ArrowDown' && lastSavedTab === "text") {
-    let messageInput = document.getElementById("messageInput").value;
-    const message = processMessage(messageInput);
-    sendMessage(channel, message);
-    historyOfText.push(message);
-  }
+function sendCurrentTextMessage() {
+  let messageInput = document.getElementById("messageInput").value;
+  const message = processMessage(messageInput);
+  sendMessage(channel, message);
+  historyOfText.push(message);
 }
 
 
@@ -596,8 +590,15 @@ btnCopy.addEventListener("dblclick", function () {
   historyOfText = []
 });
 
+window.obsBibleControl = window.obsBibleControl || {};
+window.obsBibleControl.sendCurrentText = sendCurrentTextMessage;
+window.obsBibleControl.songPrevious = () => document.getElementById("prev-line")?.click();
+window.obsBibleControl.songNext = () => document.getElementById("next-line")?.click();
+window.obsBibleControl.songToggleAutoplay = () => document.getElementById("start-song-button")?.click();
+window.obsBibleControl.biblePrevious = () => document.getElementById("prev-verse")?.click();
+window.obsBibleControl.bibleNext = () => document.getElementById("next-verse")?.click();
+
 displayBible();
-document.addEventListener('keyup', doc_keyUp, false);
 document.addEventListener('keyup', doc_spaceBarUp, false);
 
 

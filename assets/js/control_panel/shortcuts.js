@@ -1,5 +1,79 @@
 (function(){
     const clipboardKeys = new Set(["a", "c", "v", "x"]);
+    const remoteChannel = new BroadcastChannel("obs-bible-remote");
+
+    const getModifierPressed = (event) => event.ctrlKey || event.metaKey;
+
+    const applyTextAlignment = (selectedValue) => {
+        let sendSettingsChannel = new BroadcastChannel("settings");
+        sendSettingsChannel.postMessage({ selectedTextAlignment: selectedValue });
+        sendSettingsChannel.close();
+        localStorage.setItem('selectedAlign', selectedValue);
+
+        const alignmentMap = {
+            Left: "left-align",
+            Center: "center-align",
+            Right: "right-align",
+            Justify: "justify-align"
+        };
+        const radio = document.getElementById(alignmentMap[selectedValue]);
+        if (radio) {
+            radio.checked = true;
+        }
+    };
+
+    const executeShortcutAction = (action) => {
+        const control = window.obsBibleControl || {};
+        const primaryTabActions = {
+            open_edit_tab: () => control.activatePrimaryTab?.("text"),
+            open_bible_tab: () => control.activatePrimaryTab?.("bibleText"),
+            open_song_tab: () => control.activatePrimaryTab?.("songs"),
+            open_settings_tab: () => control.activatePrimaryTab?.("setBg")
+        };
+
+        const alignmentActions = {
+            align_left: () => applyTextAlignment("Left"),
+            align_center: () => applyTextAlignment("Center"),
+            align_right: () => applyTextAlignment("Right"),
+            align_justify: () => applyTextAlignment("Justify")
+        };
+
+        if (primaryTabActions[action]) {
+            primaryTabActions[action]();
+            return;
+        }
+
+        if (alignmentActions[action]) {
+            alignmentActions[action]();
+            return;
+        }
+
+        switch (action) {
+            case "send_text":
+                control.sendCurrentText?.();
+                break;
+            case "toggle_display":
+                control.toggleDisplay?.();
+                break;
+            case "song_previous":
+                control.songPrevious?.();
+                break;
+            case "song_next":
+                control.songNext?.();
+                break;
+            case "song_toggle_autoplay":
+                control.songToggleAutoplay?.();
+                break;
+            case "bible_previous":
+                control.biblePrevious?.();
+                break;
+            case "bible_next":
+                control.bibleNext?.();
+                break;
+            default:
+                break;
+        }
+    };
 
     const isEditableElement = (element) => {
         if (!element) {
@@ -43,7 +117,7 @@
     };
 
     const handleClipboardShortcut = async (event) => {
-        const isModifier = event.ctrlKey || event.metaKey;
+        const isModifier = getModifierPressed(event);
         if (!isModifier || event.altKey) {
             return;
         }
@@ -129,40 +203,71 @@
 
     let alignContent = function(event) {
         // Check if the Control key is pressed and the 'L' key (key code 76) is pressed
-        if (event.ctrlKey && event.shiftKey && event.key === 'L' || event.ctrlKey && event.shiftKey && event.key === 'l') {
+        if (getModifierPressed(event) && event.shiftKey && (event.key === 'L' || event.key === 'l')) {
             event.preventDefault();
-            let selectedValue = "Left"
-        
-            let sendSettingsChannel = new BroadcastChannel("settings");
-            sendSettingsChannel.postMessage({ selectedTextAlignment: selectedValue });
-            sendSettingsChannel.close();
+            executeShortcutAction("align_left");
         }
-        if (event.ctrlKey && event.shiftKey && event.key === 'R' || event.ctrlKey && event.shiftKey && event.key === 'r') {
+        if (getModifierPressed(event) && event.shiftKey && (event.key === 'R' || event.key === 'r')) {
             event.preventDefault(); 
+            executeShortcutAction("align_right");
+        }
+        if (getModifierPressed(event) && event.shiftKey && (event.key === 'E' || event.key === 'e')) {
+            event.preventDefault(); 
+            executeShortcutAction("align_center");
+        }
+        if (getModifierPressed(event) && event.shiftKey && (event.key === 'J' || event.key === 'j')) {
+            event.preventDefault();
+            executeShortcutAction("align_justify");
+        }
+    };
 
-            let selectedValue = "Right";
-            let sendSettingsChannel = new BroadcastChannel("settings");
-            sendSettingsChannel.postMessage({ selectedTextAlignment: selectedValue });
-            sendSettingsChannel.close();
+    const handlePluginShortcuts = (event) => {
+        const key = event.key;
+        const lowerKey = key.toLowerCase();
+
+        if (event.altKey && !getModifierPressed(event) && !event.shiftKey) {
+            const tabActions = {
+                "1": "open_edit_tab",
+                "2": "open_bible_tab",
+                "3": "open_song_tab",
+                "4": "open_settings_tab"
+            };
+            if (tabActions[key]) {
+                event.preventDefault();
+                event.stopPropagation();
+                executeShortcutAction(tabActions[key]);
+                return;
+            }
         }
-        if (event.ctrlKey && event.shiftKey && event.key === 'E' || event.ctrlKey && event.shiftKey && event.key === 'e') {
-            event.preventDefault(); 
-            let selectedValue = "Center"
-        
-            let sendSettingsChannel = new BroadcastChannel("settings");
-            sendSettingsChannel.postMessage({ selectedTextAlignment: selectedValue });
-            sendSettingsChannel.close();
+
+        if (getModifierPressed(event) && !event.shiftKey && !event.altKey) {
+            if (key === "ArrowDown") {
+                const lastSavedTab = localStorage.getItem("selectedTab");
+                if (lastSavedTab === "text") {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    executeShortcutAction("send_text");
+                    return;
+                }
+            }
+
+            if (key === "ArrowUp") {
+                event.preventDefault();
+                event.stopPropagation();
+                executeShortcutAction("toggle_display");
+                return;
+            }
         }
-        if (event.ctrlKey && event.shiftKey && event.key === 'J' || event.ctrlKey && event.shiftKey && event.key === 'j') {
-            event.preventDefault();
-            let selectedValue = "Justify"
-        
-            let sendSettingsChannel = new BroadcastChannel("settings");
-            sendSettingsChannel.postMessage({ selectedTextAlignment: selectedValue });
-            sendSettingsChannel.close();
+    };
+
+    remoteChannel.onmessage = (event) => {
+        const action = event?.data?.action;
+        if (typeof action === "string") {
+            executeShortcutAction(action);
         }
-    }
+    };
 
     document.addEventListener('keydown', handleClipboardShortcut, true);
+    document.addEventListener('keydown', handlePluginShortcuts, true);
     document.addEventListener('keydown', alignContent);
 })();
