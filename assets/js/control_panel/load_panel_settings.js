@@ -263,8 +263,6 @@ document.addEventListener('DOMContentLoaded', function() {
         // Trigger a change event in case any listeners need to know
         const event = new Event('change');
         bdsBibleTheme.dispatchEvent(event);
-      } else {
-        console.log('Either theme not found in localStorage or select element not found');
       }
     }
     

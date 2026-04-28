@@ -14,7 +14,7 @@ All notable changes to this project will be documented in this file.
 * Updated all Bible book names in the Italian New Diodati translation to match canonical formatting.
 
 ---
-## [4.0.4] - 2025-08-19
+## [4.0.4] - 2026-04-28
 ### Fixes
 * Removed unnecessary debug statements.
 * Resolved an issue where song lyrics were not rendering correctly on windows systems.
