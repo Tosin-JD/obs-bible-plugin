@@ -3,20 +3,70 @@ document.addEventListener('DOMContentLoaded', function () {
     const toolbar = document.getElementById('message-toolbar');
     const boldButton = document.getElementById('message-boldButton');
     const italicButton = document.getElementById('message-italicButton');
-    // const underlineButton = document.getElementById('message-underlineButton');
 
-    textArea.addEventListener('mouseup', function (event) {
-        const selectedText = window.getSelection().toString();
-        if (selectedText.length > 0) {
+    // --- SHOW / HIDE TOOLBAR BASED ON SELECTION ---
+    function updateToolbarPosition() {
+        const start = textArea.selectionStart;
+        const end = textArea.selectionEnd;
+
+        const hasSelection = start !== end;
+        const isFocused = document.activeElement === textArea;
+
+        if (hasSelection && isFocused) {
             const rect = textArea.getBoundingClientRect();
+
             toolbar.style.display = 'flex';
-            toolbar.style.top = `${event.clientY - rect.top - 40}px`;
-            toolbar.style.left = `${event.clientX - rect.left}px`;
+            toolbar.style.top = `${rect.top + window.scrollY - 40}px`;
+            toolbar.style.left = `${rect.left + window.scrollX + 10}px`;
         } else {
             toolbar.style.display = 'none';
         }
+    }
+
+    // --- CLEAR SELECTION + HIDE TOOLBAR ---
+    function clearSelection() {
+        textArea.selectionStart = textArea.selectionEnd; // collapse selection
+        toolbar.style.display = 'none';
+    }
+
+    // Mouse selection
+    textArea.addEventListener('mouseup', updateToolbarPosition);
+
+    // Keyboard selection
+    textArea.addEventListener('keyup', updateToolbarPosition);
+
+    // Click outside → clear selection + hide toolbar
+    document.addEventListener('mousedown', function (e) {
+        if (!textArea.contains(e.target) && !toolbar.contains(e.target)) {
+            clearSelection();
+            textArea.blur();
+        }
     });
 
+    // Escape key → clear selection + hide toolbar
+    textArea.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape') {
+            event.preventDefault();
+            clearSelection();
+            textArea.blur();
+            return;
+        }
+
+        const isModifier = event.ctrlKey || event.metaKey;
+        if (!isModifier) return;
+
+        const key = event.key.toLowerCase();
+
+        if (key === 'b') {
+            event.preventDefault();
+            toggleDelimiters(textArea, '*');
+        } else if (key === 'i') {
+            event.preventDefault();
+            toggleDelimiters(textArea, '_');
+        }
+    });
+
+    // --- BUTTON ACTIONS ---
     boldButton.addEventListener('click', function () {
         toggleDelimiters(textArea, '*');
     });
@@ -25,37 +75,38 @@ document.addEventListener('DOMContentLoaded', function () {
         toggleDelimiters(textArea, '_');
     });
 
-    // Function to toggle delimiters around selected text
+    // --- TOGGLE FORMAT FUNCTION ---
     function toggleDelimiters(textarea, delimiter) {
         const startPos = textarea.selectionStart;
         const endPos = textarea.selectionEnd;
+
+        if (startPos === endPos) return;
+
         let selectedText = textarea.value.substring(startPos, endPos);
 
-        // Check if selected text is already surrounded by the same delimiter
-        if (selectedText.startsWith(delimiter) && selectedText.endsWith(delimiter)) {
-            // Remove delimiters
-            selectedText = selectedText.substring(delimiter.length, selectedText.length - delimiter.length);
+        if (
+            selectedText.startsWith(delimiter) &&
+            selectedText.endsWith(delimiter)
+        ) {
+            selectedText = selectedText.substring(
+                delimiter.length,
+                selectedText.length - delimiter.length
+            );
         } else {
-            // Add delimiters
             selectedText = delimiter + selectedText + delimiter;
         }
 
-        // Update the textarea value
-        const newText = textarea.value.substring(0, startPos) + selectedText + textarea.value.substring(endPos);
+        const newText =
+            textarea.value.substring(0, startPos) +
+            selectedText +
+            textarea.value.substring(endPos);
+
         textarea.value = newText;
 
-        // Adjust the selection
+        textarea.focus();
         textarea.selectionStart = startPos + delimiter.length;
         textarea.selectionEnd = endPos + delimiter.length;
-    }
 
-    // Event listener for key press (Ctrl + B for bold, Ctrl + I for italic)
-    textArea.addEventListener('keydown', function (event) {
-        const isCtrlPressed = event.ctrlKey || event.metaKey; // Support both Ctrl and Cmd (Mac)
-        if (isCtrlPressed && (event.key === 'b' || event.key === 'B' || event.key === 'i' || event.key === 'I')) {
-            event.preventDefault(); // Prevent default browser behavior
-            const delimiter = (event.key === 'b' || event.key === 'B') ? '*' : '_';
-            toggleDelimiters(textArea, delimiter);
-        }
-    });
+        updateToolbarPosition();
+    }
 });

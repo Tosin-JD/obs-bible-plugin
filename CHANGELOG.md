@@ -29,7 +29,8 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 * song lyrics search improved.
 * Fix ui and ux issues
-
+* Fix songs not displaying porperly on Mac and Linux
+* Fix selection and flyout tool not showing properly
 ---
 
 
