@@ -1,7 +1,3 @@
-// Helper functions for handling DOM elements
-const getElementById = (id) => document.getElementById(id);
-
-// Helper function for creating the animation data
 const createAnimationData = (type, duration, easing, isVisible) => ({
     type,
     duration,
@@ -9,7 +5,6 @@ const createAnimationData = (type, duration, easing, isVisible) => ({
     display: isVisible ? 'flex' : 'none'
 });
 
-// Function to send the animation message
 const sendAnimationMessage = (animationData) => {
     const sendChannel = new BroadcastChannel("obs-bible-animation");
     sendChannel.postMessage(animationData);
@@ -17,46 +12,41 @@ const sendAnimationMessage = (animationData) => {
     localStorage.setItem('obs-bible-animationData', JSON.stringify(animationData));
 };
 
-// Toggle the display state
-const toggleDisplayState = (toggleDisplay) => !toggleDisplay.checked;
+const toggle = (checked) => !checked;
 
-// Update the DOM state and send the animation message
-const updateStateAndSendMessage = (toggleDisplay, animationTypeSelect, durationInput, easingSelect) => {
-    const updatedToggleDisplay = toggleDisplayState(toggleDisplay);
+const updateStateAndSendMessage = ({ toggleDisplay, animationType, duration, easing }) => {
+    const updatedVisibility = toggle(toggleDisplay.checked);
     const animationData = createAnimationData(
-        animationTypeSelect.value,
-        durationInput.value,
-        easingSelect.value,
-        updatedToggleDisplay
+        animationType.value,
+        duration.value,
+        easing.value,
+        updatedVisibility
     );
-    toggleDisplay.checked = updatedToggleDisplay;
+
     sendAnimationMessage(animationData);
+    toggleDisplay.checked = updatedVisibility;
 };
 
-// Functional event handler for button click
-const handleButtonClick = (toggleDisplay, animationTypeSelect, durationInput, easingSelect) => () => {
-    updateStateAndSendMessage(toggleDisplay, animationTypeSelect, durationInput, easingSelect);
-};
+const createButtonHandler = (elements) => () => updateStateAndSendMessage(elements);
 
-// Functional event handler for keydown (Ctrl + ArrowUp)
-const handleKeydown = (toggleDisplay, animationTypeSelect, durationInput, easingSelect) => (event) => {
+const createKeyHandler = (elements) => (event) => {
     if (event.ctrlKey && event.key === 'ArrowUp') {
         event.preventDefault();
-        updateStateAndSendMessage(toggleDisplay, animationTypeSelect, durationInput, easingSelect);
+        updateStateAndSendMessage(elements);
     }
 };
 
-// Main function to initialize the app
 const initializeApp = () => {
-    const animationTypeSelect = getElementById('animation-type');
-    const durationInput = getElementById('animation-duration');
-    const easingSelect = getElementById('animation-easing');
-    const toggleButton = getElementById("toggle-button-display");
-    const toggleDisplay = getElementById("toggle-display");
+    const elements = {
+        animationType: getElementById('animation-type'),
+        duration: getElementById('animation-duration'),
+        easing: getElementById('animation-easing'),
+        toggleButton: getElementById("toggle-button-display"),
+        toggleDisplay: getElementById("toggle-display"),
+    };
 
-    toggleButton.addEventListener('click', handleButtonClick(toggleDisplay, animationTypeSelect, durationInput, easingSelect));
-    document.addEventListener('keydown', handleKeydown(toggleDisplay, animationTypeSelect, durationInput, easingSelect));
+    elements.toggleButton.addEventListener('click', createButtonHandler(elements));
+    document.addEventListener('keydown', createKeyHandler(elements));
 };
 
-// Run the app
 initializeApp();
