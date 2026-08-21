@@ -8,7 +8,10 @@
 </head>
 <body>
   <div class="bg-container" id="bg-container">
-    <div class="container" id="container">
+    <video id="bg-video" autoplay loop muted style="position: absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; z-index:0; display:none;"></video>
+    <div id="bg-image" style="position: absolute; top:0; left:0; width:100%; height:100%; background-size:cover; background-position:center; z-index:0; display:none;"></div>
+    <div id="bg-gradient" style="position: absolute; top:0; left:0; width:100%; height:100%; z-index:0; display:none;"></div>
+    <div class="container" id="container" style="position: relative; z-index:1;">
       <p id="messageDisplay" class=""></p>
     </div>
   </div>
@@ -17,14 +20,70 @@
   <script>
     const bgContainer = document.getElementById("bg-container");
     const messageDisplay = document.getElementById("messageDisplay");
-    // const messageTitle = document.getElementById("messageTitle");
+    let currentContentType = "text";
+
+    function hexToRgba(hex, alpha) {
+      if (!hex) return "rgba(0, 0, 0, 1)";
+      hex = hex.replace(/^#/, '');
+      let r = parseInt(hex.substring(0, 2), 16) || 0;
+      let g = parseInt(hex.substring(2, 4), 16) || 0;
+      let b = parseInt(hex.substring(4, 6), 16) || 0;
+      let a = parseFloat(alpha);
+      if (isNaN(a) || a < 0 || a > 1) a = 1;
+      return `rgba(${r}, ${g}, ${b}, ${a})`;
+    }
+
+    function applyBackgroundForType(contentType) {
+      if (!contentType) contentType = currentContentType || "text";
+      currentContentType = contentType;
+
+      const bgMode = localStorage.getItem(`obs-bible-background-mode_${contentType}`) || localStorage.getItem(`background-mode_${contentType}`) || "none";
+      const bgVideo = document.getElementById("bg-video");
+      const bgImage = document.getElementById("bg-image");
+      const bgGradient = document.getElementById("bg-gradient");
+
+      if (bgVideo) bgVideo.style.display = "none";
+      if (bgImage) bgImage.style.display = "none";
+      if (bgGradient) bgGradient.style.display = "none";
+      bgContainer.style.backgroundColor = "transparent";
+
+      if (bgMode === "plain") {
+        const rawColor = localStorage.getItem(`obs-bible-bg-color_${contentType}`) || "#000000";
+        const opacity = localStorage.getItem(`obs-bible-bg-opacity_${contentType}`) || "1";
+        bgContainer.style.backgroundColor = hexToRgba(rawColor, opacity);
+      } else if (bgMode === "gradient") {
+        const gradientCss = localStorage.getItem(`obs-bible-gradient-css_${contentType}`);
+        if (gradientCss && bgGradient) {
+          bgGradient.style.backgroundImage = gradientCss;
+          bgGradient.style.display = "block";
+        }
+      } else if (bgMode === "image") {
+        const imgUrl = localStorage.getItem(`obs-bible-image-url_${contentType}`);
+        if (imgUrl && bgImage) {
+          bgImage.style.backgroundImage = `url("${imgUrl}")`;
+          bgImage.style.display = "block";
+        }
+      } else if (bgMode === "video") {
+        const videoUrl = localStorage.getItem(`obs-bible-video-url_${contentType}`);
+        if (videoUrl && bgVideo) {
+          if (bgVideo.src !== videoUrl) bgVideo.src = videoUrl;
+          bgVideo.style.display = "block";
+          bgVideo.play().catch(e => console.error("Video play error:", e));
+        }
+      }
+    }
 
     // Text channel
     const channel = new BroadcastChannel("myChannel");
     channel.onmessage = (event) => {
-      const message = event.data;
+      let message = event.data;
+      let contentType = "text";
+      if (typeof message === "object" && message !== null) {
+        contentType = message.contentType || "text";
+        message = message.messageContent || "";
+      }
+      applyBackgroundForType(contentType);
       updateMessage('messageDisplay', message);
-      // messageDisplay.innerHTML = message;
 
       if (savedTitleColor) {
           const dspans = document.querySelectorAll("#messageDisplay span");

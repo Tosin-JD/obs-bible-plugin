@@ -294,5 +294,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 loadCheckboxes();
+if (typeof syncBgFormToContentType === "function") {
+    syncBgFormToContentType();
+}
 loadSavedBorder();
 loadFontStroke();

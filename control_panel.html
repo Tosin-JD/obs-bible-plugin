@@ -474,7 +474,21 @@ DoubleClick on History erase all previous text"></textarea>
                   </svg>
                 </button>
               </div>
+              <div class="gradient-body">
+                <div class="tooltip tooltip-bottom" data-tooltip="Select content type to configure background for" style="margin-bottom: 12px;">
+                  <label for="bg-content-type-select"><strong>Configure Background For:</strong></label>
+                  <select id="bg-content-type-select" class="small-font" style="margin-top: 4px; padding: 4px 8px; width: 100%;">
+                    <option value="bible">Bible Tab</option>
+                    <option value="text">Text Tab</option>
+                    <option value="song">Songs Tab</option>
+                  </select>
+                </div>
+              </div>
               <div class="background-mode-body">
+                <label class="background-mode-option" for="background-mode-none">
+                  <input type="radio" id="background-mode-none" name="background-mode" value="none" class="background-mode-radio">
+                  <span>None</span>
+                </label>
                 <label class="background-mode-option" for="background-mode-color">
                   <input type="radio" id="background-mode-color" name="background-mode" value="plain" class="background-mode-radio">
                   <span id="background-color-option-preview" class="background-mode-swatch" aria-hidden="true"></span>
@@ -484,6 +498,14 @@ DoubleClick on History erase all previous text"></textarea>
                   <input type="radio" id="background-mode-gradient" name="background-mode" value="gradient" class="background-mode-radio">
                   <span id="background-gradient-option-preview" class="background-mode-swatch" aria-hidden="true"></span>
                   <span>Gradient</span>
+                </label>
+                <label class="background-mode-option" for="background-mode-image">
+                  <input type="radio" id="background-mode-image" name="background-mode" value="image" class="background-mode-radio">
+                  <span>Image</span>
+                </label>
+                <label class="background-mode-option" for="background-mode-video">
+                  <input type="radio" id="background-mode-video" name="background-mode" value="video" class="background-mode-radio">
+                  <span>Video</span>
                 </label>
               </div>
               <div class="gradient-body">
