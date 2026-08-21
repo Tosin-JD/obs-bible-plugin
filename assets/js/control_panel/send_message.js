@@ -19,12 +19,20 @@ function processMessage(inputMessage) {
   return result;
 }
 
-function sendMessage(senderChannel, message, messageType = "text", verseAri = null){
+function sendMessage(senderChannel, message, contentType){
   let fadeInCheckbox = document.getElementById("fade-in-checkbox");
+
+  if (!contentType) {
+    const selectedTab = localStorage.getItem("selectedTab") || "text";
+    if (selectedTab === "bibleText") contentType = "bible";
+    else if (selectedTab === "songs") contentType = "song";
+    else contentType = "text";
+  }
+
   let messageToSend = {
     fadein: fadeInCheckbox.checked,
     messageContent: message,
-    messageType
+    contentType: contentType
   };
   window.lastSentMessageType = messageType;
   if (messageType === "bible" && verseAri) {
@@ -458,13 +466,11 @@ function displayBible() {
 
   bibleVerses.forEach((verse, index) => {
     verse.addEventListener("click", (event) => {
-      const clickedVerse = event.target.closest("p.bible-verse");
-      if (clickedVerse !== verse) return;
-
-      currentVerseIndex = index;
-      const message = verse.innerHTML;
-      sendMessage(channel, message, "bible", verse.dataset.ari);
-      verse.classList.add("selected");
+      if (event.target.tagName === "P") {
+        currentVerseIndex = index;
+        const message = event.target.innerHTML;
+        sendMessage(channel, message, "bible");
+        event.target.classList.add("selected");
 
       historyOfBibleVerse.push({name: verse.id, ari: verse.dataset.ari, verse: message});
       historyOfText.push(message);
@@ -503,9 +509,8 @@ function moveToNextVerse(event){
 
   if(currentVerseIndex < bibleVerses.length - 1){
     currentVerseIndex++;
-    const currentVerse = bibleVerses[currentVerseIndex];
-    const message = currentVerse.innerHTML;
-    sendMessage(channel, message, "bible", currentVerse.dataset.ari);
+    const message = bibleVerses[currentVerseIndex].innerHTML;
+    sendMessage(channel, message, "bible");
 
     const displayVerse = document.getElementById('bible');
     const previousVerse = bibleVerses[currentVerseIndex - 1];
@@ -537,9 +542,8 @@ function moveToPreviousVerse(event){
 
   if(currentVerseIndex > 0){
     currentVerseIndex--;
-    const currentVerse = bibleVerses[currentVerseIndex];
-    const message = currentVerse.innerHTML;
-    sendMessage(channel, message, "bible", currentVerse.dataset.ari);
+    const message = bibleVerses[currentVerseIndex].innerHTML;
+    sendMessage(channel, message, "bible");
     const displayVerse = document.getElementById('bible');
     const nextVerse = bibleVerses[currentVerseIndex + 1];
 

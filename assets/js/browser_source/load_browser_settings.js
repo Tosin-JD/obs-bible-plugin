@@ -65,12 +65,7 @@ if (savedMessage){
     messageDisplay.innerHTML = savedMessage;
 }
 
-if (savedGradientCss) {
-    bgContainer.style.backgroundImage = savedGradientCss;
-    bgContainer.style.backgroundColor = "transparent";
-} else if (savedBgColor) {
-    bgContainer.style.backgroundColor = savedBgColor;
-}
+// Background rendering is handled dynamically by applyBackgroundForType() in browser_source.html
 
 if (savedFontFamily) {
     bgContainer.style.fontFamily = savedFontFamily;
