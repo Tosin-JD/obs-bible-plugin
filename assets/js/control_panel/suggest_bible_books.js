@@ -25,10 +25,10 @@ function updateInput(index) {
 
 bibleInput.addEventListener("input", function() {
 
-  const inputValue = bibleInput.value.toLowerCase();
+  const inputValue = removeAccents(bibleInput.value);
   const filteredBooks = Array.from(bibleIndex.keys()).filter(book => {
-    const bookLower = book.toLowerCase();
-    const englishName = localToEnglishBookMap.get(bookLower) || "";
+    const bookLower = removeAccents(book);
+    const englishName = removeAccents(localToEnglishBookMap.get(book.toLowerCase()) || "");
     return fuzzySearch(inputValue, bookLower) || (englishName && fuzzySearch(inputValue, englishName));
   });
 

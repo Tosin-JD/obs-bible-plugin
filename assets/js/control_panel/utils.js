@@ -32,24 +32,25 @@ function getCustomPropertyValue(property) {
 
 // Function to extract book, chapter, and verse from a reference string
 function extractBookChapterVerse(reference) {
-  // Regular expression pattern to capture book name, chapter, and verse
-  // const regex = /^([\d\s\w\u00c0-\u017f]+)\s(\d+):(\d+)$/u;
-  const regex = /^([\d\s\w\u00c0-\u017f]+(?:\s\([\d\s\w\u00c0-\u017f]+\))?)\s(\d+):(\d+)$/iu;
+  if (!reference) throw new Error("Invalid reference format");
+  const trimmed = reference.trim();
+  const lastColon = trimmed.lastIndexOf(':');
+  if (lastColon === -1) throw new Error("Invalid reference format");
 
-  const match = reference.match(regex);
+  const bookAndChapter = trimmed.substring(0, lastColon).trim();
+  const verse = trimmed.substring(lastColon + 1).trim();
 
-  if (!match) {
+  const lastSpace = bookAndChapter.lastIndexOf(' ');
+  if (lastSpace === -1) throw new Error("Invalid reference format");
+
+  const book = bookAndChapter.substring(0, lastSpace).trim();
+  const chapter = bookAndChapter.substring(lastSpace + 1).trim();
+
+  if (!book || !chapter || !verse || isNaN(parseInt(chapter, 10)) || isNaN(parseInt(verse, 10))) {
     throw new Error("Invalid reference format");
   }
 
-  if (match) {
-    const book = match[1].trim();
-    const chapter = match[2];
-    const verse = match[3];
-    return { book, chapter, verse };
-  } else {
-    throw new Error("Invalid reference format");
-  }
+  return { book, chapter, verse };
 }
 
 
