@@ -12,7 +12,7 @@ function updateInput(index) {
     }
 
     const selectedSuggestion = suggestionsList.children[index];
-    bibleInput.value = selectedSuggestion.textContent;
+    bibleInput.value = selectedSuggestion.getAttribute("data-book") || selectedSuggestion.textContent;
     bibleInput.focus();
     selectedSuggestion.classList.add("activated");
 
@@ -25,18 +25,29 @@ function updateInput(index) {
 
 bibleInput.addEventListener("input", function() {
 
-  const inputValue = bibleInput.value.toLowerCase();
-  // const filteredBooks = Array.from(bibleIndex.keys()).filter(book =>book.toLowerCase().includes(inputValue));
-  const filteredBooks = Array.from(bibleIndex.keys()).filter(book => 
-    fuzzySearch(inputValue, book.toLowerCase())
-  );
+  const inputValue = removeAccents(bibleInput.value);
+  const filteredBooks = Array.from(bibleIndex.keys()).filter(book => {
+    const bookLower = removeAccents(book);
+    const englishName = removeAccents(localToEnglishBookMap.get(book.toLowerCase()) || "");
+    return fuzzySearch(inputValue, bookLower) || (englishName && fuzzySearch(inputValue, englishName));
+  });
 
   suggestionsList.innerHTML = "";
   if(inputValue.length > 0){
 
     filteredBooks.forEach((book, index) => {
       const listItem = document.createElement("li");
-      listItem.innerHTML = `${book} `;
+      listItem.setAttribute("data-book", book);
+      
+      const bookLower = book.toLowerCase();
+      const englishName = localToEnglishBookMap.get(bookLower);
+      if (englishName && englishName !== bookLower) {
+        const capitalizedEnglish = englishName.charAt(0).toUpperCase() + englishName.slice(1);
+        listItem.innerHTML = `${book} (${capitalizedEnglish})`;
+      } else {
+        listItem.innerHTML = `${book}`;
+      }
+
       // Add a click event listener to each suggestion
       listItem.addEventListener("click", () => {
         updateInput(index);

@@ -1,3 +1,16 @@
+const englishBooks = [
+  "Genesis", "Exodus", "Leviticus", "Numbers", "Deuteronomy", "Joshua", "Judges", "Ruth", "1 Samuel", "2 Samuel",
+  "1 Kings", "2 Kings", "1 Chronicles", "2 Chronicles", "Ezra", "Nehemiah", "Esther", "Job", "Psalms", "Proverbs",
+  "Ecclesiastes", "Song of Solomon", "Isaiah", "Jeremiah", "Lamentations", "Ezekiel", "Daniel", "Hosea", "Joel",
+  "Amos", "Obadiah", "Jonah", "Micah", "Nahum", "Habakkuk", "Zephaniah", "Haggai", "Zechariah", "Malachi",
+  "Matthew", "Mark", "Luke", "John", "Acts", "Romans", "1 Corinthians", "2 Corinthians", "Galatians", "Ephesians",
+  "Philippians", "Colossians", "1 Thessalonians", "2 Thessalonians", "1 Timothy", "2 Timothy", "Titus", "Philemon",
+  "Hebrews", "James", "1 Peter", "2 Peter", "1 John", "2 John", "3 John", "Jude", "Revelation"
+];
+
+var localToEnglishBookMap = new Map();
+var englishToLocalBookMap = new Map();
+
 function hexToRgba(hex, alpha) {
   hex = hex.replace(/^#/, '');
 
@@ -19,28 +32,31 @@ function getCustomPropertyValue(property) {
 
 // Function to extract book, chapter, and verse from a reference string
 function extractBookChapterVerse(reference) {
-  // Regular expression pattern to capture book name, chapter, and verse
-  // const regex = /^([\d\s\w\u00c0-\u017f]+)\s(\d+):(\d+)$/u;
-  const regex = /^([\d\s\w\u00c0-\u017f]+(?:\s\([\d\s\w\u00c0-\u017f]+\))?)\s(\d+):(\d+)$/iu;
+  if (!reference) throw new Error("Invalid reference format");
+  const trimmed = reference.trim();
+  const lastColon = trimmed.lastIndexOf(':');
+  if (lastColon === -1) throw new Error("Invalid reference format");
 
-  const match = reference.match(regex);
+  const bookAndChapter = trimmed.substring(0, lastColon).trim();
+  const verse = trimmed.substring(lastColon + 1).trim();
 
-  if (!match) {
+  const lastSpace = bookAndChapter.lastIndexOf(' ');
+  if (lastSpace === -1) throw new Error("Invalid reference format");
+
+  const book = bookAndChapter.substring(0, lastSpace).trim();
+  const chapter = bookAndChapter.substring(lastSpace + 1).trim();
+
+  if (!book || !chapter || !verse || isNaN(parseInt(chapter, 10)) || isNaN(parseInt(verse, 10))) {
     throw new Error("Invalid reference format");
   }
 
-  if (match) {
-    const book = match[1].trim();
-    const chapter = match[2];
-    const verse = match[3];
-    return { book, chapter, verse };
-  } else {
-    throw new Error("Invalid reference format");
-  }
+  return { book, chapter, verse };
 }
 
 
 function generateIndexForBibleBooks(){
+  localToEnglishBookMap.clear();
+  englishToLocalBookMap.clear();
   bible_data.forEach(verse => {
     try {
       const { book, chapter, verse: verseNum } = extractBookChapterVerse(verse.name);
@@ -56,6 +72,14 @@ function generateIndexForBibleBooks(){
       }
 
       bookIndex.get(chapter).set(verseNum, verse.verse);
+
+      // Populate bilingual book maps
+      const bookIdx = parseInt(verse.ari.split(':')[0], 10);
+      const englishBookName = englishBooks[bookIdx];
+      if (englishBookName) {
+        localToEnglishBookMap.set(book.toLowerCase(), englishBookName.toLowerCase());
+        englishToLocalBookMap.set(englishBookName.toLowerCase(), book.toLowerCase());
+      }
     } catch (error) {
       console.error(error.message);
     }
