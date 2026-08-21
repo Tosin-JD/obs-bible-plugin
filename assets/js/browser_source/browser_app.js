@@ -1,16 +1,32 @@
-var updateMessage = (messageId, message) =>{
-  const messageElem = document.getElementById(messageId)
-  if (message.fadein === true){
+var updateMessage = (messageId, message) => {
+  const messageElem = document.getElementById(messageId);
+  if (!messageElem) return;
+
+  let textContent = "";
+  let isFadeIn = false;
+
+  if (typeof message === "object" && message !== null) {
+    textContent = (message.messageContent !== undefined && message.messageContent !== null) ? String(message.messageContent) : "";
+    isFadeIn = !!message.fadein;
+  } else if (message !== undefined && message !== null) {
+    textContent = String(message);
+  }
+
+  if (textContent === "undefined" || textContent === "null") {
+    textContent = "";
+  }
+
+  if (isFadeIn) {
     messageElem.classList.remove('fade-in');
     messageElem.style.display = 'none';
-    messageElem.innerHTML = message.messageContent;;
+    messageElem.innerHTML = textContent;
     void messageElem.offsetWidth;
     messageElem.classList.add('fade-in');
     messageElem.style.display = 'block';
-  }else{
-    messageElem.innerHTML = message.messageContent;
+  } else {
+    messageElem.innerHTML = textContent;
   }
-  localStorage.setItem('savedMessage', message.messageContent);
+  localStorage.setItem('savedMessage', textContent);
 };
 
 // function hasVerticalScroll() {

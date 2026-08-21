@@ -61,8 +61,11 @@ if (savedAnimationData) {
 
 }
 
-if (savedMessage){
+if (savedMessage && savedMessage !== "undefined" && savedMessage !== "null"){
     messageDisplay.innerHTML = savedMessage;
+} else {
+    messageDisplay.innerHTML = "";
+    localStorage.removeItem('savedMessage');
 }
 
 // Background rendering is handled dynamically by applyBackgroundForType() in browser_source.html
@@ -109,5 +112,8 @@ if (savedBgMargin !== null) {
     if (Number.isFinite(margin)) {
         messageDisplay.style.padding = `${Math.round(Math.min(200, Math.max(0, margin)))}px`;
     }
+}
+if (typeof applyBackgroundForType === "function") {
+    applyBackgroundForType();
 }
 adjustFontSizeBasedOnScroll();

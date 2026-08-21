@@ -60,18 +60,8 @@ body{
     opacity: 1;
 }
 
-#messageDisplay .bible-reference{
-    color: var(--title-color, #ff6450);
-    overflow-y: hidden;
-    opacity: 1;
-}
-
-.bible-layout-separate-line .bible-reference{
-    display: block;
-}
-
-.bible-message{
-    white-space: pre-wrap;
+#messageDisplay p {
+    margin: 4px 0;
 }
 
 .text-with-shadow {
