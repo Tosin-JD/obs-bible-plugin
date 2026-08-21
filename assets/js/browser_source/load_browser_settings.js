@@ -61,8 +61,11 @@ if (savedAnimationData) {
 
 }
 
-if (savedMessage){
+if (savedMessage && savedMessage !== "undefined" && savedMessage !== "null"){
     messageDisplay.innerHTML = savedMessage;
+} else {
+    messageDisplay.innerHTML = "";
+    localStorage.removeItem('savedMessage');
 }
 
 // Background rendering is handled dynamically by applyBackgroundForType() in browser_source.html
@@ -107,5 +110,8 @@ if (savedShadowColor) {
 
 if (savedBgMargin){
     messageDisplay.style.padding = savedBgMargin + "px";
+}
+if (typeof applyBackgroundForType === "function") {
+    applyBackgroundForType();
 }
 adjustFontSizeBasedOnScroll();

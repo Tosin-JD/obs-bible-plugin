@@ -12,7 +12,7 @@
     <div id="bg-image" style="position: absolute; top:0; left:0; width:100%; height:100%; background-size:cover; background-position:center; z-index:0; display:none;"></div>
     <div id="bg-gradient" style="position: absolute; top:0; left:0; width:100%; height:100%; z-index:0; display:none;"></div>
     <div class="container" id="container" style="position: relative; z-index:1;">
-      <p id="messageDisplay" class=""></p>
+      <div id="messageDisplay" class=""></div>
     </div>
   </div>
 
@@ -20,7 +20,7 @@
   <script>
     const bgContainer = document.getElementById("bg-container");
     const messageDisplay = document.getElementById("messageDisplay");
-    let currentContentType = "text";
+    let currentContentType = null;
 
     function hexToRgba(hex, alpha) {
       if (!hex) return "rgba(0, 0, 0, 1)";
@@ -33,11 +33,36 @@
       return `rgba(${r}, ${g}, ${b}, ${a})`;
     }
 
-    function applyBackgroundForType(contentType) {
+    function applyBackgroundForType(contentType, force = false) {
       if (!contentType) contentType = currentContentType || "text";
+      if (!force && contentType === currentContentType) {
+        return; // Background is already active for this content type! Keep background completely stable!
+      }
       currentContentType = contentType;
 
-      const bgMode = localStorage.getItem(`obs-bible-background-mode_${contentType}`) || localStorage.getItem(`background-mode_${contentType}`) || "none";
+      const bgMode = localStorage.getItem(`obs-bible-background-mode_${contentType}`);
+
+      // If no per-tab mode is defined or mode is "none", keep the user's active global background (Color / Gradient) stable
+      if (!bgMode || bgMode === "none") {
+        const bgVideo = document.getElementById("bg-video");
+        const bgImage = document.getElementById("bg-image");
+        if (bgVideo) bgVideo.style.display = "none";
+        if (bgImage) bgImage.style.display = "none";
+
+        const globalGradient = localStorage.getItem('obs-bible-gradient-css');
+        const bgGradient = document.getElementById("bg-gradient");
+        if (globalGradient && bgGradient) {
+          bgGradient.style.backgroundImage = globalGradient;
+          bgGradient.style.display = "block";
+          bgContainer.style.backgroundColor = "transparent";
+        } else {
+          if (bgGradient) bgGradient.style.display = "none";
+          const globalBg = localStorage.getItem('bgColor') || localStorage.getItem('rawBgColor') || "rgba(0, 0, 0, 0.85)";
+          bgContainer.style.backgroundColor = globalBg;
+        }
+        return;
+      }
+
       const bgVideo = document.getElementById("bg-video");
       const bgImage = document.getElementById("bg-image");
       const bgGradient = document.getElementById("bg-gradient");
@@ -48,20 +73,26 @@
       bgContainer.style.backgroundColor = "transparent";
 
       if (bgMode === "plain") {
-        const rawColor = localStorage.getItem(`obs-bible-bg-color_${contentType}`) || "#000000";
-        const opacity = localStorage.getItem(`obs-bible-bg-opacity_${contentType}`) || "1";
+        const rawColor = localStorage.getItem(`obs-bible-bg-color_${contentType}`) || localStorage.getItem('rawBgColor') || localStorage.getItem('bgColor') || "#000000";
+        const opacity = localStorage.getItem(`obs-bible-bg-opacity_${contentType}`) || localStorage.getItem('savedOpacity') || "1";
         bgContainer.style.backgroundColor = hexToRgba(rawColor, opacity);
       } else if (bgMode === "gradient") {
-        const gradientCss = localStorage.getItem(`obs-bible-gradient-css_${contentType}`);
+        const gradientCss = localStorage.getItem(`obs-bible-gradient-css_${contentType}`) || localStorage.getItem('obs-bible-gradient-css');
         if (gradientCss && bgGradient) {
           bgGradient.style.backgroundImage = gradientCss;
           bgGradient.style.display = "block";
+        } else {
+          const globalBg = localStorage.getItem('bgColor') || localStorage.getItem('rawBgColor') || "rgba(0, 0, 0, 0.85)";
+          bgContainer.style.backgroundColor = globalBg;
         }
       } else if (bgMode === "image") {
         const imgUrl = localStorage.getItem(`obs-bible-image-url_${contentType}`);
         if (imgUrl && bgImage) {
           bgImage.style.backgroundImage = `url("${imgUrl}")`;
           bgImage.style.display = "block";
+        } else {
+          const globalBg = localStorage.getItem('bgColor') || localStorage.getItem('rawBgColor') || "rgba(0, 0, 0, 0.85)";
+          bgContainer.style.backgroundColor = globalBg;
         }
       } else if (bgMode === "video") {
         const videoUrl = localStorage.getItem(`obs-bible-video-url_${contentType}`);
@@ -69,6 +100,9 @@
           if (bgVideo.src !== videoUrl) bgVideo.src = videoUrl;
           bgVideo.style.display = "block";
           bgVideo.play().catch(e => console.error("Video play error:", e));
+        } else {
+          const globalBg = localStorage.getItem('bgColor') || localStorage.getItem('rawBgColor') || "rgba(0, 0, 0, 0.85)";
+          bgContainer.style.backgroundColor = globalBg;
         }
       }
     }
@@ -76,14 +110,15 @@
     // Text channel
     const channel = new BroadcastChannel("myChannel");
     channel.onmessage = (event) => {
-      let message = event.data;
+      let data = event.data;
       let contentType = "text";
-      if (typeof message === "object" && message !== null) {
-        contentType = message.contentType || "text";
-        message = message.messageContent || "";
+      if (typeof data === "object" && data !== null) {
+        contentType = data.contentType || "text";
+      } else {
+        data = { fadein: false, messageContent: data, contentType: "text" };
       }
       applyBackgroundForType(contentType);
-      updateMessage('messageDisplay', message);
+      updateMessage('messageDisplay', data);
 
       if (savedTitleColor) {
           const dspans = document.querySelectorAll("#messageDisplay span");
@@ -95,6 +130,9 @@
     const settingsChannel = new BroadcastChannel("settings");
     settingsChannel.onmessage = (event) => {
        if (event.data) {
+          if (event.data.bgUpdateContentType) {
+            applyBackgroundForType(event.data.bgUpdateContentType, true);
+          }
           if (event.data.selectedFont){
             bgContainer.style.fontFamily = event.data.selectedFont;
             localStorage.setItem('fontFamily', event.data.selectedFont);

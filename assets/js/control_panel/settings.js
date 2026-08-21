@@ -91,7 +91,7 @@ function getBgContentType() {
     if (bgSelect && bgSelect.value) {
         return bgSelect.value;
     }
-    const lastSavedTab = localStorage.getItem("selectedTab");
+    const lastSavedTab = localStorage.getItem("lastContentTab") || localStorage.getItem("selectedTab");
     if (lastSavedTab === "bibleText") return "bible";
     if (lastSavedTab === "songs") return "song";
     return "text";
@@ -116,7 +116,7 @@ function removeBgItem(keyName) {
 function getBackgroundMode() {
     const savedMode = getBgItem("obs-bible-background-mode");
     if (savedMode) return savedMode;
-    return getBgItem("obs-bible-gradient-css") ? "gradient" : "none";
+    return "plain";
 }
 
 function syncBackgroundModeRadios() {
@@ -240,8 +240,8 @@ function openPlainBackgroundPicker() {
 }
 
 function openGradientEditor() {
-    closeBackgroundModeModal();
-    openGradientModal();
+    setBackgroundMode("gradient");
+    syncBgFormToContentType();
 }
 
 function saveGradientState(cssValue) {
@@ -364,6 +364,7 @@ function openGradientModal() {
     if (!gradientModal) {
         return;
     }
+    renderGradientPresets();
     gradientModal.classList.add("is-open");
     gradientModal.setAttribute("aria-hidden", "false");
 }
@@ -380,7 +381,18 @@ function openBackgroundModeModal() {
     if (!backgroundModeModal) {
         return;
     }
-    syncBackgroundModeRadios();
+    const lastTab = localStorage.getItem("lastContentTab") || localStorage.getItem("selectedTab");
+    const bgSelect = document.getElementById("bg-content-type-select");
+    if (bgSelect) {
+        if (lastTab === "bibleText") {
+            bgSelect.value = "bible";
+        } else if (lastTab === "songs") {
+            bgSelect.value = "song";
+        } else if (lastTab === "text") {
+            bgSelect.value = "text";
+        }
+    }
+    syncBgFormToContentType();
     backgroundModeModal.classList.add("is-open");
     backgroundModeModal.setAttribute("aria-hidden", "false");
 }
@@ -746,12 +758,85 @@ const bgVideoFilename = document.getElementById("bg-video-filename");
 const bibleBgBtn = document.getElementById("bible-bg-btn");
 const songBgBtn = document.getElementById("song-bg-btn");
 
+const bgPlainColorSection = document.getElementById("bg-plain-color-section");
+const bgPlainColorPicker = document.getElementById("bg-plain-color-picker");
+const bgPlainColorHex = document.getElementById("bg-plain-color-hex");
+
+const PROFESSIONAL_GRADIENT_PRESETS = [
+    { name: "Midnight Sapphire", css: "linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #311042 100%)" },
+    { name: "Graceful Velvet", css: "linear-gradient(135deg, #180008 0%, #3b0764 50%, #111827 100%)" },
+    { name: "Emerald Sanctuary", css: "linear-gradient(135deg, #064e3b 0%, #022c22 50%, #0f172a 100%)" },
+    { name: "Golden Worship", css: "linear-gradient(135deg, #451a03 0%, #290e05 50%, #0c0a09 100%)" },
+    { name: "Celestial Dusk", css: "linear-gradient(135deg, #172554 0%, #3b0764 50%, #09090b 100%)" },
+    { name: "Nordic Slate", css: "linear-gradient(135deg, #1f2937 0%, #111827 50%, #030712 100%)" },
+    { name: "Sacred Amethyst", css: "linear-gradient(135deg, #2e1065 0%, #1c053a 50%, #000000 100%)" },
+    { name: "Oceanic Abyss", css: "linear-gradient(135deg, #083344 0%, #0c4a6e 50%, #020617 100%)" }
+];
+
+function renderGradientPresets() {
+    const grid = document.getElementById("gradient-presets-grid");
+    if (!grid) return;
+    grid.innerHTML = "";
+
+    PROFESSIONAL_GRADIENT_PRESETS.forEach(preset => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "gradient-preset-tile tooltip tooltip-bottom";
+        btn.setAttribute("data-tooltip", preset.name);
+        btn.style.backgroundImage = preset.css;
+        btn.addEventListener("click", () => {
+            saveGradientState(preset.css);
+            setBackgroundMode("gradient");
+            broadcastBgUpdate();
+            updateBackgroundPreviews();
+        });
+        grid.appendChild(btn);
+    });
+}
+
+function updatePlainColorFromInput(colorVal) {
+    if (!colorVal || !/^#[0-9A-Fa-f]{6}$/i.test(colorVal)) return;
+    setBgItem("obs-bible-bg-color", colorVal);
+    localStorage.setItem("rawBgColor", colorVal);
+    if (bgColorInput) bgColorInput.value = colorVal;
+    setBackgroundMode("plain");
+    broadcastBgUpdate();
+    updateBackgroundPreviews();
+}
+
+bgPlainColorPicker?.addEventListener("input", (e) => {
+    if (bgPlainColorHex) bgPlainColorHex.value = e.target.value;
+    updatePlainColorFromInput(e.target.value);
+});
+
+bgPlainColorHex?.addEventListener("change", (e) => {
+    let val = e.target.value.trim();
+    if (!val.startsWith("#")) val = "#" + val;
+    if (bgPlainColorPicker) bgPlainColorPicker.value = val;
+    updatePlainColorFromInput(val);
+});
+
 function syncBgFormToContentType() {
     syncBackgroundModeRadios();
     const mode = getBackgroundMode();
 
+    const bgGradientInlineSection = document.getElementById("bg-gradient-inline-section");
+    if (bgPlainColorSection) bgPlainColorSection.style.display = (mode === "plain") ? "block" : "none";
+    if (bgGradientInlineSection) bgGradientInlineSection.style.display = (mode === "gradient") ? "block" : "none";
     if (bgImageSection) bgImageSection.style.display = (mode === "image") ? "block" : "none";
     if (bgVideoSection) bgVideoSection.style.display = (mode === "video") ? "block" : "none";
+
+    const savedPlainColor = getBgItem("obs-bible-bg-color") || localStorage.getItem("rawBgColor") || "#000000";
+    if (bgPlainColorPicker) bgPlainColorPicker.value = savedPlainColor;
+    if (bgPlainColorHex) bgPlainColorHex.value = savedPlainColor;
+
+    if (mode === "gradient") {
+        loadGradientState();
+        renderGradientPresets();
+        renderGradientSwatches();
+        updateGradientDirectionUI();
+        updateGradientDirectionPreviews();
+    }
 
     const savedImageName = getBgItem("obs-bible-image-filename");
     if (bgImageFilename) bgImageFilename.textContent = savedImageName || (getBgItem("obs-bible-image-url") ? "Saved Image Loaded" : "No image chosen");
@@ -816,6 +901,64 @@ if (bgVideoFileBtn && bgVideoFileInput) {
     });
 }
 
+const bgImageSourceRadios = document.querySelectorAll('input[name="bg-image-source-type"]');
+const bgImageFileContainer = document.getElementById("bg-image-file-container");
+const bgImageUrlContainer = document.getElementById("bg-image-url-container");
+const bgImageUrlInput = document.getElementById("bg-image-url-input");
+const bgImageUrlBtn = document.getElementById("bg-image-url-btn");
+
+const bgVideoSourceRadios = document.querySelectorAll('input[name="bg-video-source-type"]');
+const bgVideoFileContainer = document.getElementById("bg-video-file-container");
+const bgVideoUrlContainer = document.getElementById("bg-video-url-container");
+const bgVideoUrlInput = document.getElementById("bg-video-url-input");
+const bgVideoUrlBtn = document.getElementById("bg-video-url-btn");
+
+bgImageSourceRadios.forEach(radio => {
+    radio.addEventListener("change", () => {
+        if (radio.checked) {
+            const isFile = radio.value === "file";
+            if (bgImageFileContainer) bgImageFileContainer.style.display = isFile ? "block" : "none";
+            if (bgImageUrlContainer) bgImageUrlContainer.style.display = isFile ? "none" : "block";
+        }
+    });
+});
+
+bgVideoSourceRadios.forEach(radio => {
+    radio.addEventListener("change", () => {
+        if (radio.checked) {
+            const isFile = radio.value === "file";
+            if (bgVideoFileContainer) bgVideoFileContainer.style.display = isFile ? "block" : "none";
+            if (bgVideoUrlContainer) bgVideoUrlContainer.style.display = isFile ? "none" : "block";
+        }
+    });
+});
+
+if (bgImageUrlBtn && bgImageUrlInput) {
+    bgImageUrlBtn.addEventListener("click", () => {
+        const url = bgImageUrlInput.value.trim();
+        if (url) {
+            setBgItem("obs-bible-image-url", url);
+            setBgItem("obs-bible-image-filename", `URL: ${url}`);
+            if (bgImageFilename) bgImageFilename.textContent = `URL: ${url}`;
+            setBackgroundMode("image");
+            syncBgFormToContentType();
+        }
+    });
+}
+
+if (bgVideoUrlBtn && bgVideoUrlInput) {
+    bgVideoUrlBtn.addEventListener("click", () => {
+        const url = bgVideoUrlInput.value.trim();
+        if (url) {
+            setBgItem("obs-bible-video-url", url);
+            setBgItem("obs-bible-video-filename", `URL: ${url}`);
+            if (bgVideoFilename) bgVideoFilename.textContent = `URL: ${url}`;
+            setBackgroundMode("video");
+            syncBgFormToContentType();
+        }
+    });
+}
+
 if (bgContentTypeSelect) {
     bgContentTypeSelect.addEventListener("change", syncBgFormToContentType);
 }
@@ -849,21 +992,17 @@ if (bgVideoRadio) {
 
 if (backgroundModeColor) {
     backgroundModeColor.addEventListener("change", () => {
-        if (!backgroundModeColor.checked) {
-            return;
-        }
+        if (!backgroundModeColor.checked) return;
         setBackgroundMode("plain");
-        openPlainBackgroundPicker();
+        syncBgFormToContentType();
     });
 }
 
 if (backgroundModeGradient) {
     backgroundModeGradient.addEventListener("change", () => {
-        if (!backgroundModeGradient.checked) {
-            return;
-        }
+        if (!backgroundModeGradient.checked) return;
         setBackgroundMode("gradient");
-        openGradientEditor();
+        syncBgFormToContentType();
     });
 }
 

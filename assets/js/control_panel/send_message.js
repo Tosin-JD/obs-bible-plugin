@@ -41,7 +41,7 @@ function sendMessage(senderChannel, message, contentType){
 document.getElementById("sendButton").addEventListener("click", () => {
   let messageInput = document.getElementById("messageInput").value;
   const message = processMessage(messageInput);
-  sendMessage(channel, message);
+  sendMessage(channel, message, "text");
   historyOfText.push(message);
 });
 
@@ -53,7 +53,7 @@ function doc_keyUp(e) {
   if (e.ctrlKey && e.code === 'ArrowDown' && lastSavedTab === "text") {
     let messageInput = document.getElementById("messageInput").value;
     const message = processMessage(messageInput);
-    sendMessage(channel, message);
+    sendMessage(channel, message, "text");
     historyOfText.push(message);
   }
 }
@@ -68,7 +68,7 @@ function doc_spaceBarUp(e) {
   if (e.code === 'Space' && lastSavedTab === "text" && spaceBarCheckBox.checked === true) {
     let messageInput = document.getElementById("messageInput").value;
     const message = processMessage(messageInput);
-    sendMessage(channel, message);
+    sendMessage(channel, message, "text");
     historyOfText.push(message);
   }
 }
@@ -111,7 +111,7 @@ const displaySongVerseByVerse = () => {
           currentSongVerseIndex = index;
           
           let verseMessage = processMessage(verse.innerHTML);
-          sendMessage(channel, verseMessage);
+          sendMessage(channel, verseMessage, "song");
           verse.classList.add("selected");
 
           songVerses.forEach((v, i) => {
@@ -127,7 +127,7 @@ const displaySongVerseByVerse = () => {
       if(currentSongVerseIndex > 0){
         currentSongVerseIndex--;
         const message = songVerses[currentSongVerseIndex].innerHTML;
-        sendMessage(channel, message);
+        sendMessage(channel, message, "song");
 
         // get the height of the display area
         const displayVerse = document.getElementById('song');
@@ -162,7 +162,7 @@ const displaySongVerseByVerse = () => {
       if(currentSongVerseIndex < songVerses.length -1){
         currentSongVerseIndex++;
         const message = songVerses[currentSongVerseIndex].innerHTML;
-        sendMessage(channel, message);
+        sendMessage(channel, message, "song");
 
         // get the height of the display area
         const displayVerse = document.getElementById('song');
@@ -188,7 +188,7 @@ const displaySongVerseByVerse = () => {
       }else{
         currentSongVerseIndex = 0;
         const message = songVerses[currentSongVerseIndex].innerHTML;
-        sendMessage(channel, message);
+        sendMessage(channel, message, "song");
         const currentVerse = songVerses[currentSongVerseIndex];
         const previousVerse = songVerses[songVerses.length - 1];
         previousVerse.classList.remove("selected");
@@ -266,11 +266,9 @@ const displaySongLineByLine = ()=>{
         currentLine = line;
         currentLineIndex = index;
         
-        if (event.target.tagName === "P") {
-          const message = processMessage(event.target.innerHTML);
-          sendMessage(channel, message);
-          event.target.classList.add("selected");
-        }
+        const message = processMessage(line.innerHTML);
+        sendMessage(channel, message, "song");
+        line.classList.add("selected");
         songLines.forEach((v, i) => {
           if (i !== index) {
             v.classList.remove("selected");
@@ -284,7 +282,7 @@ const displaySongLineByLine = ()=>{
     if(currentLineIndex > 0){
       currentLineIndex--;
       const message = songLines[currentLineIndex].innerText;
-      sendMessage(channel, message);
+      sendMessage(channel, message, "song");
 
       // get the height of the display area
       const displayLine = document.getElementById('song');
@@ -314,7 +312,7 @@ const displaySongLineByLine = ()=>{
     if (currentLineIndex < songLines.length -2){
       currentLineIndex++;
       const message = songLines[currentLineIndex].innerText;
-      sendMessage(channel, message);
+      sendMessage(channel, message, "song");
 
       // get the height of the display area
       const displayLine = document.getElementById('song');
@@ -338,7 +336,7 @@ const displaySongLineByLine = ()=>{
     }else{
       currentLineIndex = 0;
       const message = songLines[currentLineIndex].innerText;
-      sendMessage(channel, message);
+      sendMessage(channel, message, "song");
       const currentLine = songLines[currentLineIndex];
       const previousLine = songLines[songLines.length - 1];
       previousLine.classList.remove("selected");
@@ -448,6 +446,45 @@ const displaySong = () => {
 document.getElementById("obs-bible-display-song-line-by-line")?.addEventListener("change", () => {
     initializeSongDisplayMode();
 });
+
+// Event delegation for song display clicks
+document.addEventListener("DOMContentLoaded", () => {
+    const songDisplayContainer = document.getElementById("song-display");
+    if (songDisplayContainer) {
+        songDisplayContainer.addEventListener("click", (event) => {
+            const displayLineByLine = document.getElementById("obs-bible-display-song-line-by-line");
+            const isLineByLine = displayLineByLine && displayLineByLine.checked === true;
+
+            if (isLineByLine) {
+                const targetLine = event.target.closest("p");
+                if (!targetLine || !songDisplayContainer.contains(targetLine)) return;
+
+                const allLines = Array.from(songDisplayContainer.querySelectorAll("p"));
+                allLines.forEach(l => l.classList.remove("selected"));
+                targetLine.classList.add("selected");
+
+                const message = processMessage(targetLine.innerHTML);
+                sendMessage(channel, message, "song");
+            } else {
+                const targetVerse = event.target.closest("div.verse, div.chorus, div");
+                if (!targetVerse || targetVerse.id === "song-display" || !songDisplayContainer.contains(targetVerse)) return;
+
+                const allVerses = Array.from(songDisplayContainer.children).filter(child => child.tagName === "DIV");
+                allVerses.forEach(v => v.classList.remove("selected"));
+                targetVerse.classList.add("selected");
+
+                const message = processMessage(targetVerse.innerHTML);
+                sendMessage(channel, message, "song");
+            }
+        });
+    }
+    displaySong();
+});
+
+// Initialize song display immediately if DOM is already ready
+if (document.readyState === "complete" || document.readyState === "interactive") {
+    setTimeout(displaySong, 100);
+}
 
 
 
