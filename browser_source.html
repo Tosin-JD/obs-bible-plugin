@@ -20,7 +20,66 @@
   <script>
     const bgContainer = document.getElementById("bg-container");
     const messageDisplay = document.getElementById("messageDisplay");
+    const bgVideo = document.getElementById("bg-video");
     let currentContentType = null;
+
+    if (bgVideo) {
+      bgVideo.loop = true;
+      bgVideo.muted = true;
+      bgVideo.playsInline = true;
+
+      const loopVideo = () => {
+        bgVideo.currentTime = 0;
+        const p = bgVideo.play();
+        if (p !== undefined) {
+          p.catch(() => {
+            try {
+              bgVideo.load();
+              bgVideo.play().catch(() => {});
+            } catch (e) {}
+          });
+        }
+      };
+
+      bgVideo.addEventListener("ended", loopVideo);
+      bgVideo.addEventListener("pause", () => {
+        if (bgVideo.style.display !== "none" && bgVideo.duration > 0 && bgVideo.currentTime >= bgVideo.duration - 0.5) {
+          loopVideo();
+        }
+      });
+    }
+
+    const idbMedia = {
+      dbPromise: null,
+      init() {
+        if (!this.dbPromise) {
+          this.dbPromise = new Promise((resolve) => {
+            try {
+              const req = indexedDB.open("obs_bible_media_store", 1);
+              req.onupgradeneeded = () => req.result.createObjectStore("media");
+              req.onsuccess = () => resolve(req.result);
+              req.onerror = () => resolve(null);
+            } catch (e) {
+              resolve(null);
+            }
+          });
+        }
+        return this.dbPromise;
+      },
+      async get(key) {
+        const db = await this.init();
+        if (db) {
+          const tx = db.transaction("media", "readonly");
+          const req = tx.objectStore("media").get(key);
+          const res = await new Promise((r) => {
+            req.onsuccess = () => r(req.result);
+            req.onerror = () => r(null);
+          });
+          if (res !== undefined && res !== null) return res;
+        }
+        return localStorage.getItem(key);
+      }
+    };
 
     function hexToRgba(hex, alpha) {
       if (!hex) return "rgba(0, 0, 0, 1)";
@@ -33,77 +92,92 @@
       return `rgba(${r}, ${g}, ${b}, ${a})`;
     }
 
-    function applyBackgroundForType(contentType, force = false) {
+    async function applyBackgroundForType(contentType) {
       if (!contentType) contentType = currentContentType || "text";
-      if (!force && contentType === currentContentType) {
-        return; // Background is already active for this content type! Keep background completely stable!
-      }
       currentContentType = contentType;
 
-      const bgMode = localStorage.getItem(`obs-bible-background-mode_${contentType}`);
-
-      // If no per-tab mode is defined or mode is "none", keep the user's active global background (Color / Gradient) stable
-      if (!bgMode || bgMode === "none") {
-        const bgVideo = document.getElementById("bg-video");
-        const bgImage = document.getElementById("bg-image");
-        if (bgVideo) bgVideo.style.display = "none";
-        if (bgImage) bgImage.style.display = "none";
-
-        const globalGradient = localStorage.getItem('obs-bible-gradient-css');
-        const bgGradient = document.getElementById("bg-gradient");
-        if (globalGradient && bgGradient) {
-          bgGradient.style.backgroundImage = globalGradient;
-          bgGradient.style.display = "block";
-          bgContainer.style.backgroundColor = "transparent";
-        } else {
-          if (bgGradient) bgGradient.style.display = "none";
-          const globalBg = localStorage.getItem('bgColor') || localStorage.getItem('rawBgColor') || "rgba(0, 0, 0, 0.85)";
-          bgContainer.style.backgroundColor = globalBg;
-        }
-        return;
-      }
-
-      const bgVideo = document.getElementById("bg-video");
+      const rawMode = (await idbMedia.get(`obs-bible-background-mode_${contentType}`)) || localStorage.getItem(`obs-bible-background-mode_${contentType}`);
+      const bgMode = rawMode || localStorage.getItem("obs-bible-background-mode") || "plain";
       const bgImage = document.getElementById("bg-image");
       const bgGradient = document.getElementById("bg-gradient");
 
-      if (bgVideo) bgVideo.style.display = "none";
-      if (bgImage) bgImage.style.display = "none";
-      if (bgGradient) bgGradient.style.display = "none";
-      bgContainer.style.backgroundColor = "transparent";
+      // Handle Video background smoothly without blinking or interrupting active playback
+      let targetVideoUrl = null;
+      if (bgMode === "video") {
+        targetVideoUrl = (await idbMedia.get(`obs-bible-video-url_${contentType}`)) || (await idbMedia.get("obs-bible-video-url")) || localStorage.getItem(`obs-bible-video-url_${contentType}`) || localStorage.getItem("obs-bible-video-url");
+      }
 
+      if (bgVideo && bgImage) {
+        if (bgMode === "video" && targetVideoUrl) {
+          const isGif = targetVideoUrl.toLowerCase().includes('.gif') || targetVideoUrl.startsWith('data:image/gif');
+          if (isGif) {
+            bgImage.style.backgroundImage = `url("${targetVideoUrl}")`;
+            bgImage.style.display = "block";
+            bgVideo.style.display = "none";
+            bgVideo.dataset.loadedSrc = "";
+          } else {
+            bgImage.style.display = "none";
+            if (bgVideo.dataset.loadedSrc !== targetVideoUrl) {
+              bgVideo.src = targetVideoUrl;
+              bgVideo.dataset.loadedSrc = targetVideoUrl;
+              bgVideo.loop = true;
+              bgVideo.muted = true;
+              bgVideo.style.display = "block";
+              bgVideo.load();
+              bgVideo.play().catch(e => console.error("Video play error:", e));
+            } else {
+              bgVideo.style.display = "block";
+              if (bgVideo.paused) {
+                bgVideo.play().catch(e => console.error("Video play error:", e));
+              }
+            }
+          }
+        } else {
+          bgVideo.style.display = "none";
+          bgVideo.dataset.loadedSrc = "";
+        }
+      }
+
+      // Handle Image background
+      if (bgImage && bgMode !== "video") {
+        if (bgMode === "image") {
+          const imgUrl = localStorage.getItem(`obs-bible-image-url_${contentType}`) || localStorage.getItem("obs-bible-image-url");
+          if (imgUrl) {
+            bgImage.style.backgroundImage = `url("${imgUrl}")`;
+            bgImage.style.display = "block";
+          } else {
+            bgImage.style.display = "none";
+          }
+        } else {
+          bgImage.style.display = "none";
+        }
+      }
+
+      // Handle Gradient background
+      if (bgGradient) {
+        if (bgMode === "gradient") {
+          const gradientCss = localStorage.getItem(`obs-bible-gradient-css_${contentType}`) || localStorage.getItem('obs-bible-gradient-css');
+          if (gradientCss) {
+            bgGradient.style.backgroundImage = gradientCss;
+            bgGradient.style.display = "block";
+          } else {
+            bgGradient.style.display = "none";
+          }
+        } else {
+          bgGradient.style.display = "none";
+        }
+      }
+
+      // Handle Container Background Color
       if (bgMode === "plain") {
         const rawColor = localStorage.getItem(`obs-bible-bg-color_${contentType}`) || localStorage.getItem('rawBgColor') || localStorage.getItem('bgColor') || "#000000";
         const opacity = localStorage.getItem(`obs-bible-bg-opacity_${contentType}`) || localStorage.getItem('savedOpacity') || "1";
         bgContainer.style.backgroundColor = hexToRgba(rawColor, opacity);
-      } else if (bgMode === "gradient") {
-        const gradientCss = localStorage.getItem(`obs-bible-gradient-css_${contentType}`) || localStorage.getItem('obs-bible-gradient-css');
-        if (gradientCss && bgGradient) {
-          bgGradient.style.backgroundImage = gradientCss;
-          bgGradient.style.display = "block";
-        } else {
-          const globalBg = localStorage.getItem('bgColor') || localStorage.getItem('rawBgColor') || "rgba(0, 0, 0, 0.85)";
-          bgContainer.style.backgroundColor = globalBg;
-        }
-      } else if (bgMode === "image") {
-        const imgUrl = localStorage.getItem(`obs-bible-image-url_${contentType}`);
-        if (imgUrl && bgImage) {
-          bgImage.style.backgroundImage = `url("${imgUrl}")`;
-          bgImage.style.display = "block";
-        } else {
-          const globalBg = localStorage.getItem('bgColor') || localStorage.getItem('rawBgColor') || "rgba(0, 0, 0, 0.85)";
-          bgContainer.style.backgroundColor = globalBg;
-        }
-      } else if (bgMode === "video") {
-        const videoUrl = localStorage.getItem(`obs-bible-video-url_${contentType}`);
-        if (videoUrl && bgVideo) {
-          if (bgVideo.src !== videoUrl) bgVideo.src = videoUrl;
-          bgVideo.style.display = "block";
-          bgVideo.play().catch(e => console.error("Video play error:", e));
-        } else {
-          const globalBg = localStorage.getItem('bgColor') || localStorage.getItem('rawBgColor') || "rgba(0, 0, 0, 0.85)";
-          bgContainer.style.backgroundColor = globalBg;
-        }
+      } else if (bgMode === "image" || bgMode === "video" || bgMode === "gradient") {
+        bgContainer.style.backgroundColor = "transparent";
+      } else {
+        const globalBg = localStorage.getItem('bgColor') || localStorage.getItem('rawBgColor') || "rgba(0, 0, 0, 0.85)";
+        bgContainer.style.backgroundColor = globalBg;
       }
     }
 

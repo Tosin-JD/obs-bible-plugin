@@ -97,14 +97,56 @@ function getBgContentType() {
     return "text";
 }
 
+const idbMedia = {
+  dbPromise: null,
+  init() {
+    if (!this.dbPromise) {
+      this.dbPromise = new Promise((resolve) => {
+        try {
+          const req = indexedDB.open("obs_bible_media_store", 1);
+          req.onupgradeneeded = () => req.result.createObjectStore("media");
+          req.onsuccess = () => resolve(req.result);
+          req.onerror = () => resolve(null);
+        } catch (e) {
+          resolve(null);
+        }
+      });
+    }
+    return this.dbPromise;
+  },
+  async set(key, val) {
+    try { localStorage.setItem(key, val); } catch (e) {}
+    const db = await this.init();
+    if (db) {
+      const tx = db.transaction("media", "readwrite");
+      tx.objectStore("media").put(val, key);
+    }
+  },
+  async get(key) {
+    const db = await this.init();
+    if (db) {
+      const tx = db.transaction("media", "readonly");
+      const req = tx.objectStore("media").get(key);
+      const res = await new Promise((r) => {
+        req.onsuccess = () => r(req.result);
+        req.onerror = () => r(null);
+      });
+      if (res !== undefined && res !== null) return res;
+    }
+    return localStorage.getItem(key);
+  }
+};
+
 function setBgItem(keyName, val) {
     const contentType = getBgContentType();
-    localStorage.setItem(`${keyName}_${contentType}`, val);
+    const fullKey = `${keyName}_${contentType}`;
+    idbMedia.set(fullKey, val);
 }
 
 function getBgItem(keyName) {
     const contentType = getBgContentType();
-    return localStorage.getItem(`${keyName}_${contentType}`) || localStorage.getItem(keyName);
+    const fullKey = `${keyName}_${contentType}`;
+    return localStorage.getItem(fullKey) || localStorage.getItem(keyName);
 }
 
 function removeBgItem(keyName) {
