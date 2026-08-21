@@ -734,9 +734,86 @@ const bgNoneRadio = document.getElementById("background-mode-none");
 const bgImageRadio = document.getElementById("background-mode-image");
 const bgVideoRadio = document.getElementById("background-mode-video");
 
+const bgImageSection = document.getElementById("bg-image-section");
+const bgVideoSection = document.getElementById("bg-video-section");
+const bgImageFileInput = document.getElementById("bg-image-file-input");
+const bgImageFileBtn = document.getElementById("bg-image-file-btn");
+const bgImageFilename = document.getElementById("bg-image-filename");
+const bgVideoFileInput = document.getElementById("bg-video-file-input");
+const bgVideoFileBtn = document.getElementById("bg-video-file-btn");
+const bgVideoFilename = document.getElementById("bg-video-filename");
+
+const bibleBgBtn = document.getElementById("bible-bg-btn");
+const songBgBtn = document.getElementById("song-bg-btn");
+
 function syncBgFormToContentType() {
     syncBackgroundModeRadios();
+    const mode = getBackgroundMode();
+
+    if (bgImageSection) bgImageSection.style.display = (mode === "image") ? "block" : "none";
+    if (bgVideoSection) bgVideoSection.style.display = (mode === "video") ? "block" : "none";
+
+    const savedImageName = getBgItem("obs-bible-image-filename");
+    if (bgImageFilename) bgImageFilename.textContent = savedImageName || (getBgItem("obs-bible-image-url") ? "Saved Image Loaded" : "No image chosen");
+
+    const savedVideoName = getBgItem("obs-bible-video-filename");
+    if (bgVideoFilename) bgVideoFilename.textContent = savedVideoName || (getBgItem("obs-bible-video-url") ? "Saved Video Loaded" : "No video chosen");
+
     updateBackgroundPreviews();
+}
+
+if (bibleBgBtn) {
+    bibleBgBtn.addEventListener("click", () => {
+        if (bgContentTypeSelect) bgContentTypeSelect.value = "bible";
+        openBackgroundModeModal();
+        syncBgFormToContentType();
+    });
+}
+
+if (songBgBtn) {
+    songBgBtn.addEventListener("click", () => {
+        if (bgContentTypeSelect) bgContentTypeSelect.value = "song";
+        openBackgroundModeModal();
+        syncBgFormToContentType();
+    });
+}
+
+if (bgImageFileBtn && bgImageFileInput) {
+    bgImageFileBtn.addEventListener("click", () => bgImageFileInput.click());
+    bgImageFileInput.addEventListener("change", (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            if (bgImageFilename) bgImageFilename.textContent = file.name;
+            setBgItem("obs-bible-image-filename", file.name);
+            const reader = new FileReader();
+            reader.onload = (evt) => {
+                const dataUrl = evt.target.result;
+                setBgItem("obs-bible-image-url", dataUrl);
+                setBackgroundMode("image");
+                syncBgFormToContentType();
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+}
+
+if (bgVideoFileBtn && bgVideoFileInput) {
+    bgVideoFileBtn.addEventListener("click", () => bgVideoFileInput.click());
+    bgVideoFileInput.addEventListener("change", (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            if (bgVideoFilename) bgVideoFilename.textContent = file.name;
+            setBgItem("obs-bible-video-filename", file.name);
+            const reader = new FileReader();
+            reader.onload = (evt) => {
+                const dataUrl = evt.target.result;
+                setBgItem("obs-bible-video-url", dataUrl);
+                setBackgroundMode("video");
+                syncBgFormToContentType();
+            };
+            reader.readAsDataURL(file);
+        }
+    });
 }
 
 if (bgContentTypeSelect) {
@@ -747,6 +824,7 @@ if (bgNoneRadio) {
     bgNoneRadio.addEventListener("change", () => {
         if (bgNoneRadio.checked) {
             setBackgroundMode("none");
+            syncBgFormToContentType();
         }
     });
 }
@@ -755,6 +833,7 @@ if (bgImageRadio) {
     bgImageRadio.addEventListener("change", () => {
         if (bgImageRadio.checked) {
             setBackgroundMode("image");
+            syncBgFormToContentType();
         }
     });
 }
@@ -763,6 +842,7 @@ if (bgVideoRadio) {
     bgVideoRadio.addEventListener("change", () => {
         if (bgVideoRadio.checked) {
             setBackgroundMode("video");
+            syncBgFormToContentType();
         }
     });
 }

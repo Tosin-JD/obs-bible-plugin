@@ -57,7 +57,12 @@ DoubleClick on History erase all previous text"></textarea>
                   <button id="history" class="bible-input no-border primary bible-version rounded tooltip tooltip-right"  data-tooltip="Get all the bible passages displayed so far">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="17" height="17">
                       <path class="icons" d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9L0 168c0 13.3 10.7 24 24 24l110.1 0c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24l0 104c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65 0-94.1c0-13.3-10.7-24-24-24z"/>
-                  </svg>
+                    </svg>
+                  </button>
+                  <button type="button" id="bible-bg-btn" class="bible-input no-border primary bible-version rounded tooltip tooltip-right" data-tooltip="Configure background for Bible tab">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="17" height="17">
+                      <path class="icons" d="M512 256c0 141.4-114.6 256-256 256s-256-114.6-256-256S114.6 0 256 0s256 114.6 256 256zM216 128c-13.3 0-24 10.7-24 24s10.7 24 24 24 24-10.7 24-24-10.7-24-24-24zm-96 96c-13.3 0-24 10.7-24 24s10.7 24 24 24 24-10.7 24-24-10.7-24-24-24zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24 24-10.7 24-24-10.7-24-24-24zm192-192c-13.3 0-24 10.7-24 24s10.7 24 24 24 24-10.7 24-24-10.7-24-24-24z"/>
+                    </svg>
                   </button>
                 </div>
                 <div class="row  bible-input">
@@ -123,6 +128,11 @@ DoubleClick on History erase all previous text"></textarea>
                   </svg>
                 </label>
                 <input type="file" id="song-file-upload" accept=".txt">
+                <button type="button" id="song-bg-btn" class="btn-file-upload tooltip tooltip-left" data-tooltip="Configure background for Songs tab" style="background: none; border: none; cursor: pointer; padding: 6px;">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="17" height="17">
+                    <path class="icons" d="M512 256c0 141.4-114.6 256-256 256s-256-114.6-256-256S114.6 0 256 0s256 114.6 256 256zM216 128c-13.3 0-24 10.7-24 24s10.7 24 24 24 24-10.7 24-24-10.7-24-24-24zm-96 96c-13.3 0-24 10.7-24 24s10.7 24 24 24 24-10.7 24-24-10.7-24-24-24zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24 24-10.7 24-24-10.7-24-24-24zm192-192c-13.3 0-24 10.7-24 24s10.7 24 24 24 24-10.7 24-24-10.7-24-24-24z"/>
+                  </svg>
+                </button>
               </div>
             </div>
             <div class="song selected" id="song">
@@ -512,6 +522,22 @@ DoubleClick on History erase all previous text"></textarea>
                 <div class="gradient-section">
                   <div class="gradient-section-title">Background Opacity</div>
                   <input type="range" min="0" max="20" value="20" class="slider background-opacity-slider" id="bg-opacity" data-bg-opacity-control="plain">
+                </div>
+                <div class="gradient-section" id="bg-image-section" style="display:none; margin-top: 12px;">
+                  <div class="gradient-section-title">Background Image File</div>
+                  <div class="row" style="gap: 8px; align-items: center; margin-top: 6px;">
+                    <input type="file" id="bg-image-file-input" accept="image/*" style="display:none;">
+                    <button type="button" class="btn primary" id="bg-image-file-btn" style="padding: 6px 12px; font-size: 12px; cursor: pointer;">Choose Image</button>
+                    <span id="bg-image-filename" style="font-size: 11px; opacity: 0.8; word-break: break-all;">No image chosen</span>
+                  </div>
+                </div>
+                <div class="gradient-section" id="bg-video-section" style="display:none; margin-top: 12px;">
+                  <div class="gradient-section-title">Background Video File</div>
+                  <div class="row" style="gap: 8px; align-items: center; margin-top: 6px;">
+                    <input type="file" id="bg-video-file-input" accept="video/*" style="display:none;">
+                    <button type="button" class="btn primary" id="bg-video-file-btn" style="padding: 6px 12px; font-size: 12px; cursor: pointer;">Choose Video</button>
+                    <span id="bg-video-filename" style="font-size: 11px; opacity: 0.8; word-break: break-all;">No video chosen</span>
+                  </div>
                 </div>
               </div>
             </div>
