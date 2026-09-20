@@ -8,8 +8,11 @@
 </head>
 <body>
   <div class="bg-container" id="bg-container">
-    <div class="container" id="container">
-      <p id="messageDisplay" class=""></p>
+    <video id="bg-video" autoplay loop muted playsinline style="position: absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; z-index:0; display:none; border-radius: inherit;"></video>
+    <div id="bg-image" style="position: absolute; top:0; left:0; width:100%; height:100%; background-size:cover; background-position:center; z-index:0; display:none; border-radius: inherit;"></div>
+    <div id="bg-gradient" style="position: absolute; top:0; left:0; width:100%; height:100%; z-index:0; display:none; border-radius: inherit;"></div>
+    <div class="container" id="container" style="position: relative; z-index:1;">
+      <div id="messageDisplay" class=""></div>
     </div>
   </div>
 
@@ -17,14 +20,179 @@
   <script>
     const bgContainer = document.getElementById("bg-container");
     const messageDisplay = document.getElementById("messageDisplay");
-    // const messageTitle = document.getElementById("messageTitle");
+    const bgVideo = document.getElementById("bg-video");
+    let currentContentType = null;
+
+    if (bgVideo) {
+      bgVideo.loop = true;
+      bgVideo.muted = true;
+      bgVideo.playsInline = true;
+
+      const loopVideo = () => {
+        bgVideo.currentTime = 0;
+        const p = bgVideo.play();
+        if (p !== undefined) {
+          p.catch(() => {
+            try {
+              bgVideo.load();
+              bgVideo.play().catch(() => {});
+            } catch (e) {}
+          });
+        }
+      };
+
+      bgVideo.addEventListener("ended", loopVideo);
+      bgVideo.addEventListener("pause", () => {
+        if (bgVideo.style.display !== "none" && bgVideo.duration > 0 && bgVideo.currentTime >= bgVideo.duration - 0.5) {
+          loopVideo();
+        }
+      });
+    }
+
+    const idbMedia = {
+      dbPromise: null,
+      init() {
+        if (!this.dbPromise) {
+          this.dbPromise = new Promise((resolve) => {
+            try {
+              const req = indexedDB.open("obs_bible_media_store", 1);
+              req.onupgradeneeded = () => req.result.createObjectStore("media");
+              req.onsuccess = () => resolve(req.result);
+              req.onerror = () => resolve(null);
+            } catch (e) {
+              resolve(null);
+            }
+          });
+        }
+        return this.dbPromise;
+      },
+      async get(key) {
+        const db = await this.init();
+        if (db) {
+          const tx = db.transaction("media", "readonly");
+          const req = tx.objectStore("media").get(key);
+          const res = await new Promise((r) => {
+            req.onsuccess = () => r(req.result);
+            req.onerror = () => r(null);
+          });
+          if (res !== undefined && res !== null) return res;
+        }
+        return localStorage.getItem(key);
+      }
+    };
+
+    function hexToRgba(hex, alpha) {
+      if (!hex) return "rgba(0, 0, 0, 1)";
+      hex = hex.replace(/^#/, '');
+      let r = parseInt(hex.substring(0, 2), 16) || 0;
+      let g = parseInt(hex.substring(2, 4), 16) || 0;
+      let b = parseInt(hex.substring(4, 6), 16) || 0;
+      let a = parseFloat(alpha);
+      if (isNaN(a) || a < 0 || a > 1) a = 1;
+      return `rgba(${r}, ${g}, ${b}, ${a})`;
+    }
+
+    async function applyBackgroundForType(contentType) {
+      if (!contentType) contentType = currentContentType || "text";
+      currentContentType = contentType;
+
+      const rawMode = (await idbMedia.get(`obs-bible-background-mode_${contentType}`)) || localStorage.getItem(`obs-bible-background-mode_${contentType}`);
+      const bgMode = rawMode || localStorage.getItem("obs-bible-background-mode") || "plain";
+      const bgImage = document.getElementById("bg-image");
+      const bgGradient = document.getElementById("bg-gradient");
+
+      // Handle Video background smoothly without blinking or interrupting active playback
+      let targetVideoUrl = null;
+      if (bgMode === "video") {
+        targetVideoUrl = (await idbMedia.get(`obs-bible-video-url_${contentType}`)) || (await idbMedia.get("obs-bible-video-url")) || localStorage.getItem(`obs-bible-video-url_${contentType}`) || localStorage.getItem("obs-bible-video-url");
+      }
+
+      if (bgVideo && bgImage) {
+        if (bgMode === "video" && targetVideoUrl) {
+          const isGif = targetVideoUrl.toLowerCase().includes('.gif') || targetVideoUrl.startsWith('data:image/gif');
+          if (isGif) {
+            bgImage.style.backgroundImage = `url("${targetVideoUrl}")`;
+            bgImage.style.display = "block";
+            bgVideo.style.display = "none";
+            bgVideo.dataset.loadedSrc = "";
+          } else {
+            bgImage.style.display = "none";
+            if (bgVideo.dataset.loadedSrc !== targetVideoUrl) {
+              bgVideo.src = targetVideoUrl;
+              bgVideo.dataset.loadedSrc = targetVideoUrl;
+              bgVideo.loop = true;
+              bgVideo.muted = true;
+              bgVideo.style.display = "block";
+              bgVideo.load();
+              bgVideo.play().catch(e => console.error("Video play error:", e));
+            } else {
+              bgVideo.style.display = "block";
+              if (bgVideo.paused) {
+                bgVideo.play().catch(e => console.error("Video play error:", e));
+              }
+            }
+          }
+        } else {
+          bgVideo.style.display = "none";
+          bgVideo.dataset.loadedSrc = "";
+        }
+      }
+
+      // Handle Image background
+      if (bgImage && bgMode !== "video") {
+        if (bgMode === "image") {
+          const imgUrl = localStorage.getItem(`obs-bible-image-url_${contentType}`) || localStorage.getItem("obs-bible-image-url");
+          if (imgUrl) {
+            bgImage.style.backgroundImage = `url("${imgUrl}")`;
+            bgImage.style.display = "block";
+          } else {
+            bgImage.style.display = "none";
+          }
+        } else {
+          bgImage.style.display = "none";
+        }
+      }
+
+      // Handle Gradient background
+      if (bgGradient) {
+        if (bgMode === "gradient") {
+          const gradientCss = localStorage.getItem(`obs-bible-gradient-css_${contentType}`) || localStorage.getItem('obs-bible-gradient-css');
+          if (gradientCss) {
+            bgGradient.style.backgroundImage = gradientCss;
+            bgGradient.style.display = "block";
+          } else {
+            bgGradient.style.display = "none";
+          }
+        } else {
+          bgGradient.style.display = "none";
+        }
+      }
+
+      // Handle Container Background Color
+      if (bgMode === "plain") {
+        const rawColor = localStorage.getItem(`obs-bible-bg-color_${contentType}`) || localStorage.getItem('rawBgColor') || localStorage.getItem('bgColor') || "#000000";
+        const opacity = localStorage.getItem(`obs-bible-bg-opacity_${contentType}`) || localStorage.getItem('savedOpacity') || "1";
+        bgContainer.style.backgroundColor = hexToRgba(rawColor, opacity);
+      } else if (bgMode === "image" || bgMode === "video" || bgMode === "gradient") {
+        bgContainer.style.backgroundColor = "transparent";
+      } else {
+        const globalBg = localStorage.getItem('bgColor') || localStorage.getItem('rawBgColor') || "rgba(0, 0, 0, 0.85)";
+        bgContainer.style.backgroundColor = globalBg;
+      }
+    }
 
     // Text channel
     const channel = new BroadcastChannel("myChannel");
     channel.onmessage = (event) => {
-      const message = event.data;
-      updateMessage('messageDisplay', message);
-      // messageDisplay.innerHTML = message;
+      let data = event.data;
+      let contentType = "text";
+      if (typeof data === "object" && data !== null) {
+        contentType = data.contentType || "text";
+      } else {
+        data = { fadein: false, messageContent: data, contentType: "text" };
+      }
+      applyBackgroundForType(contentType);
+      updateMessage('messageDisplay', data);
 
       if (savedTitleColor) {
           const dspans = document.querySelectorAll("#messageDisplay span");
@@ -36,6 +204,9 @@
     const settingsChannel = new BroadcastChannel("settings");
     settingsChannel.onmessage = (event) => {
        if (event.data) {
+          if (event.data.bgUpdateContentType) {
+            applyBackgroundForType(event.data.bgUpdateContentType, true);
+          }
           if (event.data.selectedFont){
             bgContainer.style.fontFamily = event.data.selectedFont;
             localStorage.setItem('fontFamily', event.data.selectedFont);
@@ -45,16 +216,43 @@
             localStorage.setItem('bgColor', event.data.opacityColor);
           }
           if (event.data.gradientBackground){
+            const bgGradient = document.getElementById("bg-gradient");
+            if (bgGradient) {
+              bgGradient.style.backgroundImage = event.data.gradientBackground;
+              bgGradient.style.display = "block";
+            }
+            if (bgVideo) bgVideo.style.display = "none";
+            const bgImage = document.getElementById("bg-image");
+            if (bgImage) bgImage.style.display = "none";
             bgContainer.style.backgroundImage = event.data.gradientBackground;
             bgContainer.style.backgroundColor = "transparent";
             localStorage.setItem('obs-bible-gradient-css', event.data.gradientBackground);
+            if (currentContentType) {
+              localStorage.setItem(`obs-bible-gradient-css_${currentContentType}`, event.data.gradientBackground);
+              localStorage.setItem(`obs-bible-background-mode_${currentContentType}`, "gradient");
+            }
+            localStorage.setItem('obs-bible-background-mode', "gradient");
           }
           if (event.data.clearGradient){
+            const bgGradient = document.getElementById("bg-gradient");
+            if (bgGradient) {
+              bgGradient.style.backgroundImage = "none";
+              bgGradient.style.display = "none";
+            }
             bgContainer.style.backgroundImage = "none";
             localStorage.removeItem('obs-bible-gradient-css');
+            if (currentContentType) {
+              localStorage.removeItem(`obs-bible-gradient-css_${currentContentType}`);
+            }
           }
-          if (event.data.roundedCorner){
-            bgContainer.style.borderRadius = event.data.roundedCorner + "px";
+          if (event.data.roundedCorner !== undefined){
+            const radiusPx = event.data.roundedCorner + "px";
+            bgContainer.style.borderRadius = radiusPx;
+            if (bgVideo) bgVideo.style.borderRadius = radiusPx;
+            const bgImage = document.getElementById("bg-image");
+            if (bgImage) bgImage.style.borderRadius = radiusPx;
+            const bgGradient = document.getElementById("bg-gradient");
+            if (bgGradient) bgGradient.style.borderRadius = radiusPx;
             localStorage.setItem('borderRadius', event.data.roundedCorner);
           }
           if (event.data.selectedBgColor){

@@ -107,7 +107,9 @@ if (savedAnimationData) {
 
 if (savedRawBgColor) {
     let defaultBgColor = document.getElementById("bgColor");
-    defaultBgColor.setAttribute("value", savedRawBgColor);
+    if (defaultBgColor) {
+        defaultBgColor.setAttribute("value", savedRawBgColor);
+    }
 }
 
 if (savedRawFontColor) {
@@ -294,5 +296,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 loadCheckboxes();
+if (typeof syncBgFormToContentType === "function") {
+    syncBgFormToContentType();
+}
 loadSavedBorder();
 loadFontStroke();

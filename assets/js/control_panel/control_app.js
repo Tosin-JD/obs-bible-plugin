@@ -13,19 +13,38 @@ function openTab(tabName) {
     selectedTab.style.display = "flex";
     selectedTab.classList.add("selected");
     localStorage.setItem("selectedTab", tabName);
+    if (tabName !== "setBg") {
+      localStorage.setItem("lastContentTab", tabName);
+    } else {
+      const savedSettingsTab = localStorage.getItem("obs-bible-selectedSettingTab") || "settings-general";
+      openSettingTab(savedSettingsTab);
+    }
   }
 }
 
 function openSettingTab(tabName) {
+  if (!tabName || tabName === "settings-background") tabName = "settings-general";
   var tabs = document.getElementsByClassName("settings-tab-area");
   for (var i = 0; i < tabs.length; i++) {
     tabs[i].style.display = "none";
   }
   var selectedTab = document.getElementById(tabName);
+  if (!selectedTab) {
+    selectedTab = document.getElementById("settings-general");
+    tabName = "settings-general";
+  }
   if (selectedTab) {
     selectedTab.style.display = "flex";
     selectedTab.classList.add("selected-setting-tab");
     localStorage.setItem("obs-bible-selectedSettingTab", tabName);
+
+    Array.from(document.getElementsByClassName("settings-tab-button")).forEach(btn => {
+      if (btn.dataset.settings === tabName) {
+        btn.classList.add("selected-setting-tab");
+      } else {
+        btn.classList.remove("selected-setting-tab");
+      }
+    });
   }
 }
 
@@ -81,20 +100,10 @@ function openSavedTab() {
       }
     });
   }
-  if (savedSettingsTab) {
+  if (savedSettingsTab && savedSettingsTab !== "settings-background") {
     openSettingTab(savedSettingsTab);
-    settingsTabButtons.forEach(settingsButton => {
-      if(settingsButton.dataset.settings === savedSettingsTab){
-        settingsButton.classList.add("selected-setting-tab");
-      }
-    });
   } else {
     openSettingTab("settings-general");
-    settingsTabButtons.forEach(settingsButton => {
-      if(settingsButton.dataset.settings === "settings-general"){
-        settingsButton.classList.add("selected-setting-tab");
-      }
-    });
   }
 }
 

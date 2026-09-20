@@ -61,16 +61,14 @@ if (savedAnimationData) {
 
 }
 
-if (savedMessage){
+if (savedMessage && savedMessage !== "undefined" && savedMessage !== "null"){
     messageDisplay.innerHTML = savedMessage;
+} else {
+    messageDisplay.innerHTML = "";
+    localStorage.removeItem('savedMessage');
 }
 
-if (savedGradientCss) {
-    bgContainer.style.backgroundImage = savedGradientCss;
-    bgContainer.style.backgroundColor = "transparent";
-} else if (savedBgColor) {
-    bgContainer.style.backgroundColor = savedBgColor;
-}
+// Background rendering is handled dynamically by applyBackgroundForType() in browser_source.html
 
 if (savedFontFamily) {
     bgContainer.style.fontFamily = savedFontFamily;
@@ -81,7 +79,14 @@ if (savedFontColor) {
 }
 
 if (savedBorderRadius) {
-    bgContainer.style.borderRadius = savedBorderRadius + "px";
+    const radiusPx = savedBorderRadius + "px";
+    bgContainer.style.borderRadius = radiusPx;
+    const bgVideoEl = document.getElementById("bg-video");
+    if (bgVideoEl) bgVideoEl.style.borderRadius = radiusPx;
+    const bgImageEl = document.getElementById("bg-image");
+    if (bgImageEl) bgImageEl.style.borderRadius = radiusPx;
+    const bgGradientEl = document.getElementById("bg-gradient");
+    if (bgGradientEl) bgGradientEl.style.borderRadius = radiusPx;
 }
 
 if (savedTitleColor) {
@@ -112,5 +117,8 @@ if (savedShadowColor) {
 
 if (savedBgMargin){
     messageDisplay.style.padding = savedBgMargin + "px";
+}
+if (typeof applyBackgroundForType === "function") {
+    applyBackgroundForType();
 }
 adjustFontSizeBasedOnScroll();

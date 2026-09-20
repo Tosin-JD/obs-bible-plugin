@@ -57,7 +57,7 @@ DoubleClick on History erase all previous text"></textarea>
                   <button id="history" class="bible-input no-border primary bible-version rounded tooltip tooltip-right"  data-tooltip="Get all the bible passages displayed so far">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="17" height="17">
                       <path class="icons" d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9L0 168c0 13.3 10.7 24 24 24l110.1 0c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24l0 104c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65 0-94.1c0-13.3-10.7-24-24-24z"/>
-                  </svg>
+                    </svg>
                   </button>
                 </div>
                 <div class="row  bible-input">
@@ -384,7 +384,7 @@ DoubleClick on History erase all previous text"></textarea>
            <div class="settings-tab-area" id="settings-color" style="display:none;">
              <div class="column color-settings-panel">
                <div class="row color-settings-grid">
-                 <div id="background-setting-trigger" class="column settings-icons color-setting-item color-setting-button tooltip tooltip-bottom" data-tooltip="Background color or gradient" role="button" tabindex="0" aria-haspopup="dialog" aria-controls="background-mode-modal">
+                 <div id="background-setting-trigger" class="column settings-icons color-setting-item color-setting-button tooltip tooltip-bottom" data-tooltip="Background color, gradient, image or video" role="button" tabindex="0" aria-haspopup="dialog" aria-controls="background-mode-modal">
                    <span id="background-style-preview" class="background-style-preview" aria-hidden="true"></span>
                    <span class="color-setting-label">Background</span>
                    <input type="color" id="bgColor" class="color-picker-native" aria-hidden="true" tabindex="-1">
@@ -397,8 +397,6 @@ DoubleClick on History erase all previous text"></textarea>
                    <input type="color" id="titleColor">
                    <span class="color-setting-label">Title</span>
                  </label>
-               </div>
-               <div class="row color-settings-grid">
                  <label class="column settings-icons color-setting-item color-setting-trigger tooltip tooltip-bottom" for="shadow-color" data-tooltip="Color for the font shadow">
                    <input type="color" id="shadow-color" value="#000000">
                    <span class="color-setting-label">Font Shadow Color</span>
@@ -463,72 +461,8 @@ DoubleClick on History erase all previous text"></textarea>
              </div>
            </div>
           </div>
-          <div id="background-mode-modal" class="gradient-modal" aria-hidden="true" role="dialog">
-            <div class="gradient-backdrop" id="background-mode-backdrop"></div>
-            <div class="gradient-dialog background-mode-dialog" role="document">
-              <div class="gradient-header column">
-                <div class="gradient-title">Background Style</div>
-                <button type="button" class="gradient-close" id="background-mode-close" aria-label="Close background style selector">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="12" height="12">
-                    <path class="icons" d="M312.1 375c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0L160 289.9 41.9 408.9c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9L126.1 256 8 137.9c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0L160 222.1 278.1 104c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9L193.9 256 312.1 375z"/>
-                  </svg>
-                </button>
-              </div>
-              <div class="background-mode-body">
-                <label class="background-mode-option" for="background-mode-color">
-                  <input type="radio" id="background-mode-color" name="background-mode" value="plain" class="background-mode-radio">
-                  <span id="background-color-option-preview" class="background-mode-swatch" aria-hidden="true"></span>
-                  <span>Plain Color</span>
-                </label>
-                <label class="background-mode-option" for="background-mode-gradient">
-                  <input type="radio" id="background-mode-gradient" name="background-mode" value="gradient" class="background-mode-radio">
-                  <span id="background-gradient-option-preview" class="background-mode-swatch" aria-hidden="true"></span>
-                  <span>Gradient</span>
-                </label>
-              </div>
-              <div class="gradient-body">
-                <div class="gradient-section">
-                  <div class="gradient-section-title">Background Opacity</div>
-                  <input type="range" min="0" max="20" value="20" class="slider background-opacity-slider" id="bg-opacity" data-bg-opacity-control="plain">
-                </div>
-              </div>
-            </div>
           </div>
-          <div id="gradient-modal" class="gradient-modal" aria-hidden="true" role="dialog">
-            <div class="gradient-backdrop" id="gradient-backdrop"></div>
-            <div class="gradient-dialog" role="document">
-              <div class="gradient-header column">
-                <div class="gradient-title">Background Gradient</div>
-                <button type="button" class="gradient-close" id="gradient-close" aria-label="Close gradient editor">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="12" height="12">
-                    <path class="icons" d="M312.1 375c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0L160 289.9 41.9 408.9c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9L126.1 256 8 137.9c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0L160 222.1 278.1 104c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9L193.9 256 312.1 375z"/>
-                  </svg>
-                </button>
-              </div>
-              <div class="gradient-body">
-                <div class="gradient-color-grid" id="gradient-color-grid"></div>
-                <div class="gradient-section">
-                  <div class="gradient-section-title">Direction</div>
-                  <div class="gradient-direction-row">
-                    <button type="button" class="gradient-direction-option" data-gradient="linear" data-direction="to-right" aria-label="Left to right gradient preview"></button>
-                    <button type="button" class="gradient-direction-option" data-gradient="linear" data-direction="to-bottom" aria-label="Top to bottom gradient preview"></button>
-                    <button type="button" class="gradient-direction-option" data-gradient="linear" data-direction="to-bottom-right" aria-label="Top left to bottom right gradient preview"></button>
-                    <button type="button" class="gradient-direction-option" data-gradient="linear" data-direction="to-bottom-left" aria-label="Top right to bottom left gradient preview"></button>
-                    <button type="button" class="gradient-direction-option" data-gradient="radial" data-direction="center" aria-label="Radial gradient preview"></button>
-                    <button type="button" class="gradient-direction-option" data-gradient="conic" data-direction="center" aria-label="Conic gradient preview"></button>
-                  </div>
-                </div>
-                <div class="gradient-section">
-                  <div class="gradient-section-title">Opacity</div>
-                  <div class="gradient-opacity-track" id="gradient-opacity-track" role="slider" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100" tabindex="0">
-                    <div class="gradient-opacity-handle" id="gradient-opacity-handle"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+
       <div class="tabs">
         <button class="tab-button" value="text">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="17" height="17">
@@ -559,6 +493,168 @@ DoubleClick on History erase all previous text"></textarea>
           </label>
           Toggle Display
         </button>
+      </div>
+    </div>
+
+    <!-- BACKGROUND CONFIGURATION MODAL -->
+    <div id="background-mode-modal" class="gradient-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="bg-mode-title">
+      <div id="background-mode-backdrop" class="gradient-backdrop"></div>
+      <div class="gradient-dialog background-mode-dialog" style="max-height: 88vh; overflow-y: auto;">
+        <div class="gradient-header">
+          <div class="gradient-title" id="bg-mode-title">Configure Background</div>
+          <button type="button" id="background-mode-close" class="gradient-close tooltip tooltip-bottom" data-tooltip="Close" aria-label="Close background settings modal">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" width="12" height="12">
+              <path class="icons" d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z"/>
+            </svg>
+          </button>
+        </div>
+
+        <div class="gradient-body" style="gap: 12px; padding: 0 14px 16px;">
+          <!-- Content Type Selector -->
+          <div class="row tooltip tooltip-bottom" data-tooltip="Select content type to configure background for" style="align-items: center; justify-content: space-between; padding: 4px 0;">
+            <label for="bg-content-type-select"><strong>Configure Background For:</strong></label>
+            <select id="bg-content-type-select" class="small-font" style="padding: 6px 12px; border-radius: 6px; min-width: 160px;">
+              <option value="bible">Bible Tab</option>
+              <option value="text">Text Tab</option>
+              <option value="song">Songs Tab</option>
+            </select>
+          </div>
+
+          <!-- Background Type Options (None radio button removed) -->
+          <div class="column background-mode-container" style="width: 100%; gap: 8px;">
+            <div class="gradient-section-title" style="margin-bottom: 2px; font-weight: bold;">Background Type</div>
+            <div class="background-mode-body">
+              <label class="background-mode-option" for="background-mode-color">
+                <input type="radio" id="background-mode-color" name="background-mode" value="plain" class="background-mode-radio">
+                <span id="background-color-option-preview" class="background-mode-swatch" aria-hidden="true"></span>
+                <span>Plain Color</span>
+              </label>
+              <label class="background-mode-option" for="background-mode-gradient">
+                <input type="radio" id="background-mode-gradient" name="background-mode" value="gradient" class="background-mode-radio">
+                <span id="background-gradient-option-preview" class="background-mode-swatch" aria-hidden="true"></span>
+                <span>Gradient</span>
+              </label>
+              <label class="background-mode-option" for="background-mode-image">
+                <input type="radio" id="background-mode-image" name="background-mode" value="image" class="background-mode-radio">
+                <span class="background-mode-icon" aria-hidden="true">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="20" height="20">
+                    <path class="icons" d="M0 96C0 60.7 28.7 32 64 32H448c35.3 0 64 28.7 64 64V416c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V96zM323.8 202.5c-4.5-6.6-11.9-10.5-19.8-10.5s-15.4 3.9-19.8 10.5l-87 127.6L170.7 297c-4.6-5.7-11.5-9-18.7-9s-14.2 3.3-18.7 9l-64 80c-5.8 7.2-6.9 17.1-2.9 25.4s12.4 13.6 21.6 13.6H424c8.9 0 17.1-4.9 21.2-12.8s3.6-17.4-1.4-24.7l-120-176zM112 192a48 48 0 1 0 0-96 48 48 0 1 0 0 96z"/>
+                  </svg>
+                </span>
+                <span>Image</span>
+              </label>
+              <label class="background-mode-option" for="background-mode-video">
+                <input type="radio" id="background-mode-video" name="background-mode" value="video" class="background-mode-radio">
+                <span class="background-mode-icon" aria-hidden="true">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" width="20" height="20">
+                    <path class="icons" d="M0 128C0 92.7 28.7 64 64 64H320c35.3 0 64 28.7 64 64V384c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V128zM559.1 99.8c10.4 5.6 16.9 16.4 16.9 28.2V384c0 11.8-6.5 22.6-16.9 28.2s-23 5-32.9-1.6l-96-64L416 337.1V174.9l14.2-9.5 96-64c9.8-6.5 22.4-7.2 32.9-1.6z"/>
+                  </svg>
+                </span>
+                <span>Video / GIF</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Plain Color Section -->
+          <div class="gradient-section" id="bg-plain-color-section" style="display:none; padding: 4px 0;">
+            <div class="gradient-section-title">Plain Background Color</div>
+            <div class="row" style="gap: 12px; margin-top: 6px; align-items: center;">
+              <input type="color" id="bg-plain-color-picker" value="#000000" style="width: 44px; height: 32px; border: none; cursor: pointer; border-radius: 6px; background: transparent;">
+              <input type="text" id="bg-plain-color-hex" value="#000000" class="input" style="width: 100px; font-size: 12px; padding: 4px 8px; text-transform: uppercase;">
+              <span style="font-size: 11px; opacity: 0.7;">Click color box to pick custom color</span>
+            </div>
+          </div>
+
+          <!-- Inline Gradient Section -->
+          <div class="gradient-section" id="bg-gradient-inline-section" style="display:none; padding: 4px 0;">
+            <div class="gradient-section-title" style="margin-bottom: 8px; font-weight: bold;">Gradient Customizer</div>
+
+            <div class="gradient-section" style="margin-bottom: 10px;">
+              <div class="gradient-section-title">Broadcast Presets</div>
+              <div class="gradient-presets-grid" id="gradient-presets-grid" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 6px;"></div>
+            </div>
+
+            <div class="gradient-section" style="margin-bottom: 10px;">
+              <div class="gradient-section-title">Color Stops & Palette</div>
+              <div class="gradient-color-grid" id="gradient-color-grid" style="margin-top: 6px;"></div>
+            </div>
+
+            <div class="gradient-section" style="margin-bottom: 10px;">
+              <div class="gradient-section-title">Direction</div>
+              <div class="gradient-direction-row" style="margin-top: 6px;">
+                <button type="button" class="gradient-direction-option" data-gradient="linear" data-direction="to-right" aria-label="Left to right gradient preview"></button>
+                <button type="button" class="gradient-direction-option" data-gradient="linear" data-direction="to-bottom" aria-label="Top to bottom gradient preview"></button>
+                <button type="button" class="gradient-direction-option" data-gradient="linear" data-direction="to-bottom-right" aria-label="Top left to bottom right gradient preview"></button>
+                <button type="button" class="gradient-direction-option" data-gradient="linear" data-direction="to-bottom-left" aria-label="Top right to bottom left gradient preview"></button>
+                <button type="button" class="gradient-direction-option" data-gradient="radial" data-direction="center" aria-label="Radial gradient preview"></button>
+                <button type="button" class="gradient-direction-option" data-gradient="conic" data-direction="center" aria-label="Conic gradient preview"></button>
+              </div>
+            </div>
+
+            <div class="gradient-section">
+              <div class="gradient-section-title">Stop Opacity</div>
+              <div class="gradient-opacity-track" id="gradient-opacity-track" role="slider" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100" tabindex="0" style="margin-top: 6px;">
+                <div class="gradient-opacity-handle" id="gradient-opacity-handle"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Background Opacity Section -->
+          <div class="gradient-section" id="bg-opacity-section" style="padding: 4px 0;">
+            <div class="gradient-section-title">Background Opacity</div>
+            <input type="range" min="0" max="20" value="20" class="slider background-opacity-slider" id="bg-opacity" data-bg-opacity-control="plain">
+          </div>
+
+          <!-- Image Section -->
+          <div class="gradient-section" id="bg-image-section" style="display:none; padding: 4px 0;">
+            <div class="gradient-section-title" style="font-weight: bold;">Background Image Source</div>
+            <div class="row" style="gap: 16px; margin-top: 6px; align-items: center;">
+              <label style="font-size: 12px; cursor: pointer; display: flex; align-items: center; gap: 4px;">
+                <input type="radio" name="bg-image-source-type" value="file" checked> Local File
+              </label>
+              <label style="font-size: 12px; cursor: pointer; display: flex; align-items: center; gap: 4px;">
+                <input type="radio" name="bg-image-source-type" value="url"> Online URL
+              </label>
+            </div>
+            <div id="bg-image-file-container" style="margin-top: 8px;">
+              <input type="file" id="bg-image-file-input" accept="image/*" style="display:none;">
+              <button type="button" class="btn primary btn-browse" id="bg-image-file-btn" style="padding: 7px 14px; font-size: 12px; cursor: pointer; color: #ffffff !important;">Browse Image File</button>
+              <div id="bg-image-filename" style="font-size: 11px; opacity: 0.8; margin-top: 4px; word-break: break-all;">No image chosen</div>
+            </div>
+            <div id="bg-image-url-container" style="display:none; margin-top: 8px;">
+              <div class="row" style="gap: 6px; align-items: center;">
+                <input type="url" id="bg-image-url-input" placeholder="https://example.com/image.jpg" class="input" style="flex: 1; font-size: 12px; padding: 6px 8px;">
+                <button type="button" id="bg-image-url-btn" class="btn primary btn-browse" style="padding: 6px 14px; font-size: 12px; cursor: pointer; color: #ffffff !important;">Apply</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Video Section -->
+          <div class="gradient-section" id="bg-video-section" style="display:none; padding: 4px 0;">
+            <div class="gradient-section-title" style="font-weight: bold;">Background Video / GIF Source</div>
+            <div class="row" style="gap: 16px; margin-top: 6px; align-items: center;">
+              <label style="font-size: 12px; cursor: pointer; display: flex; align-items: center; gap: 4px;">
+                <input type="radio" name="bg-video-source-type" value="file" checked> Local File
+              </label>
+              <label style="font-size: 12px; cursor: pointer; display: flex; align-items: center; gap: 4px;">
+                <input type="radio" name="bg-video-source-type" value="url"> Online URL
+              </label>
+            </div>
+            <div id="bg-video-file-container" style="margin-top: 8px;">
+              <input type="file" id="bg-video-file-input" accept="video/*,image/gif,.mp4,.webm,.ogg,.gif,.mov,.m4v" style="display:none;">
+              <button type="button" class="btn primary btn-browse" id="bg-video-file-btn" style="padding: 7px 14px; font-size: 12px; cursor: pointer; color: #ffffff !important;">Browse Video / GIF File</button>
+              <div id="bg-video-filename" style="font-size: 11px; opacity: 0.8; margin-top: 4px; word-break: break-all;">No video or GIF chosen</div>
+            </div>
+            <div id="bg-video-url-container" style="display:none; margin-top: 8px;">
+              <div class="row" style="gap: 6px; align-items: center;">
+                <input type="url" id="bg-video-url-input" placeholder="https://example.com/video.mp4 or .gif" class="input" style="flex: 1; font-size: 12px; padding: 6px 8px;">
+                <button type="button" id="bg-video-url-btn" class="btn primary btn-browse" style="padding: 6px 14px; font-size: 12px; cursor: pointer; color: #ffffff !important;">Apply</button>
+              </div>
+            </div>
+            <div style="font-size: 10px; opacity: 0.7; margin-top: 4px;">Supports MP4, WEBM, MOV video files or animated GIF loops</div>
+            <video id="cp-video-preview" autoplay loop muted playsinline style="display:none; width: 100%; max-height: 140px; border-radius: 6px; margin-top: 8px; object-fit: cover; border: 1px solid rgba(255,255,255,0.15);"></video>
+          </div>
+        </div>
       </div>
     </div>
     <script src="assets/js/control_panel/choose_bible_translation.js"></script>
