@@ -172,6 +172,16 @@ function syncBackgroundModeRadios() {
     if (backgroundModeGradient) backgroundModeGradient.checked = currentMode === "gradient";
     if (bgImageRadio) bgImageRadio.checked = currentMode === "image";
     if (bgVideoRadio) bgVideoRadio.checked = currentMode === "video";
+
+    // Keep visual selection state synchronized on the parent cards
+    document.querySelectorAll(".background-mode-option").forEach(option => {
+        const radio = option.querySelector(".background-mode-radio");
+        if (radio && radio.checked) {
+            option.classList.add("selected");
+        } else {
+            option.classList.remove("selected");
+        }
+    });
 }
 
 function getBackgroundOpacityValue() {
@@ -213,7 +223,7 @@ function setBackgroundSurface(element, backgroundColor, backgroundImage) {
 }
 
 function updateBackgroundPreviews() {
-    const savedGradientCss = localStorage.getItem(gradientStorageKeys.css);
+    const savedGradientCss = getBgItem("obs-bible-gradient-css") || localStorage.getItem(gradientStorageKeys.css);
     const solidBackgroundCss = getSolidBackgroundCss();
     const gradientCss = savedGradientCss || buildGradientCss(gradientColors, gradientType, gradientDirection);
     const currentMode = getBackgroundMode();
@@ -239,6 +249,7 @@ function broadcastGradient(cssValue) {
 
 function clearGradient() {
     localStorage.removeItem(gradientStorageKeys.css);
+    removeBgItem("obs-bible-gradient-css");
     const settingsChannel = new BroadcastChannel("settings");
     settingsChannel.postMessage({ clearGradient: true });
     settingsChannel.close();
@@ -261,6 +272,7 @@ function broadcastBgUpdate() {
 function setBackgroundMode(mode, options = {}) {
     const { broadcast = true } = options;
     setBgItem("obs-bible-background-mode", mode);
+    localStorage.setItem("obs-bible-background-mode", mode);
 
     if (mode === "plain") {
         const rawColor = localStorage.getItem("rawBgColor") || bgColorInput?.value || "#000000";
@@ -291,11 +303,18 @@ function saveGradientState(cssValue) {
     setBgItem("obs-bible-gradient-type", gradientType);
     setBgItem("obs-bible-gradient-direction", gradientDirection);
     setBgItem("obs-bible-gradient-css", cssValue);
+    localStorage.setItem(gradientStorageKeys.css, cssValue);
+    localStorage.setItem(gradientStorageKeys.colors, JSON.stringify(gradientColors));
+    localStorage.setItem(gradientStorageKeys.type, gradientType);
+    localStorage.setItem(gradientStorageKeys.direction, gradientDirection);
 }
 
 function applyGradient() {
     const gradientCss = buildGradientCss(gradientColors, gradientType, gradientDirection);
     saveGradientState(gradientCss);
+    setBgItem("obs-bible-background-mode", "gradient");
+    localStorage.setItem("obs-bible-background-mode", "gradient");
+    broadcastGradient(gradientCss);
     broadcastBgUpdate();
     updateGradientDirectionPreviews();
     updateBackgroundPreviews();
@@ -448,20 +467,24 @@ function closeBackgroundModeModal() {
 }
 
 function loadGradientState() {
-    const savedColors = localStorage.getItem(gradientStorageKeys.colors);
-    const savedType = localStorage.getItem(gradientStorageKeys.type);
-    const savedDirection = localStorage.getItem(gradientStorageKeys.direction);
-    const savedCss = localStorage.getItem(gradientStorageKeys.css);
+    const savedColors = getBgItem("obs-bible-gradient-colors") || localStorage.getItem(gradientStorageKeys.colors);
+    const savedType = getBgItem("obs-bible-gradient-type") || localStorage.getItem(gradientStorageKeys.type);
+    const savedDirection = getBgItem("obs-bible-gradient-direction") || localStorage.getItem(gradientStorageKeys.direction);
+    const savedCss = getBgItem("obs-bible-gradient-css") || localStorage.getItem(gradientStorageKeys.css);
 
     if (savedColors) {
-        const parsed = JSON.parse(savedColors);
-        if (parsed.length && typeof parsed[0] === "string") {
-            gradientColors = parsed.map(color => ({ color, opacity: 1 }));
-        } else {
-            gradientColors = parsed.map(item => ({
-                color: item.color || "#000000",
-                opacity: typeof item.opacity === "number" ? item.opacity : 1
-            }));
+        try {
+            const parsed = JSON.parse(savedColors);
+            if (parsed.length && typeof parsed[0] === "string") {
+                gradientColors = parsed.map(color => ({ color, opacity: 1 }));
+            } else {
+                gradientColors = parsed.map(item => ({
+                    color: item.color || "#000000",
+                    opacity: typeof item.opacity === "number" ? item.opacity : 1
+                }));
+            }
+        } catch (e) {
+            gradientColors = getDefaultGradientColors();
         }
     } else {
         gradientColors = getDefaultGradientColors();
@@ -563,18 +586,20 @@ fontOutlineColor.addEventListener("input", function () {
 });
 
 
-bgColorInput.addEventListener("input", function () {
-    let selectedColor = bgColorInput.value;
-    localStorage.setItem('rawBgColor', bgColorInput.value);
-    const alphaValue = getBackgroundOpacityValue();
-    let newColor = hexToRgba(selectedColor, alphaValue);
+if (bgColorInput) {
+    bgColorInput.addEventListener("input", function () {
+        let selectedColor = bgColorInput.value;
+        localStorage.setItem('rawBgColor', bgColorInput.value);
+        const alphaValue = getBackgroundOpacityValue();
+        let newColor = hexToRgba(selectedColor, alphaValue);
 
-    let settingsChannel = new BroadcastChannel("settings");
-    settingsChannel.postMessage({ selectedBgColor: newColor });
-    settingsChannel.close();
-    setBackgroundMode("plain", { broadcast: false });
-    clearGradient();
-});
+        let settingsChannel = new BroadcastChannel("settings");
+        settingsChannel.postMessage({ selectedBgColor: newColor });
+        settingsChannel.close();
+        setBackgroundMode("plain", { broadcast: false });
+        clearGradient();
+    });
+}
 
 
 // handle Font Color
@@ -805,14 +830,94 @@ const bgPlainColorPicker = document.getElementById("bg-plain-color-picker");
 const bgPlainColorHex = document.getElementById("bg-plain-color-hex");
 
 const PROFESSIONAL_GRADIENT_PRESETS = [
-    { name: "Midnight Sapphire", css: "linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #311042 100%)" },
-    { name: "Graceful Velvet", css: "linear-gradient(135deg, #180008 0%, #3b0764 50%, #111827 100%)" },
-    { name: "Emerald Sanctuary", css: "linear-gradient(135deg, #064e3b 0%, #022c22 50%, #0f172a 100%)" },
-    { name: "Golden Worship", css: "linear-gradient(135deg, #451a03 0%, #290e05 50%, #0c0a09 100%)" },
-    { name: "Celestial Dusk", css: "linear-gradient(135deg, #172554 0%, #3b0764 50%, #09090b 100%)" },
-    { name: "Nordic Slate", css: "linear-gradient(135deg, #1f2937 0%, #111827 50%, #030712 100%)" },
-    { name: "Sacred Amethyst", css: "linear-gradient(135deg, #2e1065 0%, #1c053a 50%, #000000 100%)" },
-    { name: "Oceanic Abyss", css: "linear-gradient(135deg, #083344 0%, #0c4a6e 50%, #020617 100%)" }
+    {
+        name: "Midnight Sapphire",
+        css: "linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #311042 100%)",
+        colors: [
+            { color: "#0f172a", opacity: 1 },
+            { color: "#1e1b4b", opacity: 1 },
+            { color: "#311042", opacity: 1 }
+        ],
+        type: "linear",
+        direction: "to-bottom-right"
+    },
+    {
+        name: "Graceful Velvet",
+        css: "linear-gradient(135deg, #180008 0%, #3b0764 50%, #111827 100%)",
+        colors: [
+            { color: "#180008", opacity: 1 },
+            { color: "#3b0764", opacity: 1 },
+            { color: "#111827", opacity: 1 }
+        ],
+        type: "linear",
+        direction: "to-bottom-right"
+    },
+    {
+        name: "Emerald Sanctuary",
+        css: "linear-gradient(135deg, #064e3b 0%, #022c22 50%, #0f172a 100%)",
+        colors: [
+            { color: "#064e3b", opacity: 1 },
+            { color: "#022c22", opacity: 1 },
+            { color: "#0f172a", opacity: 1 }
+        ],
+        type: "linear",
+        direction: "to-bottom-right"
+    },
+    {
+        name: "Golden Worship",
+        css: "linear-gradient(135deg, #451a03 0%, #290e05 50%, #0c0a09 100%)",
+        colors: [
+            { color: "#451a03", opacity: 1 },
+            { color: "#290e05", opacity: 1 },
+            { color: "#0c0a09", opacity: 1 }
+        ],
+        type: "linear",
+        direction: "to-bottom-right"
+    },
+    {
+        name: "Celestial Dusk",
+        css: "linear-gradient(135deg, #172554 0%, #3b0764 50%, #09090b 100%)",
+        colors: [
+            { color: "#172554", opacity: 1 },
+            { color: "#3b0764", opacity: 1 },
+            { color: "#09090b", opacity: 1 }
+        ],
+        type: "linear",
+        direction: "to-bottom-right"
+    },
+    {
+        name: "Nordic Slate",
+        css: "linear-gradient(135deg, #1f2937 0%, #111827 50%, #030712 100%)",
+        colors: [
+            { color: "#1f2937", opacity: 1 },
+            { color: "#111827", opacity: 1 },
+            { color: "#030712", opacity: 1 }
+        ],
+        type: "linear",
+        direction: "to-bottom-right"
+    },
+    {
+        name: "Sacred Amethyst",
+        css: "linear-gradient(135deg, #2e1065 0%, #1c053a 50%, #000000 100%)",
+        colors: [
+            { color: "#2e1065", opacity: 1 },
+            { color: "#1c053a", opacity: 1 },
+            { color: "#000000", opacity: 1 }
+        ],
+        type: "linear",
+        direction: "to-bottom-right"
+    },
+    {
+        name: "Oceanic Abyss",
+        css: "linear-gradient(135deg, #083344 0%, #0c4a6e 50%, #020617 100%)",
+        colors: [
+            { color: "#083344", opacity: 1 },
+            { color: "#0c4a6e", opacity: 1 },
+            { color: "#020617", opacity: 1 }
+        ],
+        type: "linear",
+        direction: "to-bottom-right"
+    }
 ];
 
 function renderGradientPresets() {
@@ -820,17 +925,43 @@ function renderGradientPresets() {
     if (!grid) return;
     grid.innerHTML = "";
 
+    const activeCss = getBgItem("obs-bible-gradient-css") || localStorage.getItem(gradientStorageKeys.css);
+
     PROFESSIONAL_GRADIENT_PRESETS.forEach(preset => {
         const btn = document.createElement("button");
         btn.type = "button";
         btn.className = "gradient-preset-tile tooltip tooltip-bottom";
+        if (activeCss && activeCss === preset.css) {
+            btn.classList.add("active");
+        }
         btn.setAttribute("data-tooltip", preset.name);
         btn.style.backgroundImage = preset.css;
         btn.addEventListener("click", () => {
+            // Apply preset immediately to in-memory state
+            gradientColors = JSON.parse(JSON.stringify(preset.colors));
+            gradientType = preset.type || "linear";
+            gradientDirection = preset.direction || "to-bottom-right";
+            selectedGradientIndex = 0;
+
+            // Save new state immediately to both scoped and global storage
             saveGradientState(preset.css);
-            setBackgroundMode("gradient");
-            broadcastBgUpdate();
+            setBgItem("obs-bible-background-mode", "gradient");
+            localStorage.setItem("obs-bible-background-mode", "gradient");
+
+            // Update active preset UI
+            grid.querySelectorAll(".gradient-preset-tile").forEach(tile => tile.classList.remove("active"));
+            btn.classList.add("active");
+
+            // Immediately re-render palette swatches and direction controls in the modal
+            renderGradientSwatches();
+            updateGradientDirectionUI();
+            updateGradientDirectionPreviews();
+            updateOpacityTrack();
             updateBackgroundPreviews();
+
+            // Broadcast immediately to receiver
+            broadcastGradient(preset.css);
+            broadcastBgUpdate();
         });
         grid.appendChild(btn);
     });

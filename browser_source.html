@@ -8,9 +8,9 @@
 </head>
 <body>
   <div class="bg-container" id="bg-container">
-    <video id="bg-video" autoplay loop muted style="position: absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; z-index:0; display:none;"></video>
-    <div id="bg-image" style="position: absolute; top:0; left:0; width:100%; height:100%; background-size:cover; background-position:center; z-index:0; display:none;"></div>
-    <div id="bg-gradient" style="position: absolute; top:0; left:0; width:100%; height:100%; z-index:0; display:none;"></div>
+    <video id="bg-video" autoplay loop muted playsinline style="position: absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; z-index:0; display:none; border-radius: inherit;"></video>
+    <div id="bg-image" style="position: absolute; top:0; left:0; width:100%; height:100%; background-size:cover; background-position:center; z-index:0; display:none; border-radius: inherit;"></div>
+    <div id="bg-gradient" style="position: absolute; top:0; left:0; width:100%; height:100%; z-index:0; display:none; border-radius: inherit;"></div>
     <div class="container" id="container" style="position: relative; z-index:1;">
       <div id="messageDisplay" class=""></div>
     </div>
@@ -216,16 +216,43 @@
             localStorage.setItem('bgColor', event.data.opacityColor);
           }
           if (event.data.gradientBackground){
+            const bgGradient = document.getElementById("bg-gradient");
+            if (bgGradient) {
+              bgGradient.style.backgroundImage = event.data.gradientBackground;
+              bgGradient.style.display = "block";
+            }
+            if (bgVideo) bgVideo.style.display = "none";
+            const bgImage = document.getElementById("bg-image");
+            if (bgImage) bgImage.style.display = "none";
             bgContainer.style.backgroundImage = event.data.gradientBackground;
             bgContainer.style.backgroundColor = "transparent";
             localStorage.setItem('obs-bible-gradient-css', event.data.gradientBackground);
+            if (currentContentType) {
+              localStorage.setItem(`obs-bible-gradient-css_${currentContentType}`, event.data.gradientBackground);
+              localStorage.setItem(`obs-bible-background-mode_${currentContentType}`, "gradient");
+            }
+            localStorage.setItem('obs-bible-background-mode', "gradient");
           }
           if (event.data.clearGradient){
+            const bgGradient = document.getElementById("bg-gradient");
+            if (bgGradient) {
+              bgGradient.style.backgroundImage = "none";
+              bgGradient.style.display = "none";
+            }
             bgContainer.style.backgroundImage = "none";
             localStorage.removeItem('obs-bible-gradient-css');
+            if (currentContentType) {
+              localStorage.removeItem(`obs-bible-gradient-css_${currentContentType}`);
+            }
           }
-          if (event.data.roundedCorner){
-            bgContainer.style.borderRadius = event.data.roundedCorner + "px";
+          if (event.data.roundedCorner !== undefined){
+            const radiusPx = event.data.roundedCorner + "px";
+            bgContainer.style.borderRadius = radiusPx;
+            if (bgVideo) bgVideo.style.borderRadius = radiusPx;
+            const bgImage = document.getElementById("bg-image");
+            if (bgImage) bgImage.style.borderRadius = radiusPx;
+            const bgGradient = document.getElementById("bg-gradient");
+            if (bgGradient) bgGradient.style.borderRadius = radiusPx;
             localStorage.setItem('borderRadius', event.data.roundedCorner);
           }
           if (event.data.selectedBgColor){

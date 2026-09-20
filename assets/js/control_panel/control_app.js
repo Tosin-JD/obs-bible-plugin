@@ -16,22 +16,22 @@ function openTab(tabName) {
     if (tabName !== "setBg") {
       localStorage.setItem("lastContentTab", tabName);
     } else {
-      const savedSettingsTab = localStorage.getItem("obs-bible-selectedSettingTab") || "settings-background";
+      const savedSettingsTab = localStorage.getItem("obs-bible-selectedSettingTab") || "settings-general";
       openSettingTab(savedSettingsTab);
     }
   }
 }
 
 function openSettingTab(tabName) {
-  if (!tabName) tabName = "settings-background";
+  if (!tabName || tabName === "settings-background") tabName = "settings-general";
   var tabs = document.getElementsByClassName("settings-tab-area");
   for (var i = 0; i < tabs.length; i++) {
     tabs[i].style.display = "none";
   }
   var selectedTab = document.getElementById(tabName);
   if (!selectedTab) {
-    selectedTab = document.getElementById("settings-background");
-    tabName = "settings-background";
+    selectedTab = document.getElementById("settings-general");
+    tabName = "settings-general";
   }
   if (selectedTab) {
     selectedTab.style.display = "flex";
@@ -100,10 +100,10 @@ function openSavedTab() {
       }
     });
   }
-  if (savedSettingsTab) {
+  if (savedSettingsTab && savedSettingsTab !== "settings-background") {
     openSettingTab(savedSettingsTab);
   } else {
-    openSettingTab("settings-background");
+    openSettingTab("settings-general");
   }
 }
 
