@@ -107,7 +107,9 @@ if (savedAnimationData) {
 
 if (savedRawBgColor) {
     let defaultBgColor = document.getElementById("bgColor");
-    defaultBgColor.setAttribute("value", savedRawBgColor);
+    if (defaultBgColor) {
+        defaultBgColor.setAttribute("value", savedRawBgColor);
+    }
 }
 
 if (savedRawFontColor) {

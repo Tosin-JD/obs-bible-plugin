@@ -79,7 +79,14 @@ if (savedFontColor) {
 }
 
 if (savedBorderRadius) {
-    bgContainer.style.borderRadius = savedBorderRadius + "px";
+    const radiusPx = savedBorderRadius + "px";
+    bgContainer.style.borderRadius = radiusPx;
+    const bgVideoEl = document.getElementById("bg-video");
+    if (bgVideoEl) bgVideoEl.style.borderRadius = radiusPx;
+    const bgImageEl = document.getElementById("bg-image");
+    if (bgImageEl) bgImageEl.style.borderRadius = radiusPx;
+    const bgGradientEl = document.getElementById("bg-gradient");
+    if (bgGradientEl) bgGradientEl.style.borderRadius = radiusPx;
 }
 
 if (savedTitleColor) {
