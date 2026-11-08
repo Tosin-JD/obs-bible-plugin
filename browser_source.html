@@ -8,7 +8,7 @@
 </head>
 <body>
   <div class="bg-container" id="bg-container">
-    <video id="bg-video" autoplay loop muted playsinline style="position: absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; z-index:0; display:none; border-radius: inherit;"></video>
+    <video id="bg-video" autoplay loop muted playsinline preload="auto" style="position: absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; z-index:0; display:none; border-radius: inherit;"></video>
     <div id="bg-image" style="position: absolute; top:0; left:0; width:100%; height:100%; background-size:cover; background-position:center; z-index:0; display:none; border-radius: inherit;"></div>
     <div id="bg-gradient" style="position: absolute; top:0; left:0; width:100%; height:100%; z-index:0; display:none; border-radius: inherit;"></div>
     <div class="container" id="container" style="position: relative; z-index:1;">
@@ -22,28 +22,27 @@
     const messageDisplay = document.getElementById("messageDisplay");
     const bgVideo = document.getElementById("bg-video");
     let currentContentType = null;
+    let activeVideoBlobUrl = null;
+    let activeVideoSourceKey = null;
 
     if (bgVideo) {
       bgVideo.loop = true;
       bgVideo.muted = true;
       bgVideo.playsInline = true;
 
+      // Seamless loop reset to prevent stuttering
       const loopVideo = () => {
         bgVideo.currentTime = 0;
         const p = bgVideo.play();
         if (p !== undefined) {
-          p.catch(() => {
-            try {
-              bgVideo.load();
-              bgVideo.play().catch(() => {});
-            } catch (e) {}
-          });
+          p.catch(() => {});
         }
       };
 
       bgVideo.addEventListener("ended", loopVideo);
       bgVideo.addEventListener("pause", () => {
-        if (bgVideo.style.display !== "none" && bgVideo.duration > 0 && bgVideo.currentTime >= bgVideo.duration - 0.5) {
+        // If pause triggered near the video end boundary, loop cleanly
+        if (bgVideo.style.display !== "none" && bgVideo.duration > 0 && bgVideo.currentTime >= bgVideo.duration - 0.2) {
           loopVideo();
         }
       });
@@ -66,6 +65,16 @@
         }
         return this.dbPromise;
       },
+      async set(key, val) {
+        if (typeof val === "string") {
+          try { localStorage.setItem(key, val); } catch (e) {}
+        }
+        const db = await this.init();
+        if (db) {
+          const tx = db.transaction("media", "readwrite");
+          tx.objectStore("media").put(val, key);
+        }
+      },
       async get(key) {
         const db = await this.init();
         if (db) {
@@ -78,6 +87,40 @@
           if (res !== undefined && res !== null) return res;
         }
         return localStorage.getItem(key);
+      },
+      async cacheRemoteMedia(url) {
+        if (!url || typeof url !== "string") return null;
+        if (url.startsWith("data:") || url.startsWith("blob:")) return null;
+
+        const cacheKey = `cached_blob_${url}`;
+        const existing = await this.get(cacheKey);
+        if (existing instanceof Blob) {
+          return existing;
+        }
+
+        try {
+          const response = await fetch(url);
+          if (!response.ok) return null;
+          const blob = await response.blob();
+          if (blob && blob.size > 0) {
+            await this.set(cacheKey, blob);
+            return blob;
+          }
+        } catch (err) {
+          console.warn("Could not cache remote media locally:", err);
+        }
+        return null;
+      },
+      async getMediaBlob(url) {
+        if (!url || typeof url !== "string") return null;
+        if (url.startsWith("data:") || url.startsWith("blob:")) return null;
+
+        const cacheKey = `cached_blob_${url}`;
+        const cached = await this.get(cacheKey);
+        if (cached instanceof Blob) {
+          return cached;
+        }
+        return null;
       }
     };
 
@@ -92,9 +135,14 @@
       return `rgba(${r}, ${g}, ${b}, ${a})`;
     }
 
-    async function applyBackgroundForType(contentType) {
+    async function applyBackgroundForType(contentType, force = false) {
       if (!contentType) contentType = currentContentType || "text";
       currentContentType = contentType;
+
+      if (force) {
+        activeVideoSourceKey = null;
+        if (bgVideo) bgVideo.dataset.loadedSrc = "";
+      }
 
       const rawMode = (await idbMedia.get(`obs-bible-background-mode_${contentType}`)) || localStorage.getItem(`obs-bible-background-mode_${contentType}`);
       const bgMode = rawMode || localStorage.getItem("obs-bible-background-mode") || "plain";
@@ -113,17 +161,37 @@
           if (isGif) {
             bgImage.style.backgroundImage = `url("${targetVideoUrl}")`;
             bgImage.style.display = "block";
+            if (!bgVideo.paused) bgVideo.pause();
             bgVideo.style.display = "none";
             bgVideo.dataset.loadedSrc = "";
+            activeVideoSourceKey = null;
           } else {
             bgImage.style.display = "none";
-            if (bgVideo.dataset.loadedSrc !== targetVideoUrl) {
-              bgVideo.src = targetVideoUrl;
+
+            // Only update video source if target changed or forced
+            if (activeVideoSourceKey !== targetVideoUrl) {
+              activeVideoSourceKey = targetVideoUrl;
               bgVideo.dataset.loadedSrc = targetVideoUrl;
+
+              // Check if we already have a cached Blob in IndexedDB
+              let playUrl = targetVideoUrl;
+              const cachedBlob = await idbMedia.getMediaBlob(targetVideoUrl);
+
+              if (cachedBlob) {
+                if (activeVideoBlobUrl) {
+                  URL.revokeObjectURL(activeVideoBlobUrl);
+                }
+                activeVideoBlobUrl = URL.createObjectURL(cachedBlob);
+                playUrl = activeVideoBlobUrl;
+              } else if (!targetVideoUrl.startsWith("data:") && !targetVideoUrl.startsWith("blob:")) {
+                // If not yet cached, stream directly and cache in background for future loops
+                idbMedia.cacheRemoteMedia(targetVideoUrl).catch(() => {});
+              }
+
+              bgVideo.src = playUrl;
               bgVideo.loop = true;
               bgVideo.muted = true;
               bgVideo.style.display = "block";
-              bgVideo.load();
               bgVideo.play().catch(e => console.error("Video play error:", e));
             } else {
               bgVideo.style.display = "block";
@@ -133,8 +201,10 @@
             }
           }
         } else {
+          if (!bgVideo.paused) bgVideo.pause();
           bgVideo.style.display = "none";
           bgVideo.dataset.loadedSrc = "";
+          activeVideoSourceKey = null;
         }
       }
 
@@ -181,13 +251,10 @@
       }
     }
 
-    function applyTitleColor(color) {
-      messageDisplay.style.setProperty("--title-color", color);
-      const spans = document.querySelectorAll(
-        "#messageDisplay span:not(.bible-content):not(.bible-message):not(.bible-reference)"
-      );
-      spans.forEach(span => span.style.color = color);
-    }
+    // Initialize background immediately when browser source opens
+    const initialSavedTab = localStorage.getItem("selectedTab");
+    const initialContentType = (initialSavedTab === "bibleText") ? "bible" : (initialSavedTab === "songs") ? "song" : "text";
+    applyBackgroundForType(initialContentType);
 
     // Text channel
     const channel = new BroadcastChannel("myChannel");

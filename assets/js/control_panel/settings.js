@@ -247,7 +247,9 @@ const idbMedia = {
     return this.dbPromise;
   },
   async set(key, val) {
-    try { localStorage.setItem(key, val); } catch (e) {}
+    if (typeof val === "string") {
+      try { localStorage.setItem(key, val); } catch (e) {}
+    }
     const db = await this.init();
     if (db) {
       const tx = db.transaction("media", "readwrite");
@@ -266,6 +268,40 @@ const idbMedia = {
       if (res !== undefined && res !== null) return res;
     }
     return localStorage.getItem(key);
+  },
+  async cacheRemoteMedia(url) {
+    if (!url || typeof url !== "string") return null;
+    if (url.startsWith("data:") || url.startsWith("blob:")) return null;
+
+    const cacheKey = `cached_blob_${url}`;
+    const existing = await this.get(cacheKey);
+    if (existing instanceof Blob) {
+      return existing;
+    }
+
+    try {
+      const response = await fetch(url);
+      if (!response.ok) return null;
+      const blob = await response.blob();
+      if (blob && blob.size > 0) {
+        await this.set(cacheKey, blob);
+        return blob;
+      }
+    } catch (err) {
+      console.warn("Could not cache remote media locally:", err);
+    }
+    return null;
+  },
+  async getMediaBlob(url) {
+    if (!url || typeof url !== "string") return null;
+    if (url.startsWith("data:") || url.startsWith("blob:")) return null;
+
+    const cacheKey = `cached_blob_${url}`;
+    const cached = await this.get(cacheKey);
+    if (cached instanceof Blob) {
+      return cached;
+    }
+    return null;
   }
 };
 
@@ -1190,6 +1226,38 @@ function syncBgFormToContentType() {
     const savedVideoName = getBgItem("obs-bible-video-filename");
     if (bgVideoFilename) bgVideoFilename.textContent = savedVideoName || (getBgItem("obs-bible-video-url") ? "Saved Video Loaded" : "No video chosen");
 
+    const savedVideoUrl = getBgItem("obs-bible-video-url");
+    if (savedVideoUrl && savedVideoUrl.startsWith("http")) {
+        idbMedia.getMediaBlob(savedVideoUrl).then(blob => {
+            if (blob && bgVideoFilename && !bgVideoFilename.textContent.includes("(cached locally ✓)")) {
+                bgVideoFilename.textContent = `${savedVideoName || savedVideoUrl} (cached locally ✓)`;
+            }
+        });
+    }
+
+    const cpVideoPreview = document.getElementById("cp-video-preview");
+    if (cpVideoPreview) {
+        if (mode === "video") {
+            const currentVideoUrl = getBgItem("obs-bible-video-url");
+            if (currentVideoUrl && !currentVideoUrl.toLowerCase().includes('.gif')) {
+                idbMedia.getMediaBlob(currentVideoUrl).then(blob => {
+                    const previewSrc = blob ? URL.createObjectURL(blob) : currentVideoUrl;
+                    if (cpVideoPreview.src !== previewSrc) {
+                        cpVideoPreview.src = previewSrc;
+                    }
+                    cpVideoPreview.style.display = "block";
+                }).catch(() => {
+                    if (cpVideoPreview.src !== currentVideoUrl) cpVideoPreview.src = currentVideoUrl;
+                    cpVideoPreview.style.display = "block";
+                });
+            } else {
+                cpVideoPreview.style.display = "none";
+            }
+        } else {
+            cpVideoPreview.style.display = "none";
+        }
+    }
+
     updateBackgroundPreviews();
 }
 
@@ -1293,14 +1361,47 @@ if (bgImageUrlBtn && bgImageUrlInput) {
 }
 
 if (bgVideoUrlBtn && bgVideoUrlInput) {
-    bgVideoUrlBtn.addEventListener("click", () => {
+    bgVideoUrlBtn.addEventListener("click", async () => {
         const url = bgVideoUrlInput.value.trim();
         if (url) {
             setBgItem("obs-bible-video-url", url);
             setBgItem("obs-bible-video-filename", `URL: ${url}`);
-            if (bgVideoFilename) bgVideoFilename.textContent = `URL: ${url}`;
+            if (bgVideoFilename) bgVideoFilename.textContent = `URL: ${url} (caching in browser...)`;
             setBackgroundMode("video");
             syncBgFormToContentType();
+
+            // Cache remote video in IndexedDB for seamless zero-stutter looping
+            bgVideoUrlBtn.disabled = true;
+            const originalBtnText = bgVideoUrlBtn.textContent;
+            bgVideoUrlBtn.textContent = "Caching...";
+
+            try {
+                const blob = await idbMedia.cacheRemoteMedia(url);
+                if (blob) {
+                    if (bgVideoFilename) bgVideoFilename.textContent = `URL: ${url} (cached locally ✓)`;
+                    const cpVideoPreview = document.getElementById("cp-video-preview");
+                    if (cpVideoPreview && !url.toLowerCase().includes('.gif')) {
+                        cpVideoPreview.src = URL.createObjectURL(blob);
+                        cpVideoPreview.style.display = "block";
+                    }
+                } else {
+                    if (bgVideoFilename) bgVideoFilename.textContent = `URL: ${url} (streaming directly)`;
+                }
+            } catch (e) {
+                if (bgVideoFilename) bgVideoFilename.textContent = `URL: ${url}`;
+            } finally {
+                bgVideoUrlBtn.disabled = false;
+                bgVideoUrlBtn.textContent = originalBtnText;
+            }
+        }
+    });
+}
+
+if (bgVideoUrlInput) {
+    bgVideoUrlInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+            e.preventDefault();
+            if (bgVideoUrlBtn) bgVideoUrlBtn.click();
         }
     });
 }
