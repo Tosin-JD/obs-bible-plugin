@@ -47,8 +47,14 @@ DoubleClick on History erase all previous text"></textarea>
                     <button type="button" class="clear-button" id="clear-bible-btn">&times;</button>
                   </div>
                   <div class="mid-bg color-fg" id="suggestions"></div>
+                  <div id="bible-book-picker" class="book-picker-dropdown" role="dialog" aria-label="Pick a Bible reference" aria-labelledby="picker-heading" aria-hidden="true"></div>
                 </div>
                 <div class="row">
+                  <button type="button" id="bible-book-picker-button" class="bible-input no-border primary bible-version rounded tooltip tooltip-right" data-tooltip="Pick a book, chapter, and verse" aria-label="Pick a book, chapter, and verse" aria-expanded="false" aria-controls="bible-book-picker">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="17" height="17" aria-hidden="true">
+                      <path class="icons" d="M4 4.75A2.75 2.75 0 0 1 6.75 2H20v16H6.75A2.75 2.75 0 0 0 4 20.75zm0 0v16A2.75 2.75 0 0 1 6.75 18H20M8 6h8M8 9h8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </button>
                   <button type="submit" id="bible-submit" class="bible-input no-border primary bible-version rounded tooltip tooltip-right"  data-tooltip="Search for a bible verse">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="17" height="17">
                         <path class="icons" d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/>

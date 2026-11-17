@@ -106,6 +106,7 @@ clearLyricsBtn.addEventListener('click', () => {
 
 clearBibleBtn.addEventListener('click', () => {
     bibleSearchInput.value = '';
+    bibleSearchInput.dispatchEvent(new Event('input', { bubbles: true }));
     bibleSearchInput.focus();
     clearBibleBtn.style.display = 'none';
 });

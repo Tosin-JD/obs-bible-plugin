@@ -55,6 +55,7 @@ function extractBookChapterVerse(reference) {
 
 
 function generateIndexForBibleBooks(){
+  bibleIndex.clear();
   localToEnglishBookMap.clear();
   englishToLocalBookMap.clear();
   bible_data.forEach(verse => {
@@ -78,17 +79,18 @@ function generateIndexForBibleBooks(){
       const englishBookName = englishBooks[bookIdx];
       if (englishBookName) {
         localToEnglishBookMap.set(book.toLowerCase(), englishBookName.toLowerCase());
-        englishToLocalBookMap.set(englishBookName.toLowerCase(), book.toLowerCase());
+        englishToLocalBookMap.set(englishBookName.toLowerCase(), book);
       }
     } catch (error) {
       console.error(error.message);
     }
   });
+  document.dispatchEvent(new Event("bible-index-updated"));
 }
 
 function getSavedBible(){
-  let savedBibleVerse = localStorage.getItem('savedBibleVerse');
-  savedBibleQuery = savedBibleVerse.split(',');
+  const savedBibleVerse = localStorage.getItem('savedBibleVerse');
+  const savedBibleQuery = savedBibleVerse ? savedBibleVerse.split(',') : [];
   while (bblVerseDiv.firstChild) {
       bblVerseDiv.removeChild(bblVerseDiv.firstChild);
   }
@@ -158,5 +160,4 @@ function fuzzySearchWeight(word, text, threshold = 2) {
 function fuzzySearch(word, text, threshold = 2) {
   return fuzzySearchWeight(word, text, threshold) > 0;
 }
-
 
