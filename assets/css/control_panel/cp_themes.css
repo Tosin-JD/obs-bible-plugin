@@ -193,6 +193,10 @@ body, .main-bg {
     color: var(--selected-fg-color);
 }
 
+.picker-divider {
+    border-color: var(--hover-bg-color);
+}
+
 .picker-heading, .picker-grid {
     background-color: transparent;
 }

@@ -100,11 +100,14 @@ function renderBookPicker(mode) {
   let options;
   if (mode === "books") {
     heading.textContent = "Choose a book";
-    options = getOrderedBooks().map(book => ({
-      label: bibleBookAbbreviations[book.englishBook],
-      value: book.localBook,
-      accessibleName: book.localBook === book.englishBook ? book.englishBook : `${book.localBook} (${book.englishBook})`
-    })).filter(option => option.label);
+    options = getOrderedBooks().flatMap(book => {
+      const option = {
+        label: bibleBookAbbreviations[book.englishBook],
+        value: book.localBook,
+        accessibleName: book.localBook === book.englishBook ? book.englishBook : `${book.localBook} (${book.englishBook})`
+      };
+      return book.englishBook === "Malachi" ? [option, { isDivider: true }] : [option];
+    }).filter(option => option.isDivider || option.label);
   } else if (mode === "chapters") {
     const indexedBook = getIndexedBook(pickerBook);
     if (!indexedBook || !bibleIndex.get(indexedBook)?.size) { closeBookPicker(); return; }
@@ -143,6 +146,15 @@ function renderBookPicker(mode) {
   bookPicker.setAttribute("aria-labelledby", heading.id);
   if (!options.length) { closeBookPicker(); return; }
   options.forEach(option => {
+    if (option.isDivider) {
+      const divider = document.createElement("div");
+      divider.className = "picker-divider";
+      divider.setAttribute("role", "separator");
+      divider.setAttribute("aria-label", "New Testament");
+      grid.appendChild(divider);
+      return;
+    }
+
     const button = document.createElement("button");
     button.type = "button";
     button.className = "picker-option";
