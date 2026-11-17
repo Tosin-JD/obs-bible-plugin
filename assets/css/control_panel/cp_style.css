@@ -749,13 +749,13 @@ button, .btn-file-upload{
   cursor: pointer;
   text-align: center;
   background-color: transparent !important;
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border: 1px solid var(--card-border);
   transition: all 0.2s ease;
 }
 
 .background-mode-option:hover {
-  background-color: rgba(255, 255, 255, 0.05) !important;
-  border-color: rgba(255, 255, 255, 0.25);
+  background-color: var(--card-hover-bg) !important;
+  border-color: var(--card-border-hover);
 }
 
 .background-mode-radio{
@@ -764,9 +764,9 @@ button, .btn-file-upload{
 
 .background-mode-option:has(.background-mode-radio:checked),
 .background-mode-option.selected{
-  box-shadow: 0 0 0 2px var(--selected-fg-color, #284Cee);
-  border-color: var(--selected-fg-color, #284Cee);
-  background-color: rgba(40, 76, 238, 0.08) !important;
+  box-shadow: 0 0 0 2px var(--card-selected-border);
+  border-color: var(--card-selected-border);
+  background-color: var(--card-selected-bg) !important;
 }
 
 .background-mode-swatch{
@@ -776,7 +776,7 @@ button, .btn-file-upload{
   width: 32px;
   height: 32px;
   border-radius: 6px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid var(--card-swatch-border);
   background-size: cover;
   background-position: center;
 }
@@ -1287,18 +1287,18 @@ input[type="number"]::-webkit-inner-spin-button {
     height: 38px;
     border-radius: 6px;
     cursor: pointer;
-    border: 2px solid rgba(255, 255, 255, 0.15);
+    border: 2px solid var(--preset-tile-border);
     transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
     background-size: cover;
     outline: none;
 }
 .gradient-preset-tile:hover {
     transform: scale(1.05);
-    border-color: rgba(255, 255, 255, 0.6);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    border-color: var(--preset-tile-border-hover);
+    box-shadow: 0 4px 12px var(--preset-tile-shadow);
 }
 .gradient-preset-tile.active {
-    border-color: var(--selected-fg-color, #284Cee);
-    box-shadow: 0 0 0 2px var(--selected-fg-color, #284Cee), 0 4px 12px rgba(0, 0, 0, 0.4);
+    border-color: var(--card-selected-border);
+    box-shadow: 0 0 0 2px var(--card-selected-border), 0 4px 12px var(--preset-tile-shadow);
     transform: scale(1.04);
 }

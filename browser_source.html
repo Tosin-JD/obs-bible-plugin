@@ -12,7 +12,7 @@
     <div id="bg-image" style="position: absolute; top:0; left:0; width:100%; height:100%; background-size:cover; background-position:center; z-index:0; display:none; border-radius: inherit;"></div>
     <div id="bg-gradient" style="position: absolute; top:0; left:0; width:100%; height:100%; z-index:0; display:none; border-radius: inherit;"></div>
     <div class="container" id="container" style="position: relative; z-index:1;">
-      <div id="messageDisplay" class=""></div>
+      <p id="messageDisplay" class=""></p>
     </div>
   </div>
 
@@ -144,19 +144,38 @@
         if (bgVideo) bgVideo.dataset.loadedSrc = "";
       }
 
-      const rawMode = (await idbMedia.get(`obs-bible-background-mode_${contentType}`)) || localStorage.getItem(`obs-bible-background-mode_${contentType}`);
-      const bgMode = rawMode || localStorage.getItem("obs-bible-background-mode") || "plain";
+      const rawMode = (await idbMedia.get(`obs-bible-background-mode_${contentType}`))
+        || localStorage.getItem(`obs-bible-background-mode_${contentType}`);
+      const bgMode = rawMode
+        || (await idbMedia.get("obs-bible-background-mode"))
+        || localStorage.getItem("obs-bible-background-mode")
+        || (await idbMedia.get("obs-bible-background-mode_bible"))
+        || localStorage.getItem("obs-bible-background-mode_bible")
+        || (await idbMedia.get("obs-bible-background-mode_song"))
+        || localStorage.getItem("obs-bible-background-mode_song")
+        || "plain";
       const bgImage = document.getElementById("bg-image");
       const bgGradient = document.getElementById("bg-gradient");
 
       // Handle Video background smoothly without blinking or interrupting active playback
       let targetVideoUrl = null;
       if (bgMode === "video") {
-        targetVideoUrl = (await idbMedia.get(`obs-bible-video-url_${contentType}`)) || (await idbMedia.get("obs-bible-video-url")) || localStorage.getItem(`obs-bible-video-url_${contentType}`) || localStorage.getItem("obs-bible-video-url");
+        targetVideoUrl = (await idbMedia.get(`obs-bible-video-url_${contentType}`))
+          || (await idbMedia.get("obs-bible-video-url"))
+          || (await idbMedia.get("obs-bible-video-url_bible"))
+          || (await idbMedia.get("obs-bible-video-url_song"))
+          || (await idbMedia.get("obs-bible-video-url_text"))
+          || localStorage.getItem(`obs-bible-video-url_${contentType}`)
+          || localStorage.getItem("obs-bible-video-url")
+          || localStorage.getItem("obs-bible-video-url_bible")
+          || localStorage.getItem("obs-bible-video-url_song");
       }
+
+      let isMediaActive = false;
 
       if (bgVideo && bgImage) {
         if (bgMode === "video" && targetVideoUrl) {
+          isMediaActive = true;
           const isGif = targetVideoUrl.toLowerCase().includes('.gif') || targetVideoUrl.startsWith('data:image/gif');
           if (isGif) {
             bgImage.style.backgroundImage = `url("${targetVideoUrl}")`;
@@ -209,11 +228,18 @@
       }
 
       // Handle Image background
+      let targetImageUrl = null;
       if (bgImage && bgMode !== "video") {
         if (bgMode === "image") {
-          const imgUrl = localStorage.getItem(`obs-bible-image-url_${contentType}`) || localStorage.getItem("obs-bible-image-url");
-          if (imgUrl) {
-            bgImage.style.backgroundImage = `url("${imgUrl}")`;
+          targetImageUrl = (await idbMedia.get(`obs-bible-image-url_${contentType}`))
+            || (await idbMedia.get("obs-bible-image-url"))
+            || (await idbMedia.get("obs-bible-image-url_bible"))
+            || (await idbMedia.get("obs-bible-image-url_song"))
+            || localStorage.getItem(`obs-bible-image-url_${contentType}`)
+            || localStorage.getItem("obs-bible-image-url");
+          if (targetImageUrl) {
+            isMediaActive = true;
+            bgImage.style.backgroundImage = `url("${targetImageUrl}")`;
             bgImage.style.display = "block";
           } else {
             bgImage.style.display = "none";
@@ -224,11 +250,16 @@
       }
 
       // Handle Gradient background
+      let targetGradientCss = null;
       if (bgGradient) {
         if (bgMode === "gradient") {
-          const gradientCss = localStorage.getItem(`obs-bible-gradient-css_${contentType}`) || localStorage.getItem('obs-bible-gradient-css');
-          if (gradientCss) {
-            bgGradient.style.backgroundImage = gradientCss;
+          targetGradientCss = localStorage.getItem(`obs-bible-gradient-css_${contentType}`)
+            || localStorage.getItem('obs-bible-gradient-css')
+            || localStorage.getItem('obs-bible-gradient-css_bible')
+            || localStorage.getItem('obs-bible-gradient-css_song');
+          if (targetGradientCss) {
+            isMediaActive = true;
+            bgGradient.style.backgroundImage = targetGradientCss;
             bgGradient.style.display = "block";
           } else {
             bgGradient.style.display = "none";
@@ -239,11 +270,15 @@
       }
 
       // Handle Container Background Color
-      if (bgMode === "plain") {
-        const rawColor = localStorage.getItem(`obs-bible-bg-color_${contentType}`) || localStorage.getItem('rawBgColor') || localStorage.getItem('bgColor') || "#000000";
-        const opacity = localStorage.getItem(`obs-bible-bg-opacity_${contentType}`) || localStorage.getItem('savedOpacity') || "1";
+      const rawColor = localStorage.getItem(`obs-bible-bg-color_${contentType}`) || localStorage.getItem('rawBgColor') || localStorage.getItem('bgColor') || "#000000";
+      const opacity = localStorage.getItem(`obs-bible-bg-opacity_${contentType}`) || localStorage.getItem('savedOpacity') || "1";
+
+      if (isMediaActive) {
+        bgContainer.style.backgroundColor = "transparent";
+      } else if (bgMode === "plain" || (bgMode === "video" && !targetVideoUrl) || (bgMode === "image" && !targetImageUrl)) {
+        // Fall back gracefully to plain color if media source is unavailable, so screen never goes blank!
         bgContainer.style.backgroundColor = hexToRgba(rawColor, opacity);
-      } else if (bgMode === "image" || bgMode === "video" || bgMode === "gradient") {
+      } else if (bgMode === "none") {
         bgContainer.style.backgroundColor = "transparent";
       } else {
         const globalBg = localStorage.getItem('bgColor') || localStorage.getItem('rawBgColor') || "rgba(0, 0, 0, 0.85)";

@@ -177,6 +177,7 @@ function setBgItem(keyName, val) {
     const contentType = getBgContentType();
     const fullKey = `${keyName}_${contentType}`;
     idbMedia.set(fullKey, val);
+    idbMedia.set(keyName, val);
 }
 
 function getBgItem(keyName) {

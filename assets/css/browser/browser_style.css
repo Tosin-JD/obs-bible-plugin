@@ -27,8 +27,6 @@ body{
     justify-content: center;
     align-items: center;
     position: relative;
-    overflow: hidden;
-    -webkit-mask-image: -webkit-radial-gradient(white, black);
 }
 
 #bg-video,
@@ -69,9 +67,6 @@ body{
     opacity: 1;
 }
 
-#messageDisplay p {
-    margin: 4px 0;
-}
 
 .text-with-shadow {
     text-shadow: 5px 5px 4px rgba(0, 0, 0, 0.75);
