@@ -7,6 +7,50 @@ function removeAccents(str) {
   return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
 }
 
+function formatBibleReferenceInput(value) {
+  if (value == null) return "";
+
+  const rawValue = String(value).replace(/\s+/g, " ");
+  if (!rawValue.trim()) return "";
+
+  const cleanValue = rawValue.trim();
+  const bookNames = [
+    ...(typeof englishBooks !== "undefined" ? englishBooks : []),
+    ...(typeof bibleIndex !== "undefined" ? Array.from(bibleIndex.keys()) : [])
+  ];
+  const matchedBook = bookNames.find(book =>
+    removeAccents(cleanValue).toLowerCase() === removeAccents(book).toLowerCase()
+  );
+  if (matchedBook) return `${matchedBook} `;
+
+  // Add reference punctuation only for a known book, so ordinary text searches
+  // that happen to end in a number are left alone.
+  const chapterMatch = cleanValue.match(/^(.+)\s+(\d+)$/);
+  const verseMatch = cleanValue.match(/^(.+\s+\d+):(\d+)$/);
+  const knownBooks = bookNames.map(book => removeAccents(book).toLowerCase());
+  if (chapterMatch && knownBooks.includes(removeAccents(chapterMatch[1]).toLowerCase())) {
+    return `${cleanValue}:`;
+  }
+  if (verseMatch && knownBooks.includes(removeAccents(verseMatch[1].replace(/\s+\d+$/, "")).toLowerCase())) {
+    return `${cleanValue}-`;
+  }
+
+  return cleanValue;
+}
+
+function sanitizeBibleReferenceForSearch(value) {
+  if (value == null) return "";
+
+  let cleaned = String(value).replace(/\s+/g, " ").replace(/\s*:\s*/g, ":").replace(/\s*-\s*/g, "-").trim();
+  if (!cleaned) return "";
+
+  while (cleaned.endsWith(":") || cleaned.endsWith("-")) {
+    cleaned = cleaned.slice(0, -1).trim();
+  }
+
+  return cleaned;
+}
+
 function ensureEndsWithColon(str) {
     if (str.includes(':')) {
         return str;
@@ -199,8 +243,8 @@ function searchBible(query, bible_data) {
   bblVerseDiv.innerHTML = "";
   let savedBibleVerse = [];
 
-  // Normalize spacing around colons and dashes
-  let normQuery = query.trim().replace(/\s*:\s*/g, ":").replace(/\s*-\s*/g, "-");
+  // Normalize spacing around colons and dashes and drop incomplete trailing punctuation
+  let normQuery = sanitizeBibleReferenceForSearch(query);
   const normQueryLower = normQuery.toLowerCase();
   const accentlessQuery = removeAccents(normQueryLower);
 
@@ -341,7 +385,7 @@ submitButton.addEventListener("click", function (event) {
   event.preventDefault();
 
   const inputField = document.getElementById("bible-input");
-  const searchQuery = inputField.value.trim();
+  const searchQuery = sanitizeBibleReferenceForSearch(inputField.value);
 
   if (searchQuery !== "") {
     searchBible(searchQuery, bible_data);
@@ -351,7 +395,7 @@ submitButton.addEventListener("click", function (event) {
 
 inputField.addEventListener("keydown", function(event) {
   if (event.key === "Enter") {
-    const searchQuery = inputField.value.trim();
+    const searchQuery = sanitizeBibleReferenceForSearch(inputField.value);
 
     if (searchQuery !== "") {
       searchBible(searchQuery, bible_data);

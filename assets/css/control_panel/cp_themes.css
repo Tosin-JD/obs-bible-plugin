@@ -163,6 +163,40 @@ body, .main-bg {
     color: var(--color-fg);
 }
 
+#suggestions, .book-picker-dropdown {
+    background-color: var(--color-mid-bg);
+    color: var(--color-fg);
+    box-shadow: 0 3px 8px var(--picker-shadow-color, rgba(0, 0, 0, .3));
+}
+
+#suggestions {
+    box-shadow: 0 3px 8px var(--picker-shadow-color, rgba(0, 0, 0, .3));
+}
+
+.picker-option {
+    border: 1px solid var(--hover-bg-color);
+    background-color: var(--color-mid-bg);
+    color: var(--color-fg);
+}
+
+.picker-option:hover, .picker-option:focus-visible {
+    background-color: var(--hover-bg-color);
+    color: var(--hover-fg-color);
+}
+
+.picker-option:focus-visible {
+    outline-color: var(--selected-fg-color);
+}
+
+.picker-option:active {
+    background-color: var(--selected-bg-color);
+    color: var(--selected-fg-color);
+}
+
+.picker-heading, .picker-grid {
+    background-color: transparent;
+}
+
 div, .selected-setting-tab, .settings-tab-button.selected-setting-tab{
     background-color: var(--color-bg);
     color: var(--color-fg);
