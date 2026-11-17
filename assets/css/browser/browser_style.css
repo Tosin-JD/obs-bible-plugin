@@ -43,6 +43,7 @@ body{
     opacity: 1;
 /*    font-size: 5em;*/
     font-weight: bold;
+    paint-order: stroke fill;
     text-align: center;
     margin: 0;
     padding: 20px 20px;
@@ -53,10 +54,24 @@ body{
     hyphens: auto;
 }
 
-#messageDisplay span{
+#messageDisplay span:not(.bible-content):not(.bible-message):not(.bible-reference){
     color: #ff6450;
     overflow-y: hidden;
     opacity: 1;
+}
+
+#messageDisplay .bible-reference{
+    color: var(--title-color, #ff6450);
+    overflow-y: hidden;
+    opacity: 1;
+}
+
+.bible-layout-separate-line .bible-reference{
+    display: block;
+}
+
+.bible-message{
+    white-space: pre-wrap;
 }
 
 .text-with-shadow {

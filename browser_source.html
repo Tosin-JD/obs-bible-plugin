@@ -19,6 +19,14 @@
     const messageDisplay = document.getElementById("messageDisplay");
     // const messageTitle = document.getElementById("messageTitle");
 
+    function applyTitleColor(color) {
+      messageDisplay.style.setProperty("--title-color", color);
+      const spans = document.querySelectorAll(
+        "#messageDisplay span:not(.bible-content):not(.bible-message):not(.bible-reference)"
+      );
+      spans.forEach(span => span.style.color = color);
+    }
+
     // Text channel
     const channel = new BroadcastChannel("myChannel");
     channel.onmessage = (event) => {
@@ -26,9 +34,9 @@
       updateMessage('messageDisplay', message);
       // messageDisplay.innerHTML = message;
 
-      if (savedTitleColor) {
-          const dspans = document.querySelectorAll("#messageDisplay span");
-          dspans.forEach(dspan => dspan.style.color = savedTitleColor);
+      const titleColor = localStorage.getItem("titleColor");
+      if (titleColor) {
+          applyTitleColor(titleColor);
       }
     };
 
@@ -66,10 +74,8 @@
             localStorage.setItem('fontColor', event.data.selectedFontColor);
           }
           if (event.data.selectedTitleColor){
-            const spans = document.querySelectorAll("#messageDisplay span");
-            spans.forEach(span => span.style.color = event.data.selectedTitleColor);
             localStorage.setItem('titleColor', event.data.selectedTitleColor);
-            location.reload();
+            applyTitleColor(event.data.selectedTitleColor);
           }
           if (event.data.currentBoldState){
             messageDisplay.style.fontWeight = event.data.currentBoldState;

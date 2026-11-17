@@ -34,8 +34,12 @@ document.getElementById("bible-version").addEventListener("change", function() {
     const selectedScriptFile = this.value;
 
     loadScriptFile(selectedScriptFile).then(() => {
-        getSavedBible();
         generateIndexForBibleBooks();
-        displayBible();
+        if (typeof refreshBibleDisplayPreferences === "function") {
+            refreshBibleDisplayPreferences();
+        } else {
+            getSavedBible();
+            displayBible();
+        }
     });
 });

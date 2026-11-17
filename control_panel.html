@@ -1,204 +1,255 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="assets/css/control_panel/cp_style.css">
-    <link rel="stylesheet" href="assets/css/control_panel/cp_themes.css">
-    <title>Sender</title>
-  </head>
-  <body data-theme="dark">
-    <div class="main">
-      <div class="tab-item">
-        <div id="text" class="tab-area">
-          <div class="container">
-            <div class="textarea-container tooltip tooltip-top"  data-tooltip="Type the text to display">
-              <textarea class="fill" id="messageInput" placeholder="Type a message
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="assets/css/control_panel/cp_style.css">
+  <link rel="stylesheet" href="assets/css/control_panel/cp_themes.css">
+  <title>Sender</title>
+</head>
+
+<body data-theme="dark">
+  <div class="main">
+    <div class="tab-item">
+      <div id="text" class="tab-area">
+        <div class="container">
+          <div class="textarea-container tooltip tooltip-top" data-tooltip="Type the text to display">
+            <textarea class="fill" id="messageInput" placeholder="Type a message
 Click on History to get previous text
 DoubleClick on History erase all previous text"></textarea>
-            </div>
-            <!-- <div id="message-toolbar" class="message-toolbar"> -->
-            <div id="message-toolbar" class="message-toolbar row primary">
-              <button id="message-boldButton" class="message-toolbar-button btn">B</button>
-              <button id="message-italicButton" class="message-toolbar-button btn">I</button>
-              <!-- <button id="message-underlineButton" class="message-toolbar-button btn">U</button> -->
-            </div>
-            <div class="row">
-              <button id="sendButton" class="warning tooltip tooltip-top"  data-tooltip="Send the text to be displayed">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="17" height="17">
-                  <path class="icons" d="M498.1 5.6c10.1 7 15.4 19.1 13.5 31.2l-64 416c-1.5 9.7-7.4 18.2-16 23s-18.9 5.4-28 1.6L284 427.7l-68.5 74.1c-8.9 9.7-22.9 12.9-35.2 8.1S160 493.2 160 480l0-83.6c0-4 1.5-7.8 4.2-10.8L331.8 202.8c5.8-6.3 5.6-16-.4-22s-15.7-6.4-22-.7L106 360.8 17.7 316.6C7.1 311.3 .3 300.7 0 288.9s5.9-22.8 16.1-28.7l448-256c10.7-6.1 23.9-5.5 34 1.4z"/>
-                </svg>
-              </button>
-              <button id="copyHistoryButton" class="primary tooltip tooltip-left"  data-tooltip="Get all the text you have displayed">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="17" height="17">
-                    <path class="icons" d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9L0 168c0 13.3 10.7 24 24 24l110.1 0c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24l0 104c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65 0-94.1c0-13.3-10.7-24-24-24z"/>
-                </svg>
-              </button>
-            </div>
+          </div>
+          <!-- <div id="message-toolbar" class="message-toolbar"> -->
+          <div id="message-toolbar" class="message-toolbar row primary">
+            <button id="message-boldButton" class="message-toolbar-button btn">B</button>
+            <button id="message-italicButton" class="message-toolbar-button btn">I</button>
+            <!-- <button id="message-underlineButton" class="message-toolbar-button btn">U</button> -->
+          </div>
+          <div class="row">
+            <button id="sendButton" class="warning tooltip tooltip-top" data-tooltip="Send the text to be displayed">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="17" height="17">
+                <path class="icons"
+                  d="M498.1 5.6c10.1 7 15.4 19.1 13.5 31.2l-64 416c-1.5 9.7-7.4 18.2-16 23s-18.9 5.4-28 1.6L284 427.7l-68.5 74.1c-8.9 9.7-22.9 12.9-35.2 8.1S160 493.2 160 480l0-83.6c0-4 1.5-7.8 4.2-10.8L331.8 202.8c5.8-6.3 5.6-16-.4-22s-15.7-6.4-22-.7L106 360.8 17.7 316.6C7.1 311.3 .3 300.7 0 288.9s5.9-22.8 16.1-28.7l448-256c10.7-6.1 23.9-5.5 34 1.4z" />
+              </svg>
+            </button>
+            <button id="copyHistoryButton" class="primary tooltip tooltip-left"
+              data-tooltip="Get all the text you have displayed">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="17" height="17">
+                <path class="icons"
+                  d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9L0 168c0 13.3 10.7 24 24 24l110.1 0c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24l0 104c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65 0-94.1c0-13.3-10.7-24-24-24z" />
+              </svg>
+            </button>
           </div>
         </div>
-        <div id="bibleText" class="tab-area" style="display:none;">
-          <div class="container">
-            <div class="bible-search row">
-              <div class="input-group row">
-                <div class="search-group">
-                  <div class="input-container fill rounded">
-                    <input class="bible-input input" id="bible-input" placeholder="Psalms 1:1 or Any Verse content" autocomplete="off">
-                    <button type="button" class="clear-button" id="clear-bible-btn">&times;</button>
-                  </div>
-                  <div class="mid-bg color-fg" id="suggestions"></div>
-                  <div id="bible-book-picker" class="book-picker-dropdown" role="dialog" aria-label="Pick a Bible reference" aria-labelledby="picker-heading" aria-hidden="true"></div>
+      </div>
+      <div id="bibleText" class="tab-area" style="display:none;">
+        <div class="container">
+          <div class="bible-search row">
+            <div class="input-group row">
+              <div class="search-group">
+                <div class="input-container fill rounded">
+                  <input class="bible-input input" id="bible-input" placeholder="Psalms 1:1 or Any Verse content"
+                    autocomplete="off">
+                  <button type="button" class="clear-button" id="clear-bible-btn">&times;</button>
                 </div>
-                <div class="row">
-                  <button type="button" id="bible-book-picker-button" class="bible-input no-border primary bible-version rounded tooltip tooltip-right" data-tooltip="Pick a book, chapter, and verse" aria-label="Pick a book, chapter, and verse" aria-expanded="false" aria-controls="bible-book-picker">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="17" height="17" aria-hidden="true">
-                      <path class="icons" d="M4 4.75A2.75 2.75 0 0 1 6.75 2H20v16H6.75A2.75 2.75 0 0 0 4 20.75zm0 0v16A2.75 2.75 0 0 1 6.75 18H20M8 6h8M8 9h8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                  </button>
-                  <button type="submit" id="bible-submit" class="bible-input no-border primary bible-version rounded tooltip tooltip-right"  data-tooltip="Search for a bible verse">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="17" height="17">
-                        <path class="icons" d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/>
-                    </svg>
-                  </button>
-                  <button id="history" class="bible-input no-border primary bible-version rounded tooltip tooltip-right"  data-tooltip="Get all the bible passages displayed so far">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="17" height="17">
-                      <path class="icons" d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9L0 168c0 13.3 10.7 24 24 24l110.1 0c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24l0 104c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65 0-94.1c0-13.3-10.7-24-24-24z"/>
-                  </svg>
-                  </button>
-                </div>
-                <div class="row  bible-input">
-                  <div class="settings-icons bible-version tooltip tooltip-bottom"  data-tooltip="Select a bible translation">
-                    <label class="small-font" id="bible-translation" for="bible-version">Bible Translation</label>
-                    <select name="bible-version" id="bible-version" class="small-font">
-                      <option value="assets/bibles/asv/asv.js">American Standard Version (ASV)</option>
-                      <option value="assets/bibles/amplified/amplified.js">Amplified Bible</option>
-                      <option value="assets/bibles/kjv/kjv.js">Authorized KJV</option>
-                      <option value="assets/bibles/bbe/bbe.js">Bible in Basic English (BBE)</option>
-                      <option value="assets/bibles/csb/csb.js">Christian Standard Bible (CSB)</option>
-                      <option value="assets/bibles/es_rvr/es_rvr.js">Español (Spanish)</option>
-                      <option value="assets/bibles/esv/esv.js">ESV</option>
-                      <option value="assets/bibles/hausa_bible/hausa_bible.js">Hausa Bible</option>
-                      <option value="assets/bibles/igbo_bible/igbo_bible.js">Igbo Bible</option>
-                      <option value="assets/bibles/italian/italian_bible_diodati.js">Italian Diodati Bible</option>
-                      <option value="assets/bibles/italian/italian_new_diodati.js">La Nuova Diodati</option>
-                      <option value="assets/bibles/segond_1910/segond_1910.js">Louis Segond (French)</option>
-                      <option value="assets/bibles/nasb/nasb.js">New American Standard Bible (NASB)</option>
-                      <option value="assets/bibles/niv/niv.js">NIV</option>
-                      <option value="assets/bibles/nkjv/nkjv.js">NKJV</option>
-                      <option value="assets/bibles/nlt/nlt.js">New Living Translation (NLT)</option>
-                      <option value="assets/bibles/crtb/crtb.js">Russian Bible</option>
-                      <option value="assets/bibles/swahili_bible/swahili_bible.js">Swahili Bible</option>
-                      <option value="assets/bibles/tpt/tpt.js">The Passion Translation (TPT)</option>
-                      <option value="assets/bibles/web/web.js">World English Bible (WEB)</option>
-                      <option value="assets/bibles/yoruba_bible/yoruba_bible.js">Yoruba Bible</option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="grid-item bible-container selected" id="bible">
-              <div class="bible-verse" id="bible-verse">
-                <!-- This is the area for bible verses -->
-              </div>
-            </div>
-            <div class="row">
-              <button id="prev-verse" class="prev tooltip tooltip-top" data-tooltip="Click to move to the previous verse">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="17" height="17">
-                    <path class="icons" d="M459.5 440.6c9.5 7.9 22.8 9.7 34.1 4.4s18.4-16.6 18.4-29l0-320c0-12.4-7.2-23.7-18.4-29s-24.5-3.6-34.1 4.4L288 214.3l0 41.7 0 41.7L459.5 440.6zM256 352l0-96 0-128 0-32c0-12.4-7.2-23.7-18.4-29s-24.5-3.6-34.1 4.4l-192 160C4.2 237.5 0 246.5 0 256s4.2 18.5 11.5 24.6l192 160c9.5 7.9 22.8 9.7 34.1 4.4s18.4-16.6 18.4-29l0-64z"/>
-                </svg>
-              </button>
-              <button  id="next-verse" class="next tooltip tooltip-top" data-tooltip="Click to move to the next verse">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="17" height="17">
-                    <path class="icons" d="M52.5 440.6c-9.5 7.9-22.8 9.7-34.1 4.4S0 428.4 0 416L0 96C0 83.6 7.2 72.3 18.4 67s24.5-3.6 34.1 4.4L224 214.3l0 41.7 0 41.7L52.5 440.6zM256 352l0-96 0-128 0-32c0-12.4 7.2-23.7 18.4-29s24.5-3.6 34.1 4.4l192 160c7.3 6.1 11.5 15.1 11.5 24.6s-4.2 18.5-11.5 24.6l-192 160c-9.5 7.9-22.8 9.7-34.1 4.4s-18.4-16.6-18.4-29l0-64z"/>
-                </svg>
-              </button>
-            </div>
-          </div>
-        </div>
-        <div id="songs" class="tab-area" style="display:none;">
-          <div class="container">
-            <div class="input-group row" id="add-song">
-              <div class="search-group rounded tooltip tooltip-bottom input-container" data-tooltip="Search for line in the lyrics">
-                <input class="input" id="lyric-search" placeholder="Search lyrics">
-                <button type="button" class="clear-button" id="clear-lyrics-btn">&times;</button>
+                <div class="mid-bg color-fg" id="suggestions"></div>
+                <div id="bible-book-picker" class="book-picker-dropdown" role="dialog"
+                  aria-label="Pick a Bible reference" aria-labelledby="picker-heading" aria-hidden="true"></div>
               </div>
               <div class="row">
-                <div class="rounded tooltip tooltip-bottom" style="position: relative;" data-tooltip="Enter the number of seconds before the lyrics move to the next line automatically">
-                  <input type="number" class="input tooltip tooltip-left" id="song-line-duration"  data-tooltip="Enter the number of seconds before the lyrics move to the next line automatically">
-                  <div id="countdown-timer" class="countdown-timer">0s</div>
-                </div>
-                <div class="rounded tooltip tooltip-bottom" data-tooltip="Click to move lyrics to next line after number of seconds">
-                  <input type="button" id="start-song-button" value="Play Lyrics" class="input">
-                </div>
-                <label for="song-file-upload" id="song-file-label" class="btn-file-upload tooltip tooltip-left" data-tooltip="Select a .txt file with lyrics">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="17" height="17">
-                      <path class="icons" d="M128 64c0-35.3 28.7-64 64-64L352 0l0 128c0 17.7 14.3 32 32 32l128 0 0 288c0 35.3-28.7 64-64 64l-256 0c-35.3 0-64-28.7-64-64l0-112 174.1 0-39 39c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l80-80c9.4-9.4 9.4-24.6 0-33.9l-80-80c-9.4-9.4-24.6-9.4-33.9 0s-9.4 24.6 0 33.9l39 39L128 288l0-224zm0 224l0 48L24 336c-13.3 0-24-10.7-24-24s10.7-24 24-24l104 0zM512 128l-128 0L384 0 512 128z"/>
+                <button type="button" id="bible-book-picker-button"
+                  class="bible-input no-border primary bible-version rounded tooltip tooltip-right"
+                  data-tooltip="Pick a book, chapter, and verse" aria-label="Pick a book, chapter, and verse"
+                  aria-expanded="false" aria-controls="bible-book-picker">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="17" height="17" aria-hidden="true">
+                    <path class="icons"
+                      d="M4 4.75A2.75 2.75 0 0 1 6.75 2H20v16H6.75A2.75 2.75 0 0 0 4 20.75zm0 0v16A2.75 2.75 0 0 1 6.75 18H20M8 6h8M8 9h8"
+                      fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                      stroke-linejoin="round" />
                   </svg>
-                </label>
-                <input type="file" id="song-file-upload" accept=".txt">
-              </div>
-            </div>
-            <div class="song selected" id="song">
-              <div  class="song-verse" id="song-display">
-
-                <div class="verse" id="verse1">
-                  <p>Omo to mo yare loju o</p>
-                  <p>Osi yio to mo na paa</p>
-                  <p>Iya to jiya po lori re</p>
-                  <p>Baba to ji ya po lori re</p>
-                  <p>Omo to mo ya re loju o</p>
-                  <p>Osi yio to mo na paa</p>
-                </div>
-
-                <div class="chorus song-chorus"  id="chorus">
-                  <p>CHORUS</p>
-                  <p>Many things about tomorrow,</p>
-                  <p>I don’t seem to understand;</p>
-                  <p>But I know who holds tomorrow,</p>
-                  <p>And I know who holds my hand.</p>
-                </div>
-              </div>
-              <div id="lyrics-search-nav" class="floating-search-nav" style="display: none;">
-                <button id="prev-match-btn" class="tooltip tooltip-bottom" data-tooltip="Previous match">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="15" height="15"><path class="icons" d="M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z"/></svg>
                 </button>
-                <button id="next-match-btn" class="tooltip tooltip-bottom" data-tooltip="Next match">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="15" height="15"><path class="icons" d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"/></svg>
+                <button type="submit" id="bible-submit"
+                  class="bible-input no-border primary bible-version rounded tooltip tooltip-right"
+                  data-tooltip="Search for a bible verse">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="17" height="17">
+                    <path class="icons"
+                      d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z" />
+                  </svg>
+                </button>
+                <button id="history" class="bible-input no-border primary bible-version rounded tooltip tooltip-right"
+                  data-tooltip="Get all the bible passages displayed so far">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="17" height="17">
+                    <path class="icons"
+                      d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9L0 168c0 13.3 10.7 24 24 24l110.1 0c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24l0 104c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65 0-94.1c0-13.3-10.7-24-24-24z" />
+                  </svg>
                 </button>
               </div>
+              <div class="row  bible-input">
+                <div class="settings-icons bible-version tooltip tooltip-bottom"
+                  data-tooltip="Select a bible translation">
+                  <label class="small-font" id="bible-translation" for="bible-version">Bible Translation</label>
+                  <select name="bible-version" id="bible-version" class="small-font">
+                    <option value="assets/bibles/asv/asv.js" data-abbreviation="ASV">American Standard Version (ASV)
+                    </option>
+                    <option value="assets/bibles/amplified/amplified.js" data-abbreviation="AMP">Amplified Bible
+                    </option>
+                    <option value="assets/bibles/kjv/kjv.js" data-abbreviation="KJV">Authorized KJV</option>
+                    <option value="assets/bibles/bbe/bbe.js" data-abbreviation="BBE">Bible in Basic English (BBE)
+                    </option>
+                    <option value="assets/bibles/csb/csb.js" data-abbreviation="CSB">Christian Standard Bible (CSB)
+                    </option>
+                    <option value="assets/bibles/es_rvr/es_rvr.js" data-abbreviation="RVR">Español (Spanish)</option>
+                    <option value="assets/bibles/esv/esv.js" data-abbreviation="ESV">ESV</option>
+                    <option value="assets/bibles/hausa_bible/hausa_bible.js" data-abbreviation="HAU">Hausa Bible
+                    </option>
+                    <option value="assets/bibles/igbo_bible/igbo_bible.js" data-abbreviation="IGB">Igbo Bible</option>
+                    <option value="assets/bibles/italian/italian_bible_diodati.js" data-abbreviation="IBD">Italian
+                      Diodati Bible</option>
+                    <option value="assets/bibles/italian/italian_new_diodati.js" data-abbreviation="LND">La Nuova
+                      Diodati</option>
+                    <option value="assets/bibles/segond_1910/segond_1910.js" data-abbreviation="LSG">Louis Segond
+                      (French)</option>
+                    <option value="assets/bibles/nasb/nasb.js" data-abbreviation="NASB">New American Standard Bible
+                      (NASB)</option>
+                    <option value="assets/bibles/niv/niv.js" data-abbreviation="NIV">NIV</option>
+                    <option value="assets/bibles/nkjv/nkjv.js" data-abbreviation="NKJV">NKJV</option>
+                    <option value="assets/bibles/nlt/nlt.js" data-abbreviation="NLT">New Living Translation (NLT)
+                    </option>
+                    <option value="assets/bibles/crtb/crtb.js" data-abbreviation="RUS">Russian Bible</option>
+                    <option value="assets/bibles/swahili_bible/swahili_bible.js" data-abbreviation="SWA">Swahili Bible
+                    </option>
+                    <option value="assets/bibles/tpt/tpt.js" data-abbreviation="TPT">The Passion Translation (TPT)
+                    </option>
+                    <option value="assets/bibles/web/web.js" data-abbreviation="WEB">World English Bible (WEB)</option>
+                    <option value="assets/bibles/yoruba_bible/yoruba_bible.js" data-abbreviation="YOR">Yoruba Bible
+                    </option>
+                  </select>
+                </div>
+              </div>
             </div>
-            <div class="row">
-              <button  id="prev-line" class="prev tooltip tooltip-top" data-tooltip="Click to lyrics move to the previous line">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"  width="17" height="17">
-                    <path class="icons" d="M459.5 440.6c9.5 7.9 22.8 9.7 34.1 4.4s18.4-16.6 18.4-29l0-320c0-12.4-7.2-23.7-18.4-29s-24.5-3.6-34.1 4.4L288 214.3l0 41.7 0 41.7L459.5 440.6zM256 352l0-96 0-128 0-32c0-12.4-7.2-23.7-18.4-29s-24.5-3.6-34.1 4.4l-192 160C4.2 237.5 0 246.5 0 256s4.2 18.5 11.5 24.6l192 160c9.5 7.9 22.8 9.7 34.1 4.4s18.4-16.6 18.4-29l0-64z"/>
-                </svg>
-              </button>
-              <button id="next-line"  class="next tooltip tooltip-top" data-tooltip="Click to lyrics move to the next line">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="17" height="17">
-                    <path class="icons" d="M52.5 440.6c-9.5 7.9-22.8 9.7-34.1 4.4S0 428.4 0 416L0 96C0 83.6 7.2 72.3 18.4 67s24.5-3.6 34.1 4.4L224 214.3l0 41.7 0 41.7L52.5 440.6zM256 352l0-96 0-128 0-32c0-12.4 7.2-23.7 18.4-29s24.5-3.6 34.1 4.4l192 160c7.3 6.1 11.5 15.1 11.5 24.6s-4.2 18.5-11.5 24.6l-192 160c-9.5 7.9-22.8 9.7-34.1 4.4s-18.4-16.6-18.4-29l0-64z"/>
-                </svg>
-              </button>
+          </div>
+          <div class="grid-item bible-container selected" id="bible">
+            <div class="bible-verse" id="bible-verse">
+              <!-- This is the area for bible verses -->
             </div>
+          </div>
+          <div class="row">
+            <button id="prev-verse" class="prev tooltip tooltip-top" data-tooltip="Click to move to the previous verse">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="17" height="17">
+                <path class="icons"
+                  d="M459.5 440.6c9.5 7.9 22.8 9.7 34.1 4.4s18.4-16.6 18.4-29l0-320c0-12.4-7.2-23.7-18.4-29s-24.5-3.6-34.1 4.4L288 214.3l0 41.7 0 41.7L459.5 440.6zM256 352l0-96 0-128 0-32c0-12.4-7.2-23.7-18.4-29s-24.5-3.6-34.1 4.4l-192 160C4.2 237.5 0 246.5 0 256s4.2 18.5 11.5 24.6l192 160c9.5 7.9 22.8 9.7 34.1 4.4s18.4-16.6 18.4-29l0-64z" />
+              </svg>
+            </button>
+            <button id="next-verse" class="next tooltip tooltip-top" data-tooltip="Click to move to the next verse">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="17" height="17">
+                <path class="icons"
+                  d="M52.5 440.6c-9.5 7.9-22.8 9.7-34.1 4.4S0 428.4 0 416L0 96C0 83.6 7.2 72.3 18.4 67s24.5-3.6 34.1 4.4L224 214.3l0 41.7 0 41.7L52.5 440.6zM256 352l0-96 0-128 0-32c0-12.4 7.2-23.7 18.4-29s24.5-3.6 34.1 4.4l192 160c7.3 6.1 11.5 15.1 11.5 24.6s-4.2 18.5-11.5 24.6l-192 160c-9.5 7.9-22.8 9.7-34.1 4.4s-18.4-16.6-18.4-29l0-64z" />
+              </svg>
+            </button>
           </div>
         </div>
-        <div id="setBg" class="tab-area no-gap" style="display:none;">
-          <div class="settings-tabs row">
-            <button class="settings-tab-button" data-settings="settings-general">General</button>
-            <button class="settings-tab-button" data-settings="settings-font">Font</button>
-            <button class="settings-tab-button" data-settings="settings-color">Color</button>
-            <button class="settings-tab-button" data-settings="settings-animation">Animation</button>
+      </div>
+      <div id="songs" class="tab-area" style="display:none;">
+        <div class="container">
+          <div class="input-group row" id="add-song">
+            <div class="search-group rounded tooltip tooltip-bottom input-container"
+              data-tooltip="Search for line in the lyrics">
+              <input class="input" id="lyric-search" placeholder="Search lyrics">
+              <button type="button" class="clear-button" id="clear-lyrics-btn">&times;</button>
+            </div>
+            <div class="row">
+              <div class="rounded tooltip tooltip-bottom" style="position: relative;"
+                data-tooltip="Enter the number of seconds before the lyrics move to the next line automatically">
+                <input type="number" class="input tooltip tooltip-left" id="song-line-duration"
+                  data-tooltip="Enter the number of seconds before the lyrics move to the next line automatically">
+                <div id="countdown-timer" class="countdown-timer">0s</div>
+              </div>
+              <div class="rounded tooltip tooltip-bottom"
+                data-tooltip="Click to move lyrics to next line after number of seconds">
+                <input type="button" id="start-song-button" value="Play Lyrics" class="input">
+              </div>
+              <label for="song-file-upload" id="song-file-label" class="btn-file-upload tooltip tooltip-left"
+                data-tooltip="Select a .txt file with lyrics">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="17" height="17">
+                  <path class="icons"
+                    d="M128 64c0-35.3 28.7-64 64-64L352 0l0 128c0 17.7 14.3 32 32 32l128 0 0 288c0 35.3-28.7 64-64 64l-256 0c-35.3 0-64-28.7-64-64l0-112 174.1 0-39 39c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l80-80c9.4-9.4 9.4-24.6 0-33.9l-80-80c-9.4-9.4-24.6-9.4-33.9 0s-9.4 24.6 0 33.9l39 39L128 288l0-224zm0 224l0 48L24 336c-13.3 0-24-10.7-24-24s10.7-24 24-24l104 0zM512 128l-128 0L384 0 512 128z" />
+                </svg>
+              </label>
+              <input type="file" id="song-file-upload" accept=".txt">
+            </div>
           </div>
-         <div class="row">
-           <div class="settings-tab-area" id="settings-general">
-             <div class="column settings-area">
-               <div class="row">
-                  <div class="settings-icons column full-width tooltip tooltip-bottom" data-tooltip="Display a song verse by verse or line by line">
-                    <div class="column">
-                      <label for="obs-bible-display-song-line-by-line">Display Song Line by Line</label>
-                      <input type="checkbox" id="obs-bible-display-song-line-by-line" class="checkbox-input">
-                    </div>
+          <div class="song selected" id="song">
+            <div class="song-verse" id="song-display">
+
+              <div class="verse" id="verse1">
+                <p>Omo to mo yare loju o</p>
+                <p>Osi yio to mo na paa</p>
+                <p>Iya to jiya po lori re</p>
+                <p>Baba to ji ya po lori re</p>
+                <p>Omo to mo ya re loju o</p>
+                <p>Osi yio to mo na paa</p>
+              </div>
+
+              <div class="chorus song-chorus" id="chorus">
+                <p>CHORUS</p>
+                <p>Many things about tomorrow,</p>
+                <p>I don’t seem to understand;</p>
+                <p>But I know who holds tomorrow,</p>
+                <p>And I know who holds my hand.</p>
+              </div>
+            </div>
+            <div id="lyrics-search-nav" class="floating-search-nav" style="display: none;">
+              <button id="prev-match-btn" class="tooltip tooltip-bottom" data-tooltip="Previous match">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="15" height="15">
+                  <path class="icons"
+                    d="M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" />
+                </svg>
+              </button>
+              <button id="next-match-btn" class="tooltip tooltip-bottom" data-tooltip="Next match">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="15" height="15">
+                  <path class="icons"
+                    d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" />
+                </svg>
+              </button>
+            </div>
+          </div>
+          <div class="row">
+            <button id="prev-line" class="prev tooltip tooltip-top"
+              data-tooltip="Click to lyrics move to the previous line">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="17" height="17">
+                <path class="icons"
+                  d="M459.5 440.6c9.5 7.9 22.8 9.7 34.1 4.4s18.4-16.6 18.4-29l0-320c0-12.4-7.2-23.7-18.4-29s-24.5-3.6-34.1 4.4L288 214.3l0 41.7 0 41.7L459.5 440.6zM256 352l0-96 0-128 0-32c0-12.4-7.2-23.7-18.4-29s-24.5-3.6-34.1 4.4l-192 160C4.2 237.5 0 246.5 0 256s4.2 18.5 11.5 24.6l192 160c9.5 7.9 22.8 9.7 34.1 4.4s18.4-16.6 18.4-29l0-64z" />
+              </svg>
+            </button>
+            <button id="next-line" class="next tooltip tooltip-top"
+              data-tooltip="Click to lyrics move to the next line">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="17" height="17">
+                <path class="icons"
+                  d="M52.5 440.6c-9.5 7.9-22.8 9.7-34.1 4.4S0 428.4 0 416L0 96C0 83.6 7.2 72.3 18.4 67s24.5-3.6 34.1 4.4L224 214.3l0 41.7 0 41.7L52.5 440.6zM256 352l0-96 0-128 0-32c0-12.4 7.2-23.7 18.4-29s24.5-3.6 34.1 4.4l192 160c7.3 6.1 11.5 15.1 11.5 24.6s-4.2 18.5-11.5 24.6l-192 160c-9.5 7.9-22.8 9.7-34.1 4.4s-18.4-16.6-18.4-29l0-64z" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div id="setBg" class="tab-area no-gap" style="display:none;">
+        <div class="settings-tabs row">
+          <button class="settings-tab-button" data-settings="settings-general">General</button>
+          <button class="settings-tab-button" data-settings="settings-font">Text</button>
+          <button class="settings-tab-button" data-settings="settings-color">Color</button>
+          <button class="settings-tab-button" data-settings="settings-animation">Animation</button>
+        </div>
+        <div class="row">
+          <div class="settings-tab-area" id="settings-general">
+            <div class="column settings-area">
+              <div class="row">
+                <div class="settings-icons column full-width tooltip tooltip-bottom"
+                  data-tooltip="Display a song verse by verse or line by line">
+                  <div class="column">
+                    <label for="obs-bible-display-song-line-by-line">Display Song Line by Line</label>
+                    <input type="checkbox" id="obs-bible-display-song-line-by-line" class="checkbox-input">
                   </div>
-                 <div class="settings-icons full-width">
+                </div>
+                <div class="settings-icons full-width">
                   <label for="obs-bible-panel-theme">Theme</label>
                   <select name="panel-theme" id="obs-bible-panel-theme">
                     <option value="obs-bible-acri">Acri</option>
@@ -209,387 +260,512 @@ DoubleClick on History erase all previous text"></textarea>
                     <option value="obs-bible-system">System</option>
                     <option value="obs-bible-default-yami">Yami (Default)</option>
                   </select>
-                 </div>
-                 </div>
-               <div class="row">
-                 <div class="settings-icons">
-                   <label>Rounded Corners</label>
-                   <input type="range" min="0" max="120" value="0" class="slider" id="rounded-corner">
-                 </div>
-               </div>
-               <div class="row">
-                 <div class="settings-icons">
-                   <label>Margin</label>
-                   <input type="range" min="0" max="100" value="10" class="slider" id="bg-margin">
-                 </div>
-               </div>
-               <div class="column" id="shadow-editor">
-                 <div class="row">
-                   <div class="column settings-icons">
-                     <label for="shadow-opacity">Shadow Opacity:</label>
-                     <input type="range" id="shadow-opacity" min="0" max="10" value="1"  class="slider">
-                   </div>
-                   <div class="column settings-icons">
-                     <label for="shadow-intensity">Shadow Intensity:</label>
-                     <input type="range" min="0" max="10" value="10" id="shadow-intensity" class="slider">
-                   </div>
-                 </div>
-                 <div class="row">
-                   <div class="column settings-icons">
-                     <label for="shadow-opacity">Horizontal Shadow offset:</label>
-                     <input type="range" id="hor-shadow-offset" min="-10" max="10" value="1"  class="slider">
-                   </div>
-                   <div class="column settings-icons">
-                     <label for="shadow-intensity">Vertical Shadow offset:</label>
-                     <input type="range" min="-10" max="10" value="10" id="ver-shadow-offset" class="slider">
-                   </div>
-                 </div>
-                 <div class="row">
-                   <div class="column settings-icons">
-                     <label for="main-border">Main Border</label>
-                     <input type="range" min="0" max="20" value="0" class="slider" id="main-border">
-                   </div>
-                   <div class="row settings-icons">
-                      <div class="column full-width">
-                       <label for="main-border-type">Border</label>
-                       <select class="" name="" id="main-border-type">
-                         <option value="solid">Solid</option>
-                         <option value="dashed">Dashed</option>
-                         <option value="dotted">Dotted</option>
-                         <option value="double">Double</option>
-                         <option value="groove">Groove</option>
-                         <option value="ridge">Ridge</option>
-                         <option value="inset">Inset</option>
-                         <option value="outset">Outset</option>
-                         <option value="none">None</option>
-                         <option value="hidden">Hidden</option>
-                       </select>
-                     </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="settings-icons">
+                  <label>Rounded Corners</label>
+                  <input type="range" min="0" max="120" value="0" class="slider" id="rounded-corner">
+                </div>
+              </div>
+              <div class="row">
+                <div class="settings-icons">
+                  <label>Margin</label>
+                  <input type="range" min="0" max="200" value="10" class="slider" id="bg-margin">
+                </div>
+              </div>
+              <div class="column" id="shadow-editor">
+                <div class="row">
+                  <div class="column settings-icons">
+                    <label for="shadow-opacity">Shadow Opacity:</label>
+                    <input type="range" id="shadow-opacity" min="0" max="10" value="1" class="slider">
+                  </div>
+                  <div class="column settings-icons">
+                    <label for="shadow-intensity">Shadow Intensity:</label>
+                    <input type="range" min="0" max="10" value="10" id="shadow-intensity" class="slider">
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="column settings-icons">
+                    <label for="shadow-opacity">Horizontal Shadow offset:</label>
+                    <input type="range" id="hor-shadow-offset" min="-10" max="10" value="1" class="slider">
+                  </div>
+                  <div class="column settings-icons">
+                    <label for="shadow-intensity">Vertical Shadow offset:</label>
+                    <input type="range" min="-10" max="10" value="10" id="ver-shadow-offset" class="slider">
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="column settings-icons">
+                    <label for="main-border">Main Border</label>
+                    <input type="range" min="0" max="20" value="0" class="slider" id="main-border">
+                  </div>
+                  <div class="row settings-icons">
+                    <div class="column full-width">
+                      <label for="main-border-type">Border</label>
+                      <select class="" name="" id="main-border-type">
+                        <option value="solid">Solid</option>
+                        <option value="dashed">Dashed</option>
+                        <option value="dotted">Dotted</option>
+                        <option value="double">Double</option>
+                        <option value="groove">Groove</option>
+                        <option value="ridge">Ridge</option>
+                        <option value="inset">Inset</option>
+                        <option value="outset">Outset</option>
+                        <option value="none">None</option>
+                        <option value="hidden">Hidden</option>
+                      </select>
                     </div>
                   </div>
-                  <div class="row">
-                    <div class="row settings-icons">
-                      <div class="column full-width">
-                        <div class="column">
-                          <label for="spacebar-checkbox">Display With Spacebar</label>
-                          <input type="checkbox" id="spacebar-checkbox" class="checkbox-input">
-                        </div>
-                     </div>
+                </div>
+                <div class="row">
+                  <div class="row settings-icons">
+                    <div class="column full-width">
+                      <div class="column">
+                        <label for="spacebar-checkbox">Display With Spacebar</label>
+                        <input type="checkbox" id="spacebar-checkbox" class="checkbox-input">
+                      </div>
                     </div>
-                    <div class="row settings-icons">
-                      <div class="column full-width">
-                        <div class="column">
-                          <label for="fade-in-checkbox">Fade In Display</label>
-                          <input type="checkbox" id="fade-in-checkbox" class="checkbox-input">
-                        </div>
-                     </div>
-                    </div>
-                 </div>
-               </div>
-               <div class="column">
-                 <div class="inherit-bg">This plugin is provided for free with love.</div>
-                 <div class="inherit-bg">Author: Oluwatosin Durodola <a href="https://buymeacoffee.com/tosin789" rel="noopener noreferrer"
-                   class="btn" id="donate" target="_blank">Donate</a>
-                 </div>
-               </div>
-             </div>
-           </div>
-           <div class="settings-tab-area" id="settings-font" style="display:none;">
-             <div class="column">
-               <div class="row">
-               <div class="row tooltip tooltip-bottom" data-tooltip="Select the font for text">
-                 <select id="fontStyle">
-                  <option value="Arial Black">Arial Black</option>
-                  <option value="Arial">Arial</option>
-                  <option value="Avantgarde">Avantgarde</option>
-                  <option value="Bradley Hand">Bradley Hand</option>
-                  <option value="Brush Script MT">Bradley Hand</option>
-                  <option value="Calibri">Calibri</option>
-                  <option value="Cambria">Cambria</option>
-                  <option value="Candara">Candara</option>
-                  <option value="Comic Sans MS">Comic Sans MS</option>
-                  <option value="Consolas">Consolas</option>
-                  <option value="Constantia">Constantia</option>
-                  <option value="Courier New">Courier New</option>
-                  <option value="Franklin Gothic">Franklin Gothic</option>
-                  <option value="Franklin Gothic Medium">Franklin Gothic Medium</option>
-                  <option value="Georgia">Georgia</option>
-                  <option value="Gill Sans">Gill Sans</option>
-                  <option value="Helvetica">Helvetica</option>
-                  <option value="Herculanum">Herculanum</option>
-                  <option value="Hoefler Text">Hoefler Text</option>
-                  <option value="Impact">Impact</option>
-                  <option value="Lucida Bright">Lucida Bright</option>
-                  <option value="Lucida Console">Lucida Console</option>
-                  <option value="Lucida Sans Unicode">Lucida Sans Unicode</option>
-                  <option value="Monaco">Monaco</option>
-                  <option value="Optima">Optima</option>
-                  <option value="Palatino">Palatino</option>
-                  <option value="Perpetua">Perpetua</option>
-                  <option value="Rockwell">Rockwell</option>
-                  <option value="sans-serif">Sans Serif</option>
-                  <option value="Segoe UI">Segoe UI</option>
-                  <option value="Serif">Serif</option>
-                  <option value="Sylfaen">Sylfaen</option>
-                  <option value="Tahoma">Tahoma</option>
-                  <option value="Times New Roman">Times New Roman</option>
-                  <option value="Trebuchet MS">Trebuchet MS</option>
-                  <option value="Verdana">Verdana</option>
-                 </select>
-               </div>
-                <div class="row settings-icons">
-                 <div class="row settings-icons">
-                   <span id="bold" class="font-settings tooltip tooltip-bottom" data-tooltip="Bolden the text" >B</span>
-                   <span id="italic" class="font-settings tooltip tooltip-bottom" data-tooltip="Italize the text">I</span>
-                   <span id="underline" class="font-settings tooltip tooltip-bottom" data-tooltip="Underline Texts">U</span>
-                 </div>
-                 <div id="textAlign" class="row settings-icons">
-
-                   <input name="align" type="radio" class="radio" id="left-align" value="Left">
-                   <label for="left-align" class="toggle-btn tooltip tooltip-bottom" data-tooltip="Align text to the left">
-                     <span class="toggle-circle">
-                       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="12" height="12">
-                           <path class="icons" d="M288 64c0 17.7-14.3 32-32 32L32 96C14.3 96 0 81.7 0 64S14.3 32 32 32l224 0c17.7 0 32 14.3 32 32zm0 256c0 17.7-14.3 32-32 32L32 352c-17.7 0-32-14.3-32-32s14.3-32 32-32l224 0c17.7 0 32 14.3 32 32zM0 192c0-17.7 14.3-32 32-32l384 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 224c-17.7 0-32-14.3-32-32zM448 448c0 17.7-14.3 32-32 32L32 480c-17.7 0-32-14.3-32-32s14.3-32 32-32l384 0c17.7 0 32 14.3 32 32z"/>
-                       </svg>
-                     </span>
-                   </label>
-
-                   <input name="align" type="radio" class="radio" id="center-align" value="Center">
-                   <label for="center-align" class="toggle-btn tooltip tooltip-bottom" data-tooltip="center the text">
-                     <span class="toggle-circle">
-                       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="12" height="12">
-                           <path class="icons" d="M352 64c0-17.7-14.3-32-32-32L128 32c-17.7 0-32 14.3-32 32s14.3 32 32 32l192 0c17.7 0 32-14.3 32-32zm96 128c0-17.7-14.3-32-32-32L32 160c-17.7 0-32 14.3-32 32s14.3 32 32 32l384 0c17.7 0 32-14.3 32-32zM0 448c0 17.7 14.3 32 32 32l384 0c17.7 0 32-14.3 32-32s-14.3-32-32-32L32 416c-17.7 0-32 14.3-32 32zM352 320c0-17.7-14.3-32-32-32l-192 0c-17.7 0-32 14.3-32 32s14.3 32 32 32l192 0c17.7 0 32-14.3 32-32z"/>
-                       </svg>
-                     </span>
-                   </label>
-
-                   <input name="align" type="radio" class="radio" id="right-align" value="Right">
-                   <label for="right-align" class="toggle-btn tooltip tooltip-bottom" data-tooltip="Align text to the right">
-                     <span class="toggle-circle">
-                       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="12" height="12">
-                           <path class="icons" d="M448 64c0 17.7-14.3 32-32 32L192 96c-17.7 0-32-14.3-32-32s14.3-32 32-32l224 0c17.7 0 32 14.3 32 32zm0 256c0 17.7-14.3 32-32 32l-224 0c-17.7 0-32-14.3-32-32s14.3-32 32-32l224 0c17.7 0 32 14.3 32 32zM0 192c0-17.7 14.3-32 32-32l384 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 224c-17.7 0-32-14.3-32-32zM448 448c0 17.7-14.3 32-32 32L32 480c-17.7 0-32-14.3-32-32s14.3-32 32-32l384 0c17.7 0 32 14.3 32 32z"/>
-                       </svg>
-                     </span>
-                   </label>
-                   <!-- <div class="tooltip tooltip-bottom" data-tooltip="Background color"> -->
-
-                   <!-- </div> -->
-                   <input name="align" type="radio" class="radio" id="justify-align" value="Justify">
-                   <label for="justify-align" class="toggle-btn tooltip tooltip-bottom" data-tooltip="Justify text fully">
-                     <span class="toggle-circle">
-                       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="12" height="12">
-                           <path class="icons" d="M448 64c0-17.7-14.3-32-32-32L32 32C14.3 32 0 46.3 0 64S14.3 96 32 96l384 0c17.7 0 32-14.3 32-32zm0 256c0-17.7-14.3-32-32-32L32 288c-17.7 0-32 14.3-32 32s14.3 32 32 32l384 0c17.7 0 32-14.3 32-32zM0 192c0 17.7 14.3 32 32 32l384 0c17.7 0 32-14.3 32-32s-14.3-32-32-32L32 160c-17.7 0-32 14.3-32 32zM448 448c0-17.7-14.3-32-32-32L32 416c-17.7 0-32 14.3-32 32s14.3 32 32 32l384 0c17.7 0 32-14.3 32-32z"/>
-                       </svg>
-                     </span>
-                   </label>
-
-                 </div>
-                 </div>
-               </div>
-               <div class="row">
-                 <div class="column settings-icons">
-                   <label for="font-outline">Font Outline</label>
-                   <input type="range" min="0" max="5" value="0" class="slider" id="font-outline">
-                 </div>
-               </div>
-             </div>
-           </div>
-           <div class="settings-tab-area" id="settings-color" style="display:none;">
-             <div class="column color-settings-panel">
-               <div class="row color-settings-grid">
-                 <div id="background-setting-trigger" class="column settings-icons color-setting-item color-setting-button tooltip tooltip-bottom" data-tooltip="Background color or gradient" role="button" tabindex="0" aria-haspopup="dialog" aria-controls="background-mode-modal">
-                   <span id="background-style-preview" class="background-style-preview" aria-hidden="true"></span>
-                   <span class="color-setting-label">Background</span>
-                   <input type="color" id="bgColor" class="color-picker-native" aria-hidden="true" tabindex="-1">
-                 </div>
-                 <label class="column settings-icons color-setting-item color-setting-trigger tooltip tooltip-bottom" for="fontColor" data-tooltip="Font color">
-                   <input type="color" id="fontColor">
-                   <span class="color-setting-label">Font</span>
-                 </label>
-                 <label class="column settings-icons color-setting-item color-setting-trigger tooltip tooltip-bottom" for="titleColor" data-tooltip="Color for the title">
-                   <input type="color" id="titleColor">
-                   <span class="color-setting-label">Title</span>
-                 </label>
-               </div>
-               <div class="row color-settings-grid">
-                 <label class="column settings-icons color-setting-item color-setting-trigger tooltip tooltip-bottom" for="shadow-color" data-tooltip="Color for the font shadow">
-                   <input type="color" id="shadow-color" value="#000000">
-                   <span class="color-setting-label">Font Shadow Color</span>
-                 </label>
-                 <label class="column settings-icons color-setting-item color-setting-trigger tooltip tooltip-bottom" for="font-outline-color" data-tooltip="Font outline color">
-                   <input type="color" id="font-outline-color" value="#ffffff">
-                   <span class="color-setting-label">Font Outline Color</span>
-                 </label>
-                 <label class="column settings-icons color-setting-item color-setting-trigger tooltip tooltip-bottom" for="main-border-color" data-tooltip="Border color">
-                   <input type="color" id="main-border-color" value="#000000">
-                   <span class="color-setting-label">Border Color</span>
-                 </label>
-               </div>
-             </div>
-           </div>
-           <div class="settings-tab-area" id="settings-animation" style="display:none;">
-             <div class="column">
-               <div class="tooltip tooltip-bottom" data-tooltip="style of the animation">
-                   <label for="animation-type">Animation Type:</label>
-                  <select id="animation-type">
-                    <option value="fade">Fade</option>
-                    <option value="slide">Slide</option>
-                    <option value="slide-top-left">Slide Top Left</option>
-                    <option value="slide-top-right">Slide Top Right</option>
-                    <option value="slide-bottom-left">Slide Bottom Left</option>
-                    <option value="slide-bottom-right">Slide Bottom Right</option>
-                    <option value="slide-left">Slide Left</option>
-                    <option value="slide-right">Slide Right</option>
-                    <option value="slide-top">Slide Top</option>
-                    <option value="slide-bottom">Slide Bottom</option>
-                    <option value="fly-left">Fly Left</option>
-                    <option value="fly-right">Fly Right</option>
-                    <option value="fly-top">Fly Top</option>
-                    <option value="fly-bottom">Fly Bottom</option>
-                    <option value="zoom-in">Zoom In</option>
-                    <option value="zoom-out">Zoom Out</option>
-                    <option value="rotate">Rotate</option>
-                    <option value="flip">Flip</option>
-                    <option value="bounce">Bounce</option>
-                    <option value="shake">Shake</option>
-                 </select>
-
-                 </div>
-                 
-                 <div class="tooltip tooltip-bottom" data-tooltip="time it takes for the animation">
-                    <label for="animation-duration">Duration (s):</label><br>
-                    <input type="number" id="animation-duration" min="0.1" step="0.1" value="1">
                   </div>
-
-                 <div class="tooltip tooltip-bottom" data-tooltip="How fast or slow you want the enter or leave">
-                  <label for="animation-easing">Easing:</label>
-                  <select id="animation-easing">
-                      <option value="linear">Linear</option>
-                      <option value="ease">Ease</option>
-                      <option value="ease-in">Ease In</option>
-                      <option value="ease-out">Ease Out</option>
-                      <option value="ease-in-out">Ease In-Out</option>
-                      <option value="step-start">Step Start</option>
-                      <option value="step-end">Step End</option>
-                  </select>
-                 </div>
-             </div>
-           </div>
-          </div>
-          <div id="background-mode-modal" class="gradient-modal" aria-hidden="true" role="dialog">
-            <div class="gradient-backdrop" id="background-mode-backdrop"></div>
-            <div class="gradient-dialog background-mode-dialog" role="document">
-              <div class="gradient-header column">
-                <div class="gradient-title">Background Style</div>
-                <button type="button" class="gradient-close" id="background-mode-close" aria-label="Close background style selector">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="12" height="12">
-                    <path class="icons" d="M312.1 375c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0L160 289.9 41.9 408.9c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9L126.1 256 8 137.9c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0L160 222.1 278.1 104c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9L193.9 256 312.1 375z"/>
-                  </svg>
-                </button>
+                  <div class="row settings-icons">
+                    <div class="column full-width">
+                      <div class="column">
+                        <label for="fade-in-checkbox">Fade In Display</label>
+                        <input type="checkbox" id="fade-in-checkbox" class="checkbox-input">
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <div class="background-mode-body">
-                <label class="background-mode-option" for="background-mode-color">
-                  <input type="radio" id="background-mode-color" name="background-mode" value="plain" class="background-mode-radio">
-                  <span id="background-color-option-preview" class="background-mode-swatch" aria-hidden="true"></span>
-                  <span>Plain Color</span>
-                </label>
-                <label class="background-mode-option" for="background-mode-gradient">
-                  <input type="radio" id="background-mode-gradient" name="background-mode" value="gradient" class="background-mode-radio">
-                  <span id="background-gradient-option-preview" class="background-mode-swatch" aria-hidden="true"></span>
-                  <span>Gradient</span>
-                </label>
-              </div>
-              <div class="gradient-body">
-                <div class="gradient-section">
-                  <div class="gradient-section-title">Background Opacity</div>
-                  <input type="range" min="0" max="20" value="20" class="slider background-opacity-slider" id="bg-opacity" data-bg-opacity-control="plain">
+              <div class="column">
+                <div class="inherit-bg">This plugin is provided for free with love.</div>
+                <div class="inherit-bg">Author: Oluwatosin Durodola <a href="https://buymeacoffee.com/tosin789"
+                    rel="noopener noreferrer" class="btn" id="donate" target="_blank">Donate</a>
                 </div>
               </div>
             </div>
           </div>
-          <div id="gradient-modal" class="gradient-modal" aria-hidden="true" role="dialog">
-            <div class="gradient-backdrop" id="gradient-backdrop"></div>
-            <div class="gradient-dialog" role="document">
-              <div class="gradient-header column">
-                <div class="gradient-title">Background Gradient</div>
-                <button type="button" class="gradient-close" id="gradient-close" aria-label="Close gradient editor">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="12" height="12">
-                    <path class="icons" d="M312.1 375c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0L160 289.9 41.9 408.9c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9L126.1 256 8 137.9c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0L160 222.1 278.1 104c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9L193.9 256 312.1 375z"/>
-                  </svg>
-                </button>
-              </div>
-              <div class="gradient-body">
-                <div class="gradient-color-grid" id="gradient-color-grid"></div>
-                <div class="gradient-section">
-                  <div class="gradient-section-title">Direction</div>
-                  <div class="gradient-direction-row">
-                    <button type="button" class="gradient-direction-option" data-gradient="linear" data-direction="to-right" aria-label="Left to right gradient preview"></button>
-                    <button type="button" class="gradient-direction-option" data-gradient="linear" data-direction="to-bottom" aria-label="Top to bottom gradient preview"></button>
-                    <button type="button" class="gradient-direction-option" data-gradient="linear" data-direction="to-bottom-right" aria-label="Top left to bottom right gradient preview"></button>
-                    <button type="button" class="gradient-direction-option" data-gradient="linear" data-direction="to-bottom-left" aria-label="Top right to bottom left gradient preview"></button>
-                    <button type="button" class="gradient-direction-option" data-gradient="radial" data-direction="center" aria-label="Radial gradient preview"></button>
-                    <button type="button" class="gradient-direction-option" data-gradient="conic" data-direction="center" aria-label="Conic gradient preview"></button>
+          <div class="settings-tab-area" id="settings-font" style="display:none;">
+            <div class="column">
+              <section class="settings-control-group" aria-labelledby="text-fonts-heading">
+                <h3 id="text-fonts-heading">Fonts</h3>
+                <div class="column">
+                  <div class="row font-controls-row">
+                    <div class="settings-icons tooltip tooltip-bottom" data-tooltip="Select the font for text">
+                      <select id="fontStyle">
+                        <option value="Arial Black">Arial Black</option>
+                        <option value="Arial">Arial</option>
+                        <option value="Avantgarde">Avantgarde</option>
+                        <option value="Bradley Hand">Bradley Hand</option>
+                        <option value="Brush Script MT">Brush Script MT</option>
+                        <option value="Calibri">Calibri</option>
+                        <option value="Cambria">Cambria</option>
+                        <option value="Candara">Candara</option>
+                        <option value="Comic Sans MS">Comic Sans MS</option>
+                        <option value="Consolas">Consolas</option>
+                        <option value="Constantia">Constantia</option>
+                        <option value="Courier New">Courier New</option>
+                        <option value="Franklin Gothic">Franklin Gothic</option>
+                        <option value="Franklin Gothic Medium">Franklin Gothic Medium</option>
+                        <option value="Georgia">Georgia</option>
+                        <option value="Gill Sans">Gill Sans</option>
+                        <option value="Helvetica">Helvetica</option>
+                        <option value="Herculanum">Herculanum</option>
+                        <option value="Hoefler Text">Hoefler Text</option>
+                        <option value="Impact">Impact</option>
+                        <option value="Lucida Bright">Lucida Bright</option>
+                        <option value="Lucida Console">Lucida Console</option>
+                        <option value="Lucida Sans Unicode">Lucida Sans Unicode</option>
+                        <option value="Monaco">Monaco</option>
+                        <option value="Optima">Optima</option>
+                        <option value="Palatino">Palatino</option>
+                        <option value="Perpetua">Perpetua</option>
+                        <option value="Rockwell">Rockwell</option>
+                        <option value="sans-serif">Sans Serif</option>
+                        <option value="Segoe UI">Segoe UI</option>
+                        <option value="Serif">Serif</option>
+                        <option value="Sylfaen">Sylfaen</option>
+                        <option value="Tahoma">Tahoma</option>
+                        <option value="Times New Roman">Times New Roman</option>
+                        <option value="Trebuchet MS">Trebuchet MS</option>
+                        <option value="Verdana">Verdana</option>
+                      </select>
+                    </div>
+
+                    <div class="row settings-icons">
+                      <span id="bold" class="font-settings tooltip tooltip-bottom"
+                        data-tooltip="Bolden the text">B</span>
+                      <span id="italic" class="font-settings tooltip tooltip-bottom"
+                        data-tooltip="Italize the text">I</span>
+                      <span id="underline" class="font-settings tooltip tooltip-bottom"
+                        data-tooltip="Underline Texts">U</span>
+                    </div>
+                    <div id="textAlign" class="row settings-icons">
+
+                          <input name="align" type="radio" class="radio" id="left-align" value="Left">
+                          <label for="left-align" class="toggle-btn tooltip tooltip-bottom"
+                            data-tooltip="Align text to the left">
+                            <span class="toggle-circle">
+                              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="12" height="12">
+                                <path class="icons"
+                                  d="M288 64c0 17.7-14.3 32-32 32L32 96C14.3 96 0 81.7 0 64S14.3 32 32 32l224 0c17.7 0 32 14.3 32 32zm0 256c0 17.7-14.3 32-32 32L32 352c-17.7 0-32-14.3-32-32s14.3-32 32-32l224 0c17.7 0 32 14.3 32 32zM0 192c0-17.7 14.3-32 32-32l384 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 224c-17.7 0-32-14.3-32-32zM448 448c0 17.7-14.3 32-32 32L32 480c-17.7 0-32-14.3-32-32s14.3-32 32-32l384 0c17.7 0 32 14.3 32 32z" />
+                              </svg>
+                            </span>
+                          </label>
+
+                          <input name="align" type="radio" class="radio" id="center-align" value="Center">
+                          <label for="center-align" class="toggle-btn tooltip tooltip-bottom"
+                            data-tooltip="center the text">
+                            <span class="toggle-circle">
+                              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="12" height="12">
+                                <path class="icons"
+                                  d="M352 64c0-17.7-14.3-32-32-32L128 32c-17.7 0-32 14.3-32 32s14.3 32 32 32l192 0c17.7 0 32-14.3 32-32zm96 128c0-17.7-14.3-32-32-32L32 160c-17.7 0-32 14.3-32 32s14.3 32 32 32l384 0c17.7 0 32-14.3 32-32zM0 448c0 17.7 14.3 32 32 32l384 0c17.7 0 32-14.3 32-32s-14.3-32-32-32L32 416c-17.7 0-32 14.3-32 32zM352 320c0-17.7-14.3-32-32-32l-192 0c-17.7 0-32 14.3-32 32s14.3 32 32 32l192 0c17.7 0 32-14.3 32-32z" />
+                              </svg>
+                            </span>
+                          </label>
+
+                          <input name="align" type="radio" class="radio" id="right-align" value="Right">
+                          <label for="right-align" class="toggle-btn tooltip tooltip-bottom"
+                            data-tooltip="Align text to the right">
+                            <span class="toggle-circle">
+                              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="12" height="12">
+                                <path class="icons"
+                                  d="M448 64c0 17.7-14.3 32-32 32L192 96c-17.7 0-32-14.3-32-32s14.3-32 32-32l224 0c17.7 0 32 14.3 32 32zm0 256c0 17.7-14.3 32-32 32l-224 0c-17.7 0-32-14.3-32-32s14.3-32 32-32l224 0c17.7 0 32 14.3 32 32zM0 192c0-17.7 14.3-32 32-32l384 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 224c-17.7 0-32-14.3-32-32zM448 448c0 17.7-14.3 32-32 32L32 480c-17.7 0-32-14.3-32-32s14.3-32 32-32l384 0c17.7 0 32 14.3 32 32z" />
+                              </svg>
+                            </span>
+                          </label>
+                          <!-- <div class="tooltip tooltip-bottom" data-tooltip="Background color"> -->
+
+                          <!-- </div> -->
+                          <input name="align" type="radio" class="radio" id="justify-align" value="Justify">
+                          <label for="justify-align" class="toggle-btn tooltip tooltip-bottom"
+                            data-tooltip="Justify text fully">
+                            <span class="toggle-circle">
+                              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="12" height="12">
+                                <path class="icons"
+                                  d="M448 64c0-17.7-14.3-32-32-32L32 32C14.3 32 0 46.3 0 64S14.3 96 32 96l384 0c17.7 0 32-14.3 32-32zm0 256c0-17.7-14.3-32-32-32L32 288c-17.7 0-32 14.3-32 32s14.3 32 32 32l384 0c17.7 0 32-14.3 32-32zM0 192c0 17.7 14.3 32 32 32l384 0c17.7 0 32-14.3 32-32s-14.3-32-32-32L32 160c-17.7 0-32 14.3-32 32zM448 448c0-17.7-14.3-32-32-32L32 416c-17.7 0-32 14.3-32 32s14.3 32 32 32l384 0c17.7 0 32-14.3 32-32z" />
+                              </svg>
+                            </span>
+                          </label>
+
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="column settings-icons">
+                      <label for="font-outline">Font Outline</label>
+                      <input type="range" min="0" max="50" value="0" class="slider" id="font-outline">
+                    </div>
                   </div>
                 </div>
-                <div class="gradient-section">
-                  <div class="gradient-section-title">Opacity</div>
-                  <div class="gradient-opacity-track" id="gradient-opacity-track" role="slider" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100" tabindex="0">
-                    <div class="gradient-opacity-handle" id="gradient-opacity-handle"></div>
+              </section>
+              <section class="settings-control-group" aria-labelledby="verse-display-heading">
+                <h3 id="verse-display-heading">Verse display</h3>
+                <div class="row">
+                  <div class="column settings-icons">
+                    <span>Reference layout</span>
+                    <div class="row">
+                      <label><input type="radio" name="bible-reference-line-layout" value="same-line"
+                          id="bible-reference-same-line"> Same line</label>
+                      <label><input type="radio" name="bible-reference-line-layout" value="separate-line"
+                          id="bible-reference-separate-line"> Separate line</label>
+                    </div>
                   </div>
+                  <div class="column settings-icons">
+                    <span>Book name casing</span>
+                    <div class="row">
+                      <label><input type="radio" name="bible-reference-book-case" value="uppercase"
+                          id="bible-reference-uppercase"> CAPITAL LETTERS</label>
+                      <label><input type="radio" name="bible-reference-book-case" value="title-case"
+                          id="bible-reference-title-case"> Title case</label>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="column settings-icons">
+
+
+                      <div class="column settings-icons">
+                        <label for="bible-reference-show-translation">Add translation name to reference</label>
+                        <input type="checkbox" id="bible-reference-show-translation" class="checkbox-input">
+                      </div>
+                    </div>
+                    <div class="column settings-icons">
+                      <span>Reference position</span>
+                      <div class="row">
+                        <label><input type="radio" name="bible-reference-position" value="above"
+                            id="bible-reference-above"> Above verse</label>
+                        <label><input type="radio" name="bible-reference-position" value="below"
+                            id="bible-reference-below"> Below verse</label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="column settings-icons">
+                    <label for="bible-reference-font-family">Reference font</label>
+                    <select id="bible-reference-font-family">
+                      <option value="">Same as verse text</option>
+                      <option value="Arial Black">Arial Black</option>
+                      <option value="Arial">Arial</option>
+                      <option value="Avantgarde">Avantgarde</option>
+                      <option value="Bradley Hand">Bradley Hand</option>
+                      <option value="Brush Script MT">Brush Script MT</option>
+                      <option value="Calibri">Calibri</option>
+                      <option value="Cambria">Cambria</option>
+                      <option value="Candara">Candara</option>
+                      <option value="Comic Sans MS">Comic Sans MS</option>
+                      <option value="Consolas">Consolas</option>
+                      <option value="Constantia">Constantia</option>
+                      <option value="Courier New">Courier New</option>
+                      <option value="Franklin Gothic">Franklin Gothic</option>
+                      <option value="Franklin Gothic Medium">Franklin Gothic Medium</option>
+                      <option value="Georgia">Georgia</option>
+                      <option value="Gill Sans">Gill Sans</option>
+                      <option value="Helvetica">Helvetica</option>
+                      <option value="Herculanum">Herculanum</option>
+                      <option value="Hoefler Text">Hoefler Text</option>
+                      <option value="Impact">Impact</option>
+                      <option value="Lucida Bright">Lucida Bright</option>
+                      <option value="Lucida Console">Lucida Console</option>
+                      <option value="Lucida Sans Unicode">Lucida Sans Unicode</option>
+                      <option value="Monaco">Monaco</option>
+                      <option value="Optima">Optima</option>
+                      <option value="Palatino">Palatino</option>
+                      <option value="Perpetua">Perpetua</option>
+                      <option value="Rockwell">Rockwell</option>
+                      <option value="sans-serif">Sans Serif</option>
+                      <option value="Segoe UI">Segoe UI</option>
+                      <option value="Serif">Serif</option>
+                      <option value="Sylfaen">Sylfaen</option>
+                      <option value="Tahoma">Tahoma</option>
+                      <option value="Times New Roman">Times New Roman</option>
+                      <option value="Trebuchet MS">Trebuchet MS</option>
+                      <option value="Verdana">Verdana</option>
+                    </select>
+                  </div>
+                </div>
+              </section>
+            </div>
+          </div>
+          <div class="settings-tab-area" id="settings-color" style="display:none;">
+            <div class="column color-settings-panel">
+              <div class="row color-settings-grid">
+                <div id="background-setting-trigger"
+                  class="column settings-icons color-setting-item color-setting-button tooltip tooltip-bottom"
+                  data-tooltip="Background color or gradient" role="button" tabindex="0" aria-haspopup="dialog"
+                  aria-controls="background-mode-modal">
+                  <span id="background-style-preview" class="background-style-preview" aria-hidden="true"></span>
+                  <span class="color-setting-label">Background</span>
+                  <input type="color" id="bgColor" class="color-picker-native" aria-hidden="true" tabindex="-1">
+                </div>
+                <label class="column settings-icons color-setting-item color-setting-trigger tooltip tooltip-bottom"
+                  for="fontColor" data-tooltip="Font color">
+                  <input type="color" id="fontColor">
+                  <span class="color-setting-label">Font</span>
+                </label>
+                <label class="column settings-icons color-setting-item color-setting-trigger tooltip tooltip-bottom"
+                  for="titleColor" data-tooltip="Color for the title">
+                  <input type="color" id="titleColor" value="#ff6450">
+                  <span class="color-setting-label">Title</span>
+                </label>
+              </div>
+              <div class="row color-settings-grid">
+                <label class="column settings-icons color-setting-item color-setting-trigger tooltip tooltip-bottom"
+                  for="shadow-color" data-tooltip="Color for the font shadow">
+                  <input type="color" id="shadow-color" value="#000000">
+                  <span class="color-setting-label">Font Shadow Color</span>
+                </label>
+                <label class="column settings-icons color-setting-item color-setting-trigger tooltip tooltip-bottom"
+                  for="font-outline-color" data-tooltip="Font outline color">
+                  <input type="color" id="font-outline-color" value="#ffffff">
+                  <span class="color-setting-label">Font Outline Color</span>
+                </label>
+                <label class="column settings-icons color-setting-item color-setting-trigger tooltip tooltip-bottom"
+                  for="main-border-color" data-tooltip="Border color">
+                  <input type="color" id="main-border-color" value="#000000">
+                  <span class="color-setting-label">Border Color</span>
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="settings-tab-area" id="settings-animation" style="display:none;">
+            <div class="column">
+              <div class="tooltip tooltip-bottom" data-tooltip="style of the animation">
+                <label for="animation-type">Animation Type:</label>
+                <select id="animation-type">
+                  <option value="fade">Fade</option>
+                  <option value="slide">Slide</option>
+                  <option value="slide-top-left">Slide Top Left</option>
+                  <option value="slide-top-right">Slide Top Right</option>
+                  <option value="slide-bottom-left">Slide Bottom Left</option>
+                  <option value="slide-bottom-right">Slide Bottom Right</option>
+                  <option value="slide-left">Slide Left</option>
+                  <option value="slide-right">Slide Right</option>
+                  <option value="slide-top">Slide Top</option>
+                  <option value="slide-bottom">Slide Bottom</option>
+                  <option value="fly-left">Fly Left</option>
+                  <option value="fly-right">Fly Right</option>
+                  <option value="fly-top">Fly Top</option>
+                  <option value="fly-bottom">Fly Bottom</option>
+                  <option value="zoom-in">Zoom In</option>
+                  <option value="zoom-out">Zoom Out</option>
+                  <option value="rotate">Rotate</option>
+                  <option value="flip">Flip</option>
+                  <option value="bounce">Bounce</option>
+                  <option value="shake">Shake</option>
+                </select>
+
+              </div>
+
+              <div class="tooltip tooltip-bottom" data-tooltip="time it takes for the animation">
+                <label for="animation-duration">Duration (s):</label><br>
+                <input type="number" id="animation-duration" min="0.1" step="0.1" value="1">
+              </div>
+
+              <div class="tooltip tooltip-bottom" data-tooltip="How fast or slow you want the enter or leave">
+                <label for="animation-easing">Easing:</label>
+                <select id="animation-easing">
+                  <option value="linear">Linear</option>
+                  <option value="ease">Ease</option>
+                  <option value="ease-in">Ease In</option>
+                  <option value="ease-out">Ease Out</option>
+                  <option value="ease-in-out">Ease In-Out</option>
+                  <option value="step-start">Step Start</option>
+                  <option value="step-end">Step End</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="background-mode-modal" class="gradient-modal" aria-hidden="true" role="dialog">
+          <div class="gradient-backdrop" id="background-mode-backdrop"></div>
+          <div class="gradient-dialog background-mode-dialog" role="document">
+            <div class="gradient-header column">
+              <div class="gradient-title">Background Style</div>
+              <button type="button" class="gradient-close" id="background-mode-close"
+                aria-label="Close background style selector">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="12" height="12">
+                  <path class="icons"
+                    d="M312.1 375c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0L160 289.9 41.9 408.9c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9L126.1 256 8 137.9c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0L160 222.1 278.1 104c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9L193.9 256 312.1 375z" />
+                </svg>
+              </button>
+            </div>
+            <div class="background-mode-body">
+              <label class="background-mode-option" for="background-mode-color">
+                <input type="radio" id="background-mode-color" name="background-mode" value="plain"
+                  class="background-mode-radio">
+                <span id="background-color-option-preview" class="background-mode-swatch" aria-hidden="true"></span>
+                <span>Plain Color</span>
+              </label>
+              <label class="background-mode-option" for="background-mode-gradient">
+                <input type="radio" id="background-mode-gradient" name="background-mode" value="gradient"
+                  class="background-mode-radio">
+                <span id="background-gradient-option-preview" class="background-mode-swatch" aria-hidden="true"></span>
+                <span>Gradient</span>
+              </label>
+            </div>
+            <div class="gradient-body">
+              <div class="gradient-section">
+                <div class="gradient-section-title">Background Opacity</div>
+                <input type="range" min="0" max="20" value="20" class="slider background-opacity-slider" id="bg-opacity"
+                  data-bg-opacity-control="plain">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="gradient-modal" class="gradient-modal" aria-hidden="true" role="dialog">
+          <div class="gradient-backdrop" id="gradient-backdrop"></div>
+          <div class="gradient-dialog" role="document">
+            <div class="gradient-header column">
+              <div class="gradient-title">Background Gradient</div>
+              <button type="button" class="gradient-close" id="gradient-close" aria-label="Close gradient editor">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="12" height="12">
+                  <path class="icons"
+                    d="M312.1 375c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0L160 289.9 41.9 408.9c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9L126.1 256 8 137.9c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0L160 222.1 278.1 104c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9L193.9 256 312.1 375z" />
+                </svg>
+              </button>
+            </div>
+            <div class="gradient-body">
+              <div class="gradient-color-grid" id="gradient-color-grid"></div>
+              <div class="gradient-section">
+                <div class="gradient-section-title">Direction</div>
+                <div class="gradient-direction-row">
+                  <button type="button" class="gradient-direction-option" data-gradient="linear"
+                    data-direction="to-right" aria-label="Left to right gradient preview"></button>
+                  <button type="button" class="gradient-direction-option" data-gradient="linear"
+                    data-direction="to-bottom" aria-label="Top to bottom gradient preview"></button>
+                  <button type="button" class="gradient-direction-option" data-gradient="linear"
+                    data-direction="to-bottom-right" aria-label="Top left to bottom right gradient preview"></button>
+                  <button type="button" class="gradient-direction-option" data-gradient="linear"
+                    data-direction="to-bottom-left" aria-label="Top right to bottom left gradient preview"></button>
+                  <button type="button" class="gradient-direction-option" data-gradient="radial" data-direction="center"
+                    aria-label="Radial gradient preview"></button>
+                  <button type="button" class="gradient-direction-option" data-gradient="conic" data-direction="center"
+                    aria-label="Conic gradient preview"></button>
+                </div>
+              </div>
+              <div class="gradient-section">
+                <div class="gradient-section-title">Opacity</div>
+                <div class="gradient-opacity-track" id="gradient-opacity-track" role="slider" aria-valuemin="0"
+                  aria-valuemax="100" aria-valuenow="100" tabindex="0">
+                  <div class="gradient-opacity-handle" id="gradient-opacity-handle"></div>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="tabs">
-        <button class="tab-button" value="text">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="17" height="17">
-              <path  class="icons" d="M362.7 19.3L314.3 67.7 444.3 197.7l48.4-48.4c25-25 25-65.5 0-90.5L453.3 19.3c-25-25-65.5-25-90.5 0zm-71 71L58.6 323.5c-10.4 10.4-18 23.3-22.2 37.4L1 481.2C-1.5 489.7 .8 498.8 7 505s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L421.7 220.3 291.7 90.3z"/>
-          </svg>
-        </button>
-        <button class="tab-button" value="bibleText">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="17" height="17">
-              <path class="icons" d="M96 0C43 0 0 43 0 96L0 416c0 53 43 96 96 96l288 0 32 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l0-64c17.7 0 32-14.3 32-32l0-320c0-17.7-14.3-32-32-32L384 0 96 0zm0 384l256 0 0 64L96 448c-17.7 0-32-14.3-32-32s14.3-32 32-32zM208 80c0-8.8 7.2-16 16-16l32 0c8.8 0 16 7.2 16 16l0 48 48 0c8.8 0 16 7.2 16 16l0 32c0 8.8-7.2 16-16 16l-48 0 0 112c0 8.8-7.2 16-16 16l-32 0c-8.8 0-16-7.2-16-16l0-112-48 0c-8.8 0-16-7.2-16-16l0-32c0-8.8 7.2-16 16-16l48 0 0-48z"/>
-          </svg>
-        </button>
-        <button class="tab-button" value="songs">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="17" height="17">
-              <path class="icons" d="M499.1 6.3c8.1 6 12.9 15.6 12.9 25.7l0 72 0 264c0 44.2-43 80-96 80s-96-35.8-96-80s43-80 96-80c11.2 0 22 1.6 32 4.6L448 147 192 223.8 192 432c0 44.2-43 80-96 80s-96-35.8-96-80s43-80 96-80c11.2 0 22 1.6 32 4.6L128 200l0-72c0-14.1 9.3-26.6 22.8-30.7l320-96c9.7-2.9 20.2-1.1 28.3 5z"/>
-          </svg>
-        </button>
-        <button class="tab-button" value="setBg">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="17" height="17">
-              <path class="icons" d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6c-4.4 11.9-9.7 23.3-15.8 34.3l-4.7 8.1c-6.6 11-14 21.4-22.1 31.2c-5.9 7.2-15.7 9.6-24.5 6.8l-55.7-17.7c-13.4 10.3-28.2 18.9-44 25.4l-12.5 57.1c-2 9.1-9 16.3-18.2 17.8c-13.8 2.3-28 3.5-42.5 3.5s-28.7-1.2-42.5-3.5c-9.2-1.5-16.2-8.7-18.2-17.8l-12.5-57.1c-15.8-6.5-30.6-15.1-44-25.4L83.1 425.9c-8.8 2.8-18.6 .3-24.5-6.8c-8.1-9.8-15.5-20.2-22.1-31.2l-4.7-8.1c-6.1-11-11.4-22.4-15.8-34.3c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4C64.6 273.1 64 264.6 64 256s.6-17.1 1.7-25.4L22.4 191.2c-6.9-6.2-9.6-15.9-6.4-24.6c4.4-11.9 9.7-23.3 15.8-34.3l4.7-8.1c6.6-11 14-21.4 22.1-31.2c5.9-7.2 15.7-9.6 24.5-6.8l55.7 17.7c13.4-10.3 28.2-18.9 44-25.4l12.5-57.1c2-9.1 9-16.3 18.2-17.8C227.3 1.2 241.5 0 256 0s28.7 1.2 42.5 3.5c9.2 1.5 16.2 8.7 18.2 17.8l12.5 57.1c15.8 6.5 30.6 15.1 44 25.4l55.7-17.7c8.8-2.8 18.6-.3 24.5 6.8c8.1 9.8 15.5 20.2 22.1 31.2l4.7 8.1c6.1 11 11.4 22.4 15.8 34.3zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"/>
-          </svg>
-        </button>
-      </div>
-      <div class="toggle tooltip tooltip-top" data-tooltip="Display the content on the Screen">
-        <button class="toggle-container" id="toggle-button-display">
-          <input type="checkbox" id="toggle-display" class="toggle-input">
-          <label for="toggle-display" class="toggle-label">
-              <span class="toggle-ball"></span>
-          </label>
-          Toggle Display
-        </button>
-      </div>
     </div>
-    <script src="assets/js/control_panel/choose_bible_translation.js"></script>
+    <div class="tabs">
+      <button class="tab-button" value="text">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="17" height="17">
+          <path class="icons"
+            d="M362.7 19.3L314.3 67.7 444.3 197.7l48.4-48.4c25-25 25-65.5 0-90.5L453.3 19.3c-25-25-65.5-25-90.5 0zm-71 71L58.6 323.5c-10.4 10.4-18 23.3-22.2 37.4L1 481.2C-1.5 489.7 .8 498.8 7 505s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L421.7 220.3 291.7 90.3z" />
+        </svg>
+      </button>
+      <button class="tab-button" value="bibleText">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="17" height="17">
+          <path class="icons"
+            d="M96 0C43 0 0 43 0 96L0 416c0 53 43 96 96 96l288 0 32 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l0-64c17.7 0 32-14.3 32-32l0-320c0-17.7-14.3-32-32-32L384 0 96 0zm0 384l256 0 0 64L96 448c-17.7 0-32-14.3-32-32s14.3-32 32-32zM208 80c0-8.8 7.2-16 16-16l32 0c8.8 0 16 7.2 16 16l0 48 48 0c8.8 0 16 7.2 16 16l0 32c0 8.8-7.2 16-16 16l-48 0 0 112c0 8.8-7.2 16-16 16l-32 0c-8.8 0-16-7.2-16-16l0-112-48 0c-8.8 0-16-7.2-16-16l0-32c0-8.8 7.2-16 16-16l48 0 0-48z" />
+        </svg>
+      </button>
+      <button class="tab-button" value="songs">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="17" height="17">
+          <path class="icons"
+            d="M499.1 6.3c8.1 6 12.9 15.6 12.9 25.7l0 72 0 264c0 44.2-43 80-96 80s-96-35.8-96-80s43-80 96-80c11.2 0 22 1.6 32 4.6L448 147 192 223.8 192 432c0 44.2-43 80-96 80s-96-35.8-96-80s43-80 96-80c11.2 0 22 1.6 32 4.6L128 200l0-72c0-14.1 9.3-26.6 22.8-30.7l320-96c9.7-2.9 20.2-1.1 28.3 5z" />
+        </svg>
+      </button>
+      <button class="tab-button" value="setBg">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="17" height="17">
+          <path class="icons"
+            d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6c-4.4 11.9-9.7 23.3-15.8 34.3l-4.7 8.1c-6.6 11-14 21.4-22.1 31.2c-5.9 7.2-15.7 9.6-24.5 6.8l-55.7-17.7c-13.4 10.3-28.2 18.9-44 25.4l-12.5 57.1c-2 9.1-9 16.3-18.2 17.8c-13.8 2.3-28 3.5-42.5 3.5s-28.7-1.2-42.5-3.5c-9.2-1.5-16.2-8.7-18.2-17.8l-12.5-57.1c-15.8-6.5-30.6-15.1-44-25.4L83.1 425.9c-8.8 2.8-18.6 .3-24.5-6.8c-8.1-9.8-15.5-20.2-22.1-31.2l-4.7-8.1c-6.1-11-11.4-22.4-15.8-34.3c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4C64.6 273.1 64 264.6 64 256s.6-17.1 1.7-25.4L22.4 191.2c-6.9-6.2-9.6-15.9-6.4-24.6c4.4-11.9 9.7-23.3 15.8-34.3l4.7-8.1c6.6-11 14-21.4 22.1-31.2c5.9-7.2 15.7-9.6 24.5-6.8l55.7 17.7c13.4-10.3 28.2-18.9 44-25.4l12.5-57.1c2-9.1 9-16.3 18.2-17.8C227.3 1.2 241.5 0 256 0s28.7 1.2 42.5 3.5c9.2 1.5 16.2 8.7 18.2 17.8l12.5 57.1c15.8 6.5 30.6 15.1 44 25.4l55.7-17.7c8.8-2.8 18.6-.3 24.5 6.8c8.1 9.8 15.5 20.2 22.1 31.2l4.7 8.1c6.1 11 11.4 22.4 15.8 34.3zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z" />
+        </svg>
+      </button>
+    </div>
+    <div class="toggle tooltip tooltip-top" data-tooltip="Display the content on the Screen">
+      <button class="toggle-container" id="toggle-button-display">
+        <input type="checkbox" id="toggle-display" class="toggle-input">
+        <label for="toggle-display" class="toggle-label">
+          <span class="toggle-ball"></span>
+        </label>
+        Toggle Display
+      </button>
+    </div>
+  </div>
+  <script src="assets/js/control_panel/choose_bible_translation.js"></script>
 
-    <script src="assets/js/control_panel/utils.js"></script>
-    <script src="assets/js/control_panel/shortcuts.js"></script>
-    <script src="assets/js/control_panel/control_app.js"></script>
-    <script src="assets/js/control_panel/send_message.js"></script>
-    <script src="assets/js/control_panel/settings.js"></script>
-    <!-- <script src="assets/js/control_panel/toggle_display.js"></script> -->
-    <script src="assets/js/control_panel/panel_settings.js"></script>
-    <script src="assets/js/control_panel/load_panel_settings.js"></script>
-    <script src="assets/js/control_panel/animate.js"></script>
+  <script src="assets/js/control_panel/utils.js"></script>
+  <script src="assets/js/control_panel/shortcuts.js"></script>
+  <script src="assets/js/control_panel/control_app.js"></script>
+  <script src="assets/js/control_panel/send_message.js"></script>
+  <script src="assets/js/control_panel/settings.js"></script>
+  <!-- <script src="assets/js/control_panel/toggle_display.js"></script> -->
+  <script src="assets/js/control_panel/panel_settings.js"></script>
+  <script src="assets/js/control_panel/load_panel_settings.js"></script>
+  <script src="assets/js/control_panel/animate.js"></script>
 
-    <script src="assets/js/control_panel/load_song.js"></script>
-    <script src="assets/js/control_panel/search_bible.js"></script>
-    <script src="assets/js/control_panel/search_lyrics.js"></script>
-    <script src="assets/js/control_panel/suggest_bible_books.js"></script>
-    <script src="assets/js/control_panel/flyout_tool.js"></script>
-  </body>
+  <script src="assets/js/control_panel/load_song.js"></script>
+  <script src="assets/js/control_panel/search_bible.js"></script>
+  <script src="assets/js/control_panel/search_lyrics.js"></script>
+  <script src="assets/js/control_panel/suggest_bible_books.js"></script>
+  <script src="assets/js/control_panel/flyout_tool.js"></script>
+</body>
+
 </html>

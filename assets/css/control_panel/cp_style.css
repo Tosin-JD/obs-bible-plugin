@@ -325,6 +325,10 @@ select{
   flex-wrap: wrap;
 }
 
+.settings-tab-area .font-controls-row{
+  flex-wrap: nowrap;
+}
+
 .settings-tab-area .row > .settings-icons,
 .settings-tab-area .row > .column{
   flex: 1 1 0;
@@ -333,6 +337,29 @@ select{
 
 .settings-tab-area .column{
   width: 100%;
+}
+
+.settings-control-group{
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  margin-bottom: 12px;
+}
+
+.settings-control-group h3{
+  margin: 0;
+  font-size: 1em;
+}
+
+.settings-control-group label{
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.bible-layout-separate-line .bible-reference{
+  display: block;
 }
 
 #listItems{

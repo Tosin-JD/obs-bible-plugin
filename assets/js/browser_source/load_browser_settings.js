@@ -85,8 +85,7 @@ if (savedBorderRadius) {
 }
 
 if (savedTitleColor) {
-    const dspans = document.querySelectorAll("#messageDisplay span");
-    dspans.forEach(dspan => dspan.style.color = savedTitleColor);
+    applyTitleColor(savedTitleColor);
 }
 
 if (savedBoldState){

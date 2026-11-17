@@ -221,6 +221,101 @@ function findNearestVerseByAri(queryAri, bible_data) {
   return chapterVerses[0] ? chapterVerses[0].verse : null;
 }
 
+function getBibleDisplayPreferences() {
+  const lineLayout = localStorage.getItem("obs-bible-reference-line-layout");
+  const bookCase = localStorage.getItem("obs-bible-reference-book-case");
+  const position = localStorage.getItem("obs-bible-reference-position");
+  const savedReferenceFont = localStorage.getItem("obs-bible-reference-font-family") || "";
+  const referenceFontSelect = document.getElementById("bible-reference-font-family");
+  const referenceFont = referenceFontSelect &&
+    Array.from(referenceFontSelect.options).some(option => option.value === savedReferenceFont)
+    ? savedReferenceFont
+    : "";
+
+  return {
+    lineLayout: lineLayout === "separate-line" ? lineLayout : "same-line",
+    bookCase: bookCase === "title-case" ? bookCase : "uppercase",
+    showTranslation: localStorage.getItem("obs-bible-reference-show-translation") === "true",
+    position: position === "below" ? position : "above",
+    referenceFont
+  };
+}
+
+function titleCaseBookName(bookName) {
+  return bookName
+    .toLocaleLowerCase()
+    .split(/(\s+|-|')/)
+    .map(part => {
+      if (!part || /^\s+$|^-|^'$/.test(part)) return part;
+      return part.charAt(0).toLocaleUpperCase() + part.slice(1);
+    })
+    .join("");
+}
+
+function formatBibleReference(verseName, preferences) {
+  const parsed = parseBookChapterVerse(verseName);
+  let reference = verseName.trim();
+  if (parsed) {
+    const colonIndex = verseName.lastIndexOf(":");
+    const verseRange = verseName.slice(colonIndex + 1).trim();
+    const bookName = preferences.bookCase === "uppercase"
+      ? parsed.bookName.toLocaleUpperCase()
+      : titleCaseBookName(parsed.bookName);
+    reference = `${bookName} ${parsed.chapterNum}:${verseRange}`;
+  } else if (preferences.bookCase === "uppercase") {
+    reference = reference.toLocaleUpperCase();
+  }
+
+  if (preferences.showTranslation) {
+    const translationSelect = document.getElementById("bible-version");
+    const selectedOption = translationSelect?.options[translationSelect.selectedIndex];
+    const abbreviation = selectedOption?.dataset.abbreviation;
+    if (abbreviation) {
+      reference += ` (${abbreviation})`;
+    } else {
+      console.error("The selected Bible translation is missing its reference abbreviation.");
+    }
+  }
+  return reference;
+}
+
+function createBibleVerseElement(verseObj, preferences) {
+  const pElement = document.createElement("p");
+  pElement.classList.add("verse", "bible-verse");
+  pElement.id = verseObj.name.replace(/:/g, "-").replace(/\s/g, "").toLowerCase();
+  pElement.dataset.ari = verseObj.ari;
+
+  const messageElement = document.createElement("span");
+  messageElement.classList.add(
+    "bible-message",
+    `bible-layout-${preferences.lineLayout}`,
+    `bible-position-${preferences.position}`
+  );
+  const referenceElement = document.createElement("span");
+  referenceElement.classList.add("bible-reference");
+  referenceElement.textContent = formatBibleReference(verseObj.name, preferences);
+  if (preferences.referenceFont) {
+    referenceElement.style.fontFamily = preferences.referenceFont;
+  }
+
+  const contentElement = document.createElement("span");
+  contentElement.classList.add("bible-content");
+  contentElement.textContent = verseObj.verse;
+
+  if (preferences.position === "above") {
+    messageElement.appendChild(referenceElement);
+    messageElement.appendChild(document.createTextNode(" "));
+    messageElement.appendChild(contentElement);
+  } else {
+    messageElement.appendChild(contentElement);
+    messageElement.appendChild(document.createTextNode(" "));
+    messageElement.appendChild(referenceElement);
+  }
+
+  pElement.appendChild(messageElement);
+  return pElement;
+}
+
 function searchBible(query, bible_data) {
   if (!query || !bible_data || bible_data.length === 0) return;
 
@@ -242,6 +337,7 @@ function searchBible(query, bible_data) {
 
   bblVerseDiv.innerHTML = "";
   let savedBibleVerse = [];
+  const displayPreferences = getBibleDisplayPreferences();
 
   // Normalize spacing around colons and dashes and drop incomplete trailing punctuation
   let normQuery = sanitizeBibleReferenceForSearch(query);
@@ -252,12 +348,7 @@ function searchBible(query, bible_data) {
     if (!verseObj || !verseObj.ari) return;
     if (!savedBibleVerse.includes(verseObj.ari)) {
       savedBibleVerse.push(verseObj.ari);
-      const pElement = document.createElement('p');
-      pElement.classList.add("verse");
-      const cleanedName = verseObj.name.replace(/:/g, '-').replace(/\s/g, '').toLowerCase();
-      pElement.id = cleanedName;
-      pElement.innerHTML = `<span>${verseObj.name.toUpperCase()}</span> ${verseObj.verse}`;
-      bblVerseDiv.appendChild(pElement);
+      bblVerseDiv.appendChild(createBibleVerseElement(verseObj, displayPreferences));
     }
   }
 
@@ -359,6 +450,7 @@ function searchBible(query, bible_data) {
 function getBibeAri(query) {
   bblVerseDiv.innerHTML = "";
   let savedBibleVerse = [];
+  const displayPreferences = getBibleDisplayPreferences();
   if (query) {
     savedBibleVerse = [];
     for (let i = 0; i < query.length; i++) {
@@ -369,17 +461,39 @@ function getBibeAri(query) {
       if (matchingVerse) {
         if (!savedBibleVerse.includes(matchingVerse.ari)) {
           savedBibleVerse.push(matchingVerse.ari);
-          const pElement = document.createElement('p');
-          const cleanedName = matchingVerse.name.replace(/:/g, '-').replace(/\s/g, '').toLowerCase();
-          pElement.id = cleanedName;
-          pElement.innerHTML = `<span>${matchingVerse.name.toUpperCase()}</span> ${matchingVerse.verse}`;
-          bblVerseDiv.appendChild(pElement);
+          bblVerseDiv.appendChild(createBibleVerseElement(matchingVerse, displayPreferences));
         }
       }
     }
   }
   localStorage.setItem('savedBibleVerse', savedBibleVerse);
 }
+
+function refreshBibleDisplayPreferences() {
+  if (!Array.isArray(bible_data) || bible_data.length === 0) return;
+
+  const activeAri = window.lastDisplayedBibleVerseAri;
+  getSavedBible();
+  displayBible();
+
+  if (!activeAri) return;
+  const verses = Array.from(bblVerseDiv.querySelectorAll("p.bible-verse"));
+  const activeVerseIndex = verses.findIndex(verse => verse.dataset.ari === activeAri);
+  currentVerseIndex = activeVerseIndex;
+  if (activeVerseIndex >= 0) {
+    verses[activeVerseIndex].classList.add("selected");
+  }
+  if (window.lastSentMessageType === "bible") {
+    const activeVerse = bible_data.find(verse => verse.ari === activeAri) ||
+      findNearestVerseByAri(activeAri, bible_data);
+    if (activeVerse) {
+      const formattedVerse = createBibleVerseElement(activeVerse, getBibleDisplayPreferences());
+      sendMessage(channel, formattedVerse.innerHTML, "bible", activeVerse.ari);
+    }
+  }
+}
+
+document.addEventListener("bible-display-settings-change", refreshBibleDisplayPreferences);
 
 submitButton.addEventListener("click", function (event) {
   event.preventDefault();

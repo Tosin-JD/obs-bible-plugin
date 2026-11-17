@@ -399,6 +399,96 @@ fontElement.addEventListener("change", function() {
     sendSettingsChannel.close();
 });
 
+const bibleReferencePreferenceKeys = {
+    lineLayout: "obs-bible-reference-line-layout",
+    bookCase: "obs-bible-reference-book-case",
+    showTranslation: "obs-bible-reference-show-translation",
+    position: "obs-bible-reference-position",
+    fontFamily: "obs-bible-reference-font-family"
+};
+
+function restoreBibleReferenceRadio(name, preferenceKey, allowedValues, defaultValue) {
+    const savedValue = localStorage.getItem(preferenceKey);
+    const value = allowedValues.includes(savedValue) ? savedValue : defaultValue;
+    document.querySelectorAll(`input[name="${name}"]`).forEach(input => {
+        input.checked = input.value === value;
+    });
+}
+
+restoreBibleReferenceRadio(
+    "bible-reference-line-layout",
+    bibleReferencePreferenceKeys.lineLayout,
+    ["same-line", "separate-line"],
+    "same-line"
+);
+restoreBibleReferenceRadio(
+    "bible-reference-book-case",
+    bibleReferencePreferenceKeys.bookCase,
+    ["uppercase", "title-case"],
+    "uppercase"
+);
+restoreBibleReferenceRadio(
+    "bible-reference-position",
+    bibleReferencePreferenceKeys.position,
+    ["above", "below"],
+    "above"
+);
+
+const bibleReferenceTranslationCheckbox = document.getElementById("bible-reference-show-translation");
+bibleReferenceTranslationCheckbox.checked =
+    localStorage.getItem(bibleReferencePreferenceKeys.showTranslation) === "true";
+
+const bibleReferenceFontSelect = document.getElementById("bible-reference-font-family");
+const savedBibleReferenceFont = localStorage.getItem(bibleReferencePreferenceKeys.fontFamily) || "";
+bibleReferenceFontSelect.value = Array.from(bibleReferenceFontSelect.options)
+    .some(option => option.value === savedBibleReferenceFont)
+    ? savedBibleReferenceFont
+    : "";
+
+function notifyBibleReferencePreferenceChange(preferenceKey, value) {
+    if (value === "") {
+        localStorage.removeItem(preferenceKey);
+    } else {
+        localStorage.setItem(preferenceKey, value);
+    }
+    document.dispatchEvent(new CustomEvent("bible-display-settings-change"));
+}
+
+document.querySelectorAll('input[name="bible-reference-line-layout"]').forEach(input => {
+    input.addEventListener("change", () => {
+        if (input.checked) {
+            notifyBibleReferencePreferenceChange(bibleReferencePreferenceKeys.lineLayout, input.value);
+        }
+    });
+});
+
+document.querySelectorAll('input[name="bible-reference-book-case"]').forEach(input => {
+    input.addEventListener("change", () => {
+        if (input.checked) {
+            notifyBibleReferencePreferenceChange(bibleReferencePreferenceKeys.bookCase, input.value);
+        }
+    });
+});
+
+bibleReferenceTranslationCheckbox.addEventListener("change", () => {
+    notifyBibleReferencePreferenceChange(
+        bibleReferencePreferenceKeys.showTranslation,
+        String(bibleReferenceTranslationCheckbox.checked)
+    );
+});
+
+document.querySelectorAll('input[name="bible-reference-position"]').forEach(input => {
+    input.addEventListener("change", () => {
+        if (input.checked) {
+            notifyBibleReferencePreferenceChange(bibleReferencePreferenceKeys.position, input.value);
+        }
+    });
+});
+
+bibleReferenceFontSelect.addEventListener("change", () => {
+    notifyBibleReferencePreferenceChange(bibleReferencePreferenceKeys.fontFamily, bibleReferenceFontSelect.value);
+});
+
 
 function applyBackgroundOpacity(rawValue) {
     let currentOpacity = Number(rawValue) / BACKGROUND_OPACITY_STEPS;
