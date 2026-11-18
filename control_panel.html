@@ -650,8 +650,23 @@ DoubleClick on History erase all previous text"></textarea>
         </div>
 
         <div class="gradient-body" style="gap: 12px; padding: 0 14px 16px;">
-          <!-- Content Type Selector -->
-          <div class="row tooltip tooltip-bottom" data-tooltip="Select content type to configure background for" style="align-items: center; justify-content: space-between; padding: 4px 0;">
+          <!-- Background Scope Selector -->
+          <div id="bg-scope-container" class="column" style="width: 100%; gap: 6px; padding: 4px 0 10px 0; border-bottom: 1px solid var(--card-border, rgba(255,255,255,0.12)); margin-bottom: 4px;">
+            <div class="gradient-section-title" style="margin-bottom: 2px; font-weight: bold;">Background Scope</div>
+            <div class="row" style="gap: 16px; align-items: center; flex-wrap: wrap;">
+              <label style="display: inline-flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.85em; margin: 0;">
+                <input type="radio" name="bg-scope" id="bg-scope-same" value="same" checked>
+                <span>Same for All (Bible, Text, Songs)</span>
+              </label>
+              <label style="display: inline-flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.85em; margin: 0;">
+                <input type="radio" name="bg-scope" id="bg-scope-separate" value="separate">
+                <span>Separate for Each Tab</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Content Type Selector (visible when Separate for Each Tab is selected) -->
+          <div id="bg-content-type-container" class="row tooltip tooltip-bottom" data-tooltip="Select tab to configure background for" style="align-items: center; justify-content: space-between; padding: 4px 0; display: none;">
             <label for="bg-content-type-select"><strong>Configure Background For:</strong></label>
             <select id="bg-content-type-select" class="small-font" style="padding: 6px 12px; border-radius: 6px; min-width: 160px;">
               <option value="bible">Bible Tab</option>

@@ -144,31 +144,47 @@
         if (bgVideo) bgVideo.dataset.loadedSrc = "";
       }
 
-      const rawMode = (await idbMedia.get(`obs-bible-background-mode_${contentType}`))
-        || localStorage.getItem(`obs-bible-background-mode_${contentType}`);
-      const bgMode = rawMode
-        || (await idbMedia.get("obs-bible-background-mode"))
-        || localStorage.getItem("obs-bible-background-mode")
-        || (await idbMedia.get("obs-bible-background-mode_bible"))
-        || localStorage.getItem("obs-bible-background-mode_bible")
-        || (await idbMedia.get("obs-bible-background-mode_song"))
-        || localStorage.getItem("obs-bible-background-mode_song")
-        || "plain";
+      const bgScope = localStorage.getItem("obs-bible-background-scope") || "same";
+      const isSeparate = bgScope === "separate";
+
+      // Resolve background mode based on scope
+      let bgMode = null;
+      if (isSeparate && contentType) {
+        bgMode = (await idbMedia.get(`obs-bible-background-mode_${contentType}`))
+          || localStorage.getItem(`obs-bible-background-mode_${contentType}`);
+      }
+      if (!bgMode) {
+        bgMode = (await idbMedia.get("obs-bible-background-mode"))
+          || localStorage.getItem("obs-bible-background-mode")
+          || (await idbMedia.get("obs-bible-background-mode_bible"))
+          || localStorage.getItem("obs-bible-background-mode_bible")
+          || (await idbMedia.get("obs-bible-background-mode_song"))
+          || localStorage.getItem("obs-bible-background-mode_song")
+          || (await idbMedia.get("obs-bible-background-mode_text"))
+          || localStorage.getItem("obs-bible-background-mode_text")
+          || "plain";
+      }
+
       const bgImage = document.getElementById("bg-image");
       const bgGradient = document.getElementById("bg-gradient");
 
       // Handle Video background smoothly without blinking or interrupting active playback
       let targetVideoUrl = null;
       if (bgMode === "video") {
-        targetVideoUrl = (await idbMedia.get(`obs-bible-video-url_${contentType}`))
-          || (await idbMedia.get("obs-bible-video-url"))
-          || (await idbMedia.get("obs-bible-video-url_bible"))
-          || (await idbMedia.get("obs-bible-video-url_song"))
-          || (await idbMedia.get("obs-bible-video-url_text"))
-          || localStorage.getItem(`obs-bible-video-url_${contentType}`)
-          || localStorage.getItem("obs-bible-video-url")
-          || localStorage.getItem("obs-bible-video-url_bible")
-          || localStorage.getItem("obs-bible-video-url_song");
+        if (isSeparate && contentType) {
+          targetVideoUrl = (await idbMedia.get(`obs-bible-video-url_${contentType}`))
+            || localStorage.getItem(`obs-bible-video-url_${contentType}`);
+        }
+        if (!targetVideoUrl) {
+          targetVideoUrl = (await idbMedia.get("obs-bible-video-url"))
+            || (await idbMedia.get("obs-bible-video-url_bible"))
+            || (await idbMedia.get("obs-bible-video-url_song"))
+            || (await idbMedia.get("obs-bible-video-url_text"))
+            || localStorage.getItem("obs-bible-video-url")
+            || localStorage.getItem("obs-bible-video-url_bible")
+            || localStorage.getItem("obs-bible-video-url_song")
+            || localStorage.getItem("obs-bible-video-url_text");
+        }
       }
 
       let isMediaActive = false;
@@ -231,12 +247,20 @@
       let targetImageUrl = null;
       if (bgImage && bgMode !== "video") {
         if (bgMode === "image") {
-          targetImageUrl = (await idbMedia.get(`obs-bible-image-url_${contentType}`))
-            || (await idbMedia.get("obs-bible-image-url"))
-            || (await idbMedia.get("obs-bible-image-url_bible"))
-            || (await idbMedia.get("obs-bible-image-url_song"))
-            || localStorage.getItem(`obs-bible-image-url_${contentType}`)
-            || localStorage.getItem("obs-bible-image-url");
+          if (isSeparate && contentType) {
+            targetImageUrl = (await idbMedia.get(`obs-bible-image-url_${contentType}`))
+              || localStorage.getItem(`obs-bible-image-url_${contentType}`);
+          }
+          if (!targetImageUrl) {
+            targetImageUrl = (await idbMedia.get("obs-bible-image-url"))
+              || (await idbMedia.get("obs-bible-image-url_bible"))
+              || (await idbMedia.get("obs-bible-image-url_song"))
+              || (await idbMedia.get("obs-bible-image-url_text"))
+              || localStorage.getItem("obs-bible-image-url")
+              || localStorage.getItem("obs-bible-image-url_bible")
+              || localStorage.getItem("obs-bible-image-url_song")
+              || localStorage.getItem("obs-bible-image-url_text");
+          }
           if (targetImageUrl) {
             isMediaActive = true;
             bgImage.style.backgroundImage = `url("${targetImageUrl}")`;
@@ -253,10 +277,15 @@
       let targetGradientCss = null;
       if (bgGradient) {
         if (bgMode === "gradient") {
-          targetGradientCss = localStorage.getItem(`obs-bible-gradient-css_${contentType}`)
-            || localStorage.getItem('obs-bible-gradient-css')
-            || localStorage.getItem('obs-bible-gradient-css_bible')
-            || localStorage.getItem('obs-bible-gradient-css_song');
+          if (isSeparate && contentType) {
+            targetGradientCss = localStorage.getItem(`obs-bible-gradient-css_${contentType}`);
+          }
+          if (!targetGradientCss) {
+            targetGradientCss = localStorage.getItem('obs-bible-gradient-css')
+              || localStorage.getItem('obs-bible-gradient-css_bible')
+              || localStorage.getItem('obs-bible-gradient-css_song')
+              || localStorage.getItem('obs-bible-gradient-css_text');
+          }
           if (targetGradientCss) {
             isMediaActive = true;
             bgGradient.style.backgroundImage = targetGradientCss;
@@ -270,19 +299,24 @@
       }
 
       // Handle Container Background Color
-      const rawColor = localStorage.getItem(`obs-bible-bg-color_${contentType}`) || localStorage.getItem('rawBgColor') || localStorage.getItem('bgColor') || "#000000";
-      const opacity = localStorage.getItem(`obs-bible-bg-opacity_${contentType}`) || localStorage.getItem('savedOpacity') || "1";
+      const rawColor = (isSeparate && contentType && localStorage.getItem(`obs-bible-bg-color_${contentType}`))
+        || localStorage.getItem('obs-bible-bg-color')
+        || localStorage.getItem('rawBgColor')
+        || localStorage.getItem('bgColor')
+        || "#000000";
+
+      const opacity = (isSeparate && contentType && localStorage.getItem(`obs-bible-bg-opacity_${contentType}`))
+        || localStorage.getItem('obs-bible-bg-opacity')
+        || localStorage.getItem('savedOpacity')
+        || "1";
 
       if (isMediaActive) {
         bgContainer.style.backgroundColor = "transparent";
-      } else if (bgMode === "plain" || (bgMode === "video" && !targetVideoUrl) || (bgMode === "image" && !targetImageUrl)) {
-        // Fall back gracefully to plain color if media source is unavailable, so screen never goes blank!
-        bgContainer.style.backgroundColor = hexToRgba(rawColor, opacity);
       } else if (bgMode === "none") {
         bgContainer.style.backgroundColor = "transparent";
       } else {
-        const globalBg = localStorage.getItem('bgColor') || localStorage.getItem('rawBgColor') || "rgba(0, 0, 0, 0.85)";
-        bgContainer.style.backgroundColor = globalBg;
+        // Fall back gracefully to plain color if media source is unavailable or plain mode, so screen never goes blank!
+        bgContainer.style.backgroundColor = hexToRgba(rawColor, opacity);
       }
     }
 
@@ -322,8 +356,12 @@
     const settingsChannel = new BroadcastChannel("settings");
     settingsChannel.onmessage = (event) => {
        if (event.data) {
+          if (event.data.backgroundScope) {
+            localStorage.setItem("obs-bible-background-scope", event.data.backgroundScope);
+            applyBackgroundForType(currentContentType, true);
+          }
           if (event.data.bgUpdateContentType) {
-            applyBackgroundForType(event.data.bgUpdateContentType, true);
+            applyBackgroundForType(event.data.bgUpdateContentType === "all" ? currentContentType : event.data.bgUpdateContentType, true);
           }
           if (event.data.selectedFont){
             bgContainer.style.fontFamily = event.data.selectedFont;

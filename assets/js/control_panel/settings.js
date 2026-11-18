@@ -305,23 +305,46 @@ const idbMedia = {
   }
 };
 
+function isSeparateBackgrounds() {
+    return localStorage.getItem("obs-bible-background-scope") === "separate";
+}
+
 function setBgItem(keyName, val) {
-    const contentType = getBgContentType();
-    const fullKey = `${keyName}_${contentType}`;
-    idbMedia.set(fullKey, val);
-    idbMedia.set(keyName, val);
+    if (isSeparateBackgrounds()) {
+        const contentType = getBgContentType();
+        const fullKey = `${keyName}_${contentType}`;
+        idbMedia.set(fullKey, val);
+        idbMedia.set(keyName, val);
+    } else {
+        // Unified background: write to global key and sync to all tab keys
+        idbMedia.set(keyName, val);
+        idbMedia.set(`${keyName}_bible`, val);
+        idbMedia.set(`${keyName}_song`, val);
+        idbMedia.set(`${keyName}_text`, val);
+    }
 }
 
 function getBgItem(keyName) {
-    const contentType = getBgContentType();
-    const fullKey = `${keyName}_${contentType}`;
-    return localStorage.getItem(fullKey) || localStorage.getItem(keyName);
+    if (isSeparateBackgrounds()) {
+        const contentType = getBgContentType();
+        const fullKey = `${keyName}_${contentType}`;
+        return localStorage.getItem(fullKey) || localStorage.getItem(keyName);
+    } else {
+        return localStorage.getItem(keyName) || localStorage.getItem(`${keyName}_bible`) || localStorage.getItem(`${keyName}_song`) || localStorage.getItem(`${keyName}_text`);
+    }
 }
 
 function removeBgItem(keyName) {
-    const contentType = getBgContentType();
-    localStorage.removeItem(`${keyName}_${contentType}`);
-    localStorage.removeItem(keyName);
+    if (isSeparateBackgrounds()) {
+        const contentType = getBgContentType();
+        localStorage.removeItem(`${keyName}_${contentType}`);
+        localStorage.removeItem(keyName);
+    } else {
+        localStorage.removeItem(keyName);
+        localStorage.removeItem(`${keyName}_bible`);
+        localStorage.removeItem(`${keyName}_song`);
+        localStorage.removeItem(`${keyName}_text`);
+    }
 }
 
 function getBackgroundMode() {
@@ -433,9 +456,12 @@ function broadcastPlainBackground() {
 }
 
 function broadcastBgUpdate() {
-    const contentType = getBgContentType();
+    const contentType = isSeparateBackgrounds() ? getBgContentType() : "all";
     const settingsChannel = new BroadcastChannel("settings");
-    settingsChannel.postMessage({ bgUpdateContentType: contentType });
+    settingsChannel.postMessage({
+        bgUpdateContentType: contentType,
+        backgroundScope: isSeparateBackgrounds() ? "separate" : "same"
+    });
     settingsChannel.close();
 }
 
@@ -614,6 +640,7 @@ function openBackgroundModeModal() {
     if (!backgroundModeModal) {
         return;
     }
+    updateBgScopeUI();
     const lastTab = localStorage.getItem("lastContentTab") || localStorage.getItem("selectedTab");
     const bgSelect = document.getElementById("bg-content-type-select");
     if (bgSelect) {
@@ -1016,6 +1043,42 @@ if (backgroundModeBackdrop) {
 
 if (backgroundModeClose) {
     backgroundModeClose.addEventListener("click", closeBackgroundModeModal);
+}
+
+const bgScopeSameRadio = document.getElementById("bg-scope-same");
+const bgScopeSeparateRadio = document.getElementById("bg-scope-separate");
+const bgContentTypeContainer = document.getElementById("bg-content-type-container");
+
+function updateBgScopeUI() {
+    const isSeparate = isSeparateBackgrounds();
+    if (bgScopeSameRadio) bgScopeSameRadio.checked = !isSeparate;
+    if (bgScopeSeparateRadio) bgScopeSeparateRadio.checked = isSeparate;
+    if (bgContentTypeContainer) {
+        bgContentTypeContainer.style.display = isSeparate ? "flex" : "none";
+    }
+}
+
+function setBgScope(scope) {
+    localStorage.setItem("obs-bible-background-scope", scope);
+    updateBgScopeUI();
+    syncBgFormToContentType();
+    updateBackgroundPreviews();
+
+    if (typeof broadcastBgUpdate === "function") {
+        broadcastBgUpdate();
+    }
+}
+
+if (bgScopeSameRadio) {
+    bgScopeSameRadio.addEventListener("change", () => {
+        if (bgScopeSameRadio.checked) setBgScope("same");
+    });
+}
+
+if (bgScopeSeparateRadio) {
+    bgScopeSeparateRadio.addEventListener("change", () => {
+        if (bgScopeSeparateRadio.checked) setBgScope("separate");
+    });
 }
 
 const bgContentTypeSelect = document.getElementById("bg-content-type-select");

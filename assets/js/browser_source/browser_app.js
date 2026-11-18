@@ -1,89 +1,171 @@
-var updateMessage = (messageId, message) => {
-  const messageElem = document.getElementById(messageId);
-  if (!messageElem) return;
-
-  const isObject = typeof message === "object" && message !== null;
-  const isFadeIn = isObject ? !!message.fadein : false;
-  let content = isObject ? (message.messageContent ?? "") : (message ?? "");
-
-  if (content === "undefined" || content === "null") {
-    content = "";
-  }
-
-  if (isFadeIn) {
+var updateMessage = (messageId, message) =>{
+  const messageElem = document.getElementById(messageId)
+  if (message.fadein === true){
     messageElem.classList.remove('fade-in');
     messageElem.style.display = 'none';
-    messageElem.innerHTML = content;
+    messageElem.innerHTML = message.messageContent;;
     void messageElem.offsetWidth;
     messageElem.classList.add('fade-in');
     messageElem.style.display = 'block';
-  } else {
-    messageElem.innerHTML = content;
+  }else{
+    messageElem.innerHTML = message.messageContent;
   }
-  localStorage.setItem('savedMessage', content);
+  localStorage.setItem('savedMessage', message.messageContent);
 };
 
+// function hasVerticalScroll() {
+//   return document.documentElement.clientHeight < document.documentElement.scrollHeight;
+// }
+
+
+// function adjustFontSizeBasedOnScroll() {
+//   // Get the message element by its ID
+//   var message = document.getElementById('messageDisplay');
+
+//   // Get the current font size
+//   var fontSize = parseInt(window.getComputedStyle(message).fontSize);
+
+//   // Check if there is vertical scroll
+//   if (hasVerticalScroll()) {
+//     while (hasVerticalScroll() && fontSize > 1) {
+//       fontSize -= 1;
+//       message.style.fontSize = fontSize + 'px';
+//     }
+//   } else {
+//     while (!hasVerticalScroll() && fontSize < 90) {
+//       fontSize += 1;
+//       message.style.fontSize = fontSize + 'px';
+//       if(hasVerticalScroll()){
+//         fontSize -= 1;
+//         message.style.fontSize = fontSize + 'px';
+//         break;
+//       }
+//     }
+//   }
+
+//   return fontSize + "px";
+// }
+
+
+
+
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+// new code on adjustable text.
+
+// function hasVerticalScroll() {
+//   return document.documentElement.clientHeight < document.documentElement.scrollHeight;
+// }
+
+
+// function adjustFontSizeBasedOnScroll() {
+//   // Get the message element by its ID
+//   var message = document.getElementById('messageDisplay');
+
+//   // Get the current font size
+//   var fontSize = parseInt(window.getComputedStyle(message).fontSize);
+
+//   // Check if there is vertical scroll
+//   if (hasVerticalScroll()) {
+//     while (hasVerticalScroll() && fontSize > 1) {
+//       fontSize -= 1;
+//       message.style.fontSize = fontSize + 'px';
+//     }
+//   } else {
+//     while (!hasVerticalScroll() && fontSize < 90) {
+//       fontSize += 1;
+//       message.style.fontSize = fontSize + 'px';
+//       if(hasVerticalScroll()){
+//         fontSize -= 1;
+//         message.style.fontSize = fontSize + 'px';
+//         break;
+//       }
+//     }
+//   }
+
+//   return fontSize + "px";
+// }
+
+
+
+
+// function hasVerticalScroll() {
+//   return document.documentElement.clientHeight < document.documentElement.scrollHeight;
+// }
+
+// function adjustFontSizeBasedOnScroll() {
+//   const message = document.getElementById('messageDisplay');
+//   const container = message.parentElement; // Ensure the container is the parent of the message
+//   let minFontSize = 1; // Minimum font size
+//   let maxFontSize = Math.max(container.clientWidth, container.clientHeight); // Dynamic starting point
+//   let fontSize = parseInt(window.getComputedStyle(message).fontSize);
+
+//   // Limit the number of iterations to prevent infinite loops
+//   const maxIterations = 20;
+//   let iterations = 0;
+
+//   // Binary search to find the optimal font size
+//   while (minFontSize <= maxFontSize && iterations < maxIterations) {
+//     const midFontSize = Math.floor((minFontSize + maxFontSize) / 2);
+//     message.style.fontSize = midFontSize + 'px';
+
+//     if (hasVerticalScroll()) {
+//       // If there's a scroll, reduce the font size
+//       maxFontSize = midFontSize - 1;
+//     } else {
+//       // If there's no scroll, increase the font size
+//       minFontSize = midFontSize + 1;
+//     }
+
+//     iterations++;
+//   }
+
+//   // Set the final font size
+//   message.style.fontSize = maxFontSize + 'px';
+//   return maxFontSize + 'px';
+// }
+
+
+
+
 function hasVerticalScroll() {
-  const message = document.getElementById('messageDisplay');
-  if (!message) return false;
-
-  // Measure against the actual screen container or viewport
-  const bgContainer = document.getElementById('bg-container');
-  const maxHeight = (bgContainer && bgContainer.clientHeight > 0) ? bgContainer.clientHeight : window.innerHeight;
-  const maxWidth = (bgContainer && bgContainer.clientWidth > 0) ? bgContainer.clientWidth : window.innerWidth;
-
-  return (
-    document.documentElement.clientHeight < document.documentElement.scrollHeight ||
-    message.scrollHeight > maxHeight ||
-    message.offsetHeight > maxHeight ||
-    message.scrollWidth > maxWidth ||
-    message.offsetWidth > maxWidth
-  );
+  return document.documentElement.clientHeight < document.documentElement.scrollHeight;
 }
 
 function adjustFontSizeBasedOnScroll() {
   const message = document.getElementById('messageDisplay');
-  if (!message) return;
+  let minFontSize = 1; // Minimum font size
+  let maxFontSize = 1000; // A large enough upper limit (can be adjusted)
+  let fontSize = parseInt(window.getComputedStyle(message).fontSize);
 
-  const text = (message.innerText || message.textContent || "").trim();
-  if (!text) {
-    message.style.fontSize = "";
-    return;
-  }
-
-  const bgContainer = document.getElementById('bg-container');
-  const maxHeight = (bgContainer && bgContainer.clientHeight > 0) ? bgContainer.clientHeight : window.innerHeight;
-  const maxWidth = (bgContainer && bgContainer.clientWidth > 0) ? bgContainer.clientWidth : window.innerWidth;
-
-  let minFontSize = 1;
-  // Cap starting upper bound to 300px to avoid single-letter jumps on short words
-  let maxFontSize = Math.min(Math.max(maxHeight, maxWidth), 300);
-
-  // Binary search to find optimal font size fitting container cleanly
+  // Binary search to find the optimal font size
   while (minFontSize <= maxFontSize) {
     const midFontSize = Math.floor((minFontSize + maxFontSize) / 2);
     message.style.fontSize = midFontSize + 'px';
 
     if (hasVerticalScroll()) {
+      // If there's a scroll, reduce the font size
       maxFontSize = midFontSize - 1;
     } else {
+      // If there's no scroll, increase the font size
       minFontSize = midFontSize + 1;
     }
   }
 
-  // Set bounded font size so text never overflows and stays readable
-  const finalSize = Math.max(1, maxFontSize);
-  message.style.fontSize = finalSize + 'px';
-  return finalSize + 'px';
+  // Set the final font size
+  message.style.fontSize = maxFontSize + 'px';
+  return maxFontSize + 'px';
 }
 
-// Adjust font size dynamically on window resize
-window.addEventListener('resize', adjustFontSizeBasedOnScroll);
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+
 
 // Callback function for the MutationObserver
 function handleMutation(mutationsList, observer) {
   for (var mutation of mutationsList) {
     if (mutation.type === 'childList' && mutation.target.id === 'messageDisplay') {
+      // Call the function to adjust font size
       adjustFontSizeBasedOnScroll();
     }
   }
@@ -92,8 +174,5 @@ function handleMutation(mutationsList, observer) {
 // Create a new MutationObserver instance
 var observer = new MutationObserver(handleMutation);
 
-// Start observing changes in the inner HTML of the message display element
-const messageTarget = document.getElementById('messageDisplay');
-if (messageTarget) {
-  observer.observe(messageTarget, { childList: true });
-}
+// Start observing changes in the inner HTML of the <p> element
+observer.observe(document.getElementById('messageDisplay'), { childList: true });
