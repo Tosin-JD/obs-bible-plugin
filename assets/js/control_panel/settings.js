@@ -40,6 +40,138 @@ const gradientOpacityTrack = document.getElementById("gradient-opacity-track");
 const gradientOpacityHandle = document.getElementById("gradient-opacity-handle");
 const gradientDirectionOptions = document.querySelectorAll(".gradient-direction-option");
 const BACKGROUND_OPACITY_STEPS = 20;
+const sliderValueInputs = new Map();
+let activeSliderTrack = null;
+
+function getSliderValueConfig(slider) {
+    const min = slider.min === "" ? 0 : Number(slider.min);
+    const max = slider.max === "" ? 100 : Number(slider.max);
+    const stepAttribute = slider.getAttribute("step");
+    const step = stepAttribute === "any" ? null : Number(stepAttribute || 1);
+    const validStep = step !== null && Number.isFinite(step) && step > 0 ? step : null;
+    const stepString = String(validStep);
+    const exponent = stepString.match(/e-(\d+)$/i);
+    const precision = validStep === null
+        ? 8
+        : Math.min(8, exponent
+            ? Number(exponent[1])
+            : (stepString.split(".")[1] || "").length);
+    const normalizedMin = Number.isFinite(min) ? min : 0;
+
+    return {
+        min: normalizedMin,
+        max: Number.isFinite(max) ? max : 100,
+        step: validStep,
+        precision,
+        allowNegative: normalizedMin < 0,
+        allowFraction: validStep === null || !Number.isInteger(validStep),
+    };
+}
+
+function sanitizeNumericInput(value, allowNegative, allowFraction) {
+    let sanitized = "";
+    let hasDecimal = false;
+
+    for (const character of value) {
+        if (/[0-9]/.test(character)) {
+            sanitized += character;
+        } else if (character === "-" && allowNegative && sanitized === "") {
+            sanitized += character;
+        } else if (character === "." && allowFraction && !hasDecimal) {
+            sanitized += character;
+            hasDecimal = true;
+        }
+    }
+
+    return sanitized;
+}
+
+function isIncompleteNumericInput(value) {
+    return value === "" || value === "-" || value === "." || value === "-." || value.endsWith(".");
+}
+
+function normalizeSliderValue(value, config) {
+    const clamped = Math.min(config.max, Math.max(config.min, value));
+    const stepped = config.step === null
+        ? clamped
+        : config.min + Math.round((clamped - config.min) / config.step) * config.step;
+    const bounded = Math.min(config.max, Math.max(config.min, stepped));
+    return Number(bounded.toFixed(config.precision));
+}
+
+function syncSliderValueInput(slider) {
+    const valueInput = sliderValueInputs.get(slider);
+    if (valueInput) valueInput.value = slider.value;
+}
+
+function updateSliderFromValueInput(slider, valueInput, config) {
+    const parsed = Number(valueInput.value);
+    if (Number.isNaN(parsed)) return;
+
+    const previousValue = slider.value;
+    slider.value = String(normalizeSliderValue(parsed, config));
+    if (slider.value !== previousValue) {
+        slider.dispatchEvent(new Event("input", { bubbles: true }));
+    } else {
+        syncSliderValueInput(slider);
+    }
+}
+
+function clearActiveSliderTrack() {
+    activeSliderTrack?.classList.remove("is-active");
+    activeSliderTrack = null;
+}
+
+document.addEventListener("pointerup", clearActiveSliderTrack);
+document.addEventListener("pointercancel", clearActiveSliderTrack);
+
+function initializeSliderValueInputs() {
+    document.querySelectorAll("input[type='range'].slider").forEach(slider => {
+        const valueInput = document.getElementById(`${slider.id}-value`);
+        if (!valueInput) return;
+        const config = getSliderValueConfig(slider);
+        valueInput.inputMode = config.allowFraction || config.allowNegative ? "decimal" : "numeric";
+        sliderValueInputs.set(slider, valueInput);
+        syncSliderValueInput(slider);
+        slider.addEventListener("input", () => syncSliderValueInput(slider));
+
+        const track = slider.closest(".slider-track-wrap");
+        if (track) {
+            track.addEventListener("pointerenter", () => track.classList.add("is-hovered"));
+            track.addEventListener("pointerleave", () => track.classList.remove("is-hovered"));
+            slider.addEventListener("pointerdown", () => {
+                clearActiveSliderTrack();
+                activeSliderTrack = track;
+                track.classList.add("is-active");
+            });
+            slider.addEventListener("focus", () => track.classList.add("is-focused"));
+            slider.addEventListener("blur", () => track.classList.remove("is-focused"));
+        }
+
+        valueInput.addEventListener("input", () => {
+            const sanitized = sanitizeNumericInput(valueInput.value, config.allowNegative, config.allowFraction);
+            if (sanitized !== valueInput.value) valueInput.value = sanitized;
+            if (isIncompleteNumericInput(sanitized)) return;
+            updateSliderFromValueInput(slider, valueInput, config);
+        });
+        valueInput.addEventListener("blur", () => {
+            const sanitized = sanitizeNumericInput(valueInput.value, config.allowNegative, config.allowFraction);
+            if (sanitized !== valueInput.value) valueInput.value = sanitized;
+            if (isIncompleteNumericInput(sanitized)) {
+                syncSliderValueInput(slider);
+                return;
+            }
+            updateSliderFromValueInput(slider, valueInput, config);
+            syncSliderValueInput(slider);
+        });
+    });
+}
+
+window.syncControlPanelSliderValues = () => {
+    sliderValueInputs.forEach((valueInput, slider) => { valueInput.value = slider.value; });
+};
+
+initializeSliderValueInputs();
 
 const gradientStorageKeys = {
     mode: "obs-bible-background-mode",
@@ -116,6 +248,7 @@ function syncBackgroundOpacityControls(rawValue) {
     backgroundOpacityControls.forEach(control => {
         control.max = String(BACKGROUND_OPACITY_STEPS);
         control.value = rawValue;
+        syncSliderValueInput(control);
     });
 }
 
@@ -258,6 +391,8 @@ function updateOpacityTrack() {
     const percent = Math.round((selected.opacity || 0) * 100);
     gradientOpacityHandle.style.left = `${percent}%`;
     gradientOpacityTrack.setAttribute("aria-valuenow", `${percent}`);
+    const gradientOpacityValue = document.getElementById("gradient-opacity-value");
+    if (gradientOpacityValue) gradientOpacityValue.value = String(percent);
 }
 
 function setSelectedGradientIndex(index) {
@@ -670,92 +805,40 @@ textAlign.forEach(radio => {
 });
 
 
-textShadowColor.addEventListener("change", function() {
-    let selectedColor = textShadowColor.value;
-    localStorage.setItem('rawShadowColor', textShadowColor.value);
-    let rgbaParts
-    rgbaParts = selectedColor.split(",");
+function updateTextShadow() {
+    const opacity = Number(textShadowOpacity.value) / 10;
+    const rawColor = localStorage.getItem('rawShadowColor') || textShadowColor.value || '#000000';
+    const shadowColor = hexToRgba(rawColor, opacity);
+    const intensity = textShadowIntensity.value;
+    const horizontalOffset = textShadowHorOffset.value;
+    const verticalOffset = textShadowVerOffset.value;
 
-    const alphaValue  = Number(localStorage.getItem('savedTextOpacity')) /10;
-    let newColor = hexToRgba(selectedColor, alphaValue);
-    localStorage.setItem('textShadowColor', newColor);
-
-    let savedVerOffset = localStorage.getItem('savedVerOffset');
-    let savedHorOffset = localStorage.getItem('savedHorOffset');
-    let savedIntensity = localStorage.getItem('savedTextIntensity');
-    let shadowValue = `${savedHorOffset}px ${savedVerOffset}px ${savedIntensity}px ${newColor}`;
-
-    let settingsChannel = new BroadcastChannel("settings");
-    settingsChannel.postMessage({ selectedShadowColor: shadowValue });
-    settingsChannel.close();
-});
-
-textShadowOpacity.addEventListener("input", function () {
-    let currentOpacity = textShadowOpacity.value / 10;
     localStorage.setItem('savedTextOpacity', textShadowOpacity.value);
-    let shadowColor = localStorage.getItem('shadowColor');
+    localStorage.setItem('savedTextIntensity', intensity);
+    localStorage.setItem('savedHorOffset', horizontalOffset);
+    localStorage.setItem('savedVerOffset', verticalOffset);
+    localStorage.setItem('textShadowColor', shadowColor);
 
-    let rgbValues = shadowColor.match(/\d+/g);
-    let newColor = `rgba(${rgbValues[0]}, ${rgbValues[1]}, ${rgbValues[2]}, ${currentOpacity})`;
-    localStorage.setItem('textShadowColor', newColor);
-    let savedVerOffset = localStorage.getItem('savedVerOffset');
-    let savedHorOffset = localStorage.getItem('savedHorOffset');
-    let savedIntensity = localStorage.getItem('savedTextIntensity');
-    let shadowValue = `${savedHorOffset}px ${savedVerOffset}px ${savedIntensity}px ${newColor}`;
-
+    const shadowValue = `${horizontalOffset}px ${verticalOffset}px ${intensity}px ${shadowColor}`;
     let settingsChannel = new BroadcastChannel("settings");
     settingsChannel.postMessage({ selectedShadowColor: shadowValue });
     settingsChannel.close();
+}
+
+textShadowColor.addEventListener("change", function() {
+    localStorage.setItem('rawShadowColor', textShadowColor.value);
+    updateTextShadow();
 });
 
-
-textShadowIntensity.addEventListener('input', function () {
-    let currentIntensity = textShadowIntensity.value;
-    localStorage.setItem('savedTextIntensity', textShadowIntensity.value);
-    let savedTextShadowValue = localStorage.getItem('textShadowColor');
-    let savedVerOffset = localStorage.getItem('savedVerOffset');
-    let savedHorOffset = localStorage.getItem('savedHorOffset');
-
-    let shadowValue = `${savedHorOffset}px ${savedVerOffset}px ${currentIntensity}px ${savedTextShadowValue}`;
-
-    let settingsChannel = new BroadcastChannel("settings");
-    settingsChannel.postMessage({ selectedShadowColor: shadowValue });
-    settingsChannel.close();
-});
-
-textShadowHorOffset.addEventListener('input', function () {
-    let currentOffset = textShadowHorOffset.value;
-    localStorage.setItem('savedHorOffset', currentOffset);
-    let savedTextShadowValue = localStorage.getItem('textShadowColor');
-    let savedIntensity = localStorage.getItem('savedTextIntensity');
-    let savedVerOffset = localStorage.getItem('savedVerOffset');
-
-    let shadowValue = `${currentOffset}px ${savedVerOffset}px ${savedIntensity}px ${savedTextShadowValue}`;
-
-    let settingsChannel = new BroadcastChannel("settings");
-    settingsChannel.postMessage({ selectedShadowColor: shadowValue });
-    settingsChannel.close();
-});
+textShadowOpacity.addEventListener('input', updateTextShadow);
+textShadowIntensity.addEventListener('input', updateTextShadow);
+textShadowHorOffset.addEventListener('input', updateTextShadow);
+textShadowVerOffset.addEventListener('input', updateTextShadow);
 
 
-textShadowVerOffset.addEventListener('input', function () {
-    let currentOffset = textShadowVerOffset.value;
-    localStorage.setItem('savedVerOffset', textShadowVerOffset.value);
-    let savedTextShadowValue = localStorage.getItem('textShadowColor');
-    let savedIntensity = localStorage.getItem('savedTextIntensity');
-    let savedHorOffset = localStorage.getItem('savedHorOffset');
-
-    let shadowValue = `${savedHorOffset}px ${currentOffset}px ${savedIntensity}px ${savedTextShadowValue}`;
-
-    let settingsChannel = new BroadcastChannel("settings");
-    settingsChannel.postMessage({ selectedShadowColor: shadowValue });
-    settingsChannel.close();
-});
-
-
-bgMargin.addEventListener("change", function() {
+bgMargin.addEventListener("input", function() {
     let selectedMargin = bgMargin.value;
-    localStorage.setItem('bgMargin', bgMargin.value);
+    localStorage.setItem('savedBgMargin', selectedMargin);
 
     let settingsChannel = new BroadcastChannel("settings");
     settingsChannel.postMessage({ selectedBgMargin: selectedMargin });
@@ -851,6 +934,24 @@ function handleOpacityPointer(event) {
 }
 
 if (gradientOpacityTrack) {
+    const gradientOpacityValue = document.getElementById("gradient-opacity-value");
+    if (gradientOpacityValue) {
+        gradientOpacityValue.addEventListener("input", () => {
+            const sanitized = sanitizeNumericInput(gradientOpacityValue.value, false, false);
+            if (sanitized !== gradientOpacityValue.value) gradientOpacityValue.value = sanitized;
+            if (isIncompleteNumericInput(sanitized)) return;
+            const percent = Math.min(100, Math.max(0, Number(sanitized)));
+            if (!gradientColors[selectedGradientIndex]) return;
+            gradientColors[selectedGradientIndex].opacity = percent / 100;
+            updateOpacityTrack();
+            applyGradient();
+        });
+        gradientOpacityValue.addEventListener("blur", () => {
+            const sanitized = sanitizeNumericInput(gradientOpacityValue.value, false, false);
+            if (sanitized !== gradientOpacityValue.value) gradientOpacityValue.value = sanitized;
+            if (isIncompleteNumericInput(sanitized)) updateOpacityTrack();
+        });
+    }
     gradientOpacityTrack.addEventListener("mousedown", (event) => {
         handleOpacityPointer(event);
         const move = (moveEvent) => handleOpacityPointer(moveEvent);

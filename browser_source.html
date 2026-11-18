@@ -89,9 +89,13 @@
             messageDisplay.style.textDecoration = event.data.currentUnderlineState;
             localStorage.setItem('underlineState', event.data.currentUnderlineState);
           }
-          if (event.data.selectedBgMargin){
-            messageDisplay.style.padding = event.data.selectedBgMargin + "px";
-            localStorage.setItem('savedBgMargin', event.data.selectedBgMargin);
+          if (event.data.selectedBgMargin !== undefined && event.data.selectedBgMargin !== null) {
+            const margin = Number(event.data.selectedBgMargin);
+            if (Number.isFinite(margin)) {
+              const normalizedMargin = Math.round(Math.min(200, Math.max(0, margin)));
+              messageDisplay.style.padding = normalizedMargin + "px";
+              localStorage.setItem('savedBgMargin', String(normalizedMargin));
+            }
             adjustFontSizeBasedOnScroll();
           }
           if (event.data.selectedTextAlignment){

@@ -263,42 +263,45 @@ DoubleClick on History erase all previous text"></textarea>
                 </div>
               </div>
               <div class="row">
-                <div class="settings-icons">
-                  <label>Rounded Corners</label>
-                  <input type="range" min="0" max="120" value="0" class="slider" id="rounded-corner">
+                <div class="settings-icons slider-control">
+                  <div class="slider-control-header"><input class="slider-value" id="rounded-corner-value" type="text" inputmode="numeric" pattern="[0-9]*" aria-label="Rounded Corners value"><label for="rounded-corner">Rounded Corners</label></div>
+                  <div class="slider-track-wrap"><input type="range" min="0" max="120" value="0" class="slider" id="rounded-corner"></div>
                 </div>
               </div>
               <div class="row">
-                <div class="settings-icons">
-                  <label>Margin</label>
-                  <input type="range" min="0" max="200" value="10" class="slider" id="bg-margin">
+                <div class="settings-icons slider-control">
+                  <div class="slider-control-header"><input class="slider-value" id="bg-margin-value" type="text" inputmode="numeric" pattern="[0-9]*" aria-label="Margin value"><label for="bg-margin">Margin</label></div>
+                  <div class="slider-track-wrap"><input type="range" min="0" max="200" value="10" class="slider" id="bg-margin"></div>
                 </div>
               </div>
               <div class="column" id="shadow-editor">
                 <div class="row">
-                  <div class="column settings-icons">
-                    <label for="shadow-opacity">Shadow Opacity:</label>
-                    <input type="range" id="shadow-opacity" min="0" max="10" value="1" class="slider">
+                  <div class="column settings-icons slider-control">
+                    <div class="slider-control-header"><input class="slider-value" id="shadow-opacity-value" type="text" inputmode="numeric" pattern="[0-9]*" aria-label="Shadow Opacity value"><label for="shadow-opacity">Shadow Opacity:</label></div>
+                    <div class="slider-track-wrap"><input type="range" id="shadow-opacity" min="0" max="10" value="1" class="slider"></div>
                   </div>
-                  <div class="column settings-icons">
-                    <label for="shadow-intensity">Shadow Intensity:</label>
-                    <input type="range" min="0" max="10" value="10" id="shadow-intensity" class="slider">
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="column settings-icons">
-                    <label for="shadow-opacity">Horizontal Shadow offset:</label>
-                    <input type="range" id="hor-shadow-offset" min="-10" max="10" value="1" class="slider">
-                  </div>
-                  <div class="column settings-icons">
-                    <label for="shadow-intensity">Vertical Shadow offset:</label>
-                    <input type="range" min="-10" max="10" value="10" id="ver-shadow-offset" class="slider">
+                  <div class="column settings-icons slider-control">
+                    <div class="slider-control-header"><input class="slider-value" id="shadow-intensity-value" type="text" inputmode="numeric" pattern="[0-9]*" aria-label="Shadow Intensity value"><label for="shadow-intensity">Shadow Intensity:</label></div>
+                    <div class="slider-track-wrap"><input type="range" min="0" max="10" value="10" id="shadow-intensity" class="slider"></div>
                   </div>
                 </div>
                 <div class="row">
-                  <div class="column settings-icons">
-                    <label for="main-border">Main Border</label>
-                    <input type="range" min="0" max="20" value="0" class="slider" id="main-border">
+                  <div class="column settings-icons slider-control">
+                    <div class="slider-control-header"><input class="slider-value" id="hor-shadow-offset-value" type="text" inputmode="numeric" pattern="-?[0-9]*" aria-label="Horizontal Shadow offset value"><label for="hor-shadow-offset">Horizontal Shadow offset:</label></div>
+                    <div class="slider-track-wrap"><input type="range" id="hor-shadow-offset" min="-10" max="10" value="1" class="slider"></div>
+                  </div>
+                  <div class="column settings-icons slider-control">
+                    <div class="slider-control-header"><input class="slider-value" id="ver-shadow-offset-value" type="text" inputmode="numeric" pattern="-?[0-9]*" aria-label="Vertical Shadow offset value"><label for="ver-shadow-offset">Vertical Shadow offset:</label></div>
+                    <div class="slider-track-wrap"><input type="range" min="-10" max="10" value="10" id="ver-shadow-offset" class="slider"></div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="column settings-icons slider-control">
+                    <div class="slider-control-header">
+                      <input class="slider-value" id="main-border-value" type="text" inputmode="numeric" pattern="[0-9]*" aria-label="Main Border value">
+                      <label for="main-border">Main Border</label>
+                    </div>
+                    <div class="slider-track-wrap"><input type="range" min="0" max="20" value="0" class="slider" id="main-border"></div>
                   </div>
                   <div class="row settings-icons">
                     <div class="column full-width">
@@ -451,9 +454,9 @@ DoubleClick on History erase all previous text"></textarea>
                     </div>
                   </div>
                   <div class="row">
-                    <div class="column settings-icons">
-                      <label for="font-outline">Font Outline</label>
-                      <input type="range" min="0" max="50" value="0" class="slider" id="font-outline">
+                    <div class="column settings-icons slider-control">
+                      <div class="slider-control-header"><input class="slider-value" id="font-outline-value" type="text" inputmode="numeric" pattern="[0-9]*" aria-label="Font Outline value"><label for="font-outline">Font Outline</label></div>
+                      <div class="slider-track-wrap"><input type="range" min="0" max="50" value="0" class="slider" id="font-outline"></div>
                     </div>
                   </div>
                 </div>
@@ -664,8 +667,11 @@ DoubleClick on History erase all previous text"></textarea>
             <div class="gradient-body">
               <div class="gradient-section">
                 <div class="gradient-section-title">Background Opacity</div>
-                <input type="range" min="0" max="20" value="20" class="slider background-opacity-slider" id="bg-opacity"
-                  data-bg-opacity-control="plain">
+                <div class="slider-control-header"><input class="slider-value" id="bg-opacity-value" type="text" inputmode="numeric" pattern="[0-9]*" aria-label="Background opacity value"><label for="bg-opacity">Background opacity</label></div>
+                <div class="slider-track-wrap">
+                  <input type="range" min="0" max="20" value="20" class="slider background-opacity-slider" id="bg-opacity"
+                    data-bg-opacity-control="plain">
+                </div>
               </div>
             </div>
           </div>
@@ -702,9 +708,9 @@ DoubleClick on History erase all previous text"></textarea>
                 </div>
               </div>
               <div class="gradient-section">
-                <div class="gradient-section-title">Opacity</div>
+                <div class="slider-control-header"><input class="slider-value" id="gradient-opacity-value" type="text" inputmode="numeric" pattern="[0-9]*" aria-labelledby="gradient-opacity-label" aria-label="Gradient opacity percentage"><span id="gradient-opacity-label">Opacity (%)</span></div>
                 <div class="gradient-opacity-track" id="gradient-opacity-track" role="slider" aria-valuemin="0"
-                  aria-valuemax="100" aria-valuenow="100" tabindex="0">
+                  aria-labelledby="gradient-opacity-label" aria-valuemax="100" aria-valuenow="100" tabindex="0">
                   <div class="gradient-opacity-handle" id="gradient-opacity-handle"></div>
                 </div>
               </div>

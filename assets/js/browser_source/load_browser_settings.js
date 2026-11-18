@@ -109,7 +109,10 @@ if (savedShadowColor) {
     messageDisplay.style.textShadow = savedShadowColor;
 }
 
-if (savedBgMargin){
-    messageDisplay.style.padding = savedBgMargin + "px";
+if (savedBgMargin !== null) {
+    const margin = Number(savedBgMargin);
+    if (Number.isFinite(margin)) {
+        messageDisplay.style.padding = `${Math.round(Math.min(200, Math.max(0, margin)))}px`;
+    }
 }
 adjustFontSizeBasedOnScroll();
