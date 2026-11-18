@@ -291,6 +291,14 @@
     const initialContentType = (initialSavedTab === "bibleText") ? "bible" : (initialSavedTab === "songs") ? "song" : "text";
     applyBackgroundForType(initialContentType);
 
+    function applyTitleColor(color) {
+      messageDisplay.style.setProperty("--title-color", color);
+      const spans = document.querySelectorAll(
+        "#messageDisplay span:not(.bible-content):not(.bible-message):not(.bible-reference)"
+      );
+      spans.forEach(span => span.style.color = color);
+    }
+
     // Text channel
     const channel = new BroadcastChannel("myChannel");
     channel.onmessage = (event) => {
@@ -304,9 +312,9 @@
       applyBackgroundForType(contentType);
       updateMessage('messageDisplay', data);
 
-      if (savedTitleColor) {
-          const dspans = document.querySelectorAll("#messageDisplay span");
-          dspans.forEach(dspan => dspan.style.color = savedTitleColor);
+      const titleColor = localStorage.getItem("titleColor");
+      if (titleColor) {
+          applyTitleColor(titleColor);
       }
     };
 
@@ -374,10 +382,8 @@
             localStorage.setItem('fontColor', event.data.selectedFontColor);
           }
           if (event.data.selectedTitleColor){
-            const spans = document.querySelectorAll("#messageDisplay span");
-            spans.forEach(span => span.style.color = event.data.selectedTitleColor);
             localStorage.setItem('titleColor', event.data.selectedTitleColor);
-            location.reload();
+            applyTitleColor(event.data.selectedTitleColor);
           }
           if (event.data.currentBoldState){
             messageDisplay.style.fontWeight = event.data.currentBoldState;
@@ -391,9 +397,13 @@
             messageDisplay.style.textDecoration = event.data.currentUnderlineState;
             localStorage.setItem('underlineState', event.data.currentUnderlineState);
           }
-          if (event.data.selectedBgMargin){
-            messageDisplay.style.padding = event.data.selectedBgMargin + "px";
-            localStorage.setItem('savedBgMargin', event.data.selectedBgMargin);
+          if (event.data.selectedBgMargin !== undefined && event.data.selectedBgMargin !== null) {
+            const margin = Number(event.data.selectedBgMargin);
+            if (Number.isFinite(margin)) {
+              const normalizedMargin = Math.round(Math.min(200, Math.max(0, margin)));
+              messageDisplay.style.padding = normalizedMargin + "px";
+              localStorage.setItem('savedBgMargin', String(normalizedMargin));
+            }
             adjustFontSizeBasedOnScroll();
           }
           if (event.data.selectedTextAlignment){

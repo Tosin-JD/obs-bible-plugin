@@ -325,6 +325,10 @@ select{
   flex-wrap: wrap;
 }
 
+.settings-tab-area .font-controls-row{
+  flex-wrap: nowrap;
+}
+
 .settings-tab-area .row > .settings-icons,
 .settings-tab-area .row > .column{
   flex: 1 1 0;
@@ -333,6 +337,29 @@ select{
 
 .settings-tab-area .column{
   width: 100%;
+}
+
+.settings-control-group{
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  margin-bottom: 12px;
+}
+
+.settings-control-group h3{
+  margin: 0;
+  font-size: 1em;
+}
+
+.settings-control-group label{
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.bible-layout-separate-line .bible-reference{
+  display: block;
 }
 
 #listItems{
@@ -495,6 +522,7 @@ button, .btn-file-upload{
 }
 
 .search-group{
+  position: relative;
   flex-grow: 3;
   flex-basis: auto;
   width: 100%;
@@ -613,9 +641,82 @@ button, .btn-file-upload{
   border-radius: 5px;
 }
 
-/* Mouse-over effects */
-.slider:hover {
+.slider:hover,
+.slider:focus-visible {
   opacity: 1;
+}
+
+.slider-track-wrap {
+  display: flex;
+  position: relative;
+  width: 100%;
+  transform-origin: center;
+  transition: transform .12s ease-out;
+}
+
+.slider-track-wrap.is-hovered,
+.slider-track-wrap.is-focused {
+  transform: scaleY(1.12);
+  z-index: 1;
+}
+
+.slider-track-wrap.is-active,
+.slider-track-wrap.is-hovered.is-active,
+.slider-track-wrap.is-focused.is-active {
+  transform: scaleY(1.16);
+  z-index: 1;
+}
+
+.slider-control { min-width: 0; }
+
+.slider-control-header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: 8px;
+  width: 100%;
+  margin-bottom: 4px;
+}
+
+.slider-control-header label,
+.slider-control-header span {
+  min-width: 0;
+  flex: 1 1 5em;
+}
+
+.slider-value {
+  width: 4.5em;
+  min-width: 3.5em;
+  box-sizing: border-box;
+  flex: 0 0 4.5em;
+  padding: 3px 5px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  font: inherit;
+  text-align: right;
+}
+
+.slider-value:focus-visible { outline-offset: 1px; }
+
+.gradient-opacity-track {
+  transform-origin: center;
+  transition: transform .12s ease-out;
+}
+.gradient-opacity-track:hover,
+.gradient-opacity-track:focus-visible,
+.gradient-opacity-track:active {
+  transform: scaleY(1.06);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .slider-track-wrap, .gradient-opacity-track { transition: none; }
+  .slider-track-wrap.is-hovered,
+  .slider-track-wrap.is-focused,
+  .slider-track-wrap.is-active,
+  .gradient-opacity-track:hover,
+  .gradient-opacity-track:focus-visible,
+  .gradient-opacity-track:active { transform: none; }
 }
 
 .slider::-webkit-slider-thumb {
@@ -930,18 +1031,23 @@ button, .btn-file-upload{
 
 #suggestions {
   position: absolute;
-  z-index: 1;
+  z-index: 10;
   list-style-type: none;
   margin: 0;
   padding: 0;
   border-top: none;
   border-radius: 5px;
-  box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.3);
-  max-height: 150px;
+  max-height: min(50vh, 320px);
   overflow-y: auto;
   width: 100%;
   font-size: 0.6em;
+  display: none;
+  box-sizing: border-box;
+  top: 100%;
+  left: 0;
 }
+
+#suggestions.is-open { display: block; }
 
 #suggestions li {
   padding: 10px;
@@ -949,6 +1055,53 @@ button, .btn-file-upload{
 }
 
 #suggestions li:hover {
+}
+
+.book-picker-dropdown {
+  display: none;
+  position: absolute;
+  z-index: 11;
+  top: 100%;
+  left: 0;
+  width: max(100%, min(420px, calc(100vw - 20px)));
+  max-width: calc(100vw - 20px);
+  max-height: min(65vh, 480px);
+  overflow-y: auto;
+  box-sizing: border-box;
+  padding: 10px;
+  border-radius: 5px;
+  font-size: .75em;
+}
+.book-picker-dropdown.is-open { display: block; }
+.picker-heading { font-weight: 600; margin: 0 0 9px; }
+.picker-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.picker-divider {
+  flex: 0 0 100%;
+  height: 0;
+  margin: 3px 0;
+  border-top: 1px solid;
+}
+.picker-option {
+  flex: 1 0 13%;
+  min-width: 36px;
+  min-height: 36px;
+  padding: 5px 3px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.picker-option:focus-visible { outline: 2px solid; outline-offset: 1px; }
+
+@media (max-width: 520px) {
+  .book-picker-dropdown { max-height: 60vh; padding: 8px; }
+  .picker-grid { gap: 5px; }
+  .picker-option { flex-basis: 16%; min-height: 40px; }
+}
+@media (max-width: 360px) {
+  .picker-option { flex-basis: 21%; }
 }
 
 .selected{

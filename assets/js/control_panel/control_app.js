@@ -110,11 +110,11 @@ function openSavedTab() {
 // Call the function to open the saved tab when the webpage loads
 window.onload = function() {
   openSavedTab();
-  // get the bible Translation
-  const savedScriptFile = localStorage.getItem('selectedScriptFile');
-  if (savedScriptFile) {
-      document.getElementById('bible-version').value = savedScriptFile;
-      loadScriptFile(savedScriptFile).then(() => {
+  const bibleVersion = document.getElementById('bible-version');
+  const scriptFile = localStorage.getItem('selectedScriptFile') || bibleVersion?.value;
+  if (scriptFile && bibleVersion) {
+      bibleVersion.value = scriptFile;
+      loadScriptFile(scriptFile).then(() => {
           getSavedBible();
           displayBible();
           generateIndexForBibleBooks();

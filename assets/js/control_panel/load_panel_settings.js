@@ -141,15 +141,14 @@ if (savedBibleTranslation) {
     }
 }
 
-if (savedBorderRadius) {
+if (savedBorderRadius !== null) {
     let defaultBorderRadius = document.getElementById("rounded-corner");
-    defaultBorderRadius.setAttribute("value", savedBorderRadius);
+    defaultBorderRadius.value = savedBorderRadius;
 }
 
-if (savedOpacity) {
+if (savedOpacity !== null) {
     let defaultOpacity = document.getElementById("bg-opacity");
-    defaultOpacity.setAttribute("value", savedOpacity);
-    defaultOpacity.setAttribute("max", "20");
+    defaultOpacity.value = savedOpacity;
 }
 
 if (savedRawTitleColor) {
@@ -218,27 +217,27 @@ if (savedTextShadowColor) {
     defaultShadowColor.setAttribute("value", savedTextShadowColor);
 }
 
-if (savedTextShadowIntensity) {
+if (savedTextShadowIntensity !== null) {
     let defaultShadowIntensity = document.getElementById("shadow-intensity");
-    defaultShadowIntensity.setAttribute("value", savedTextShadowIntensity);
+    defaultShadowIntensity.value = savedTextShadowIntensity;
 }
 
-if (savedTextShadowOpacity) {
+if (savedTextShadowOpacity !== null) {
     let defaultShadowOpacity = document.getElementById("shadow-opacity");
-    defaultShadowOpacity.setAttribute("value", savedTextShadowOpacity);
+    defaultShadowOpacity.value = savedTextShadowOpacity;
 }
 
-if (savedTextShadowHorOffset) {
+if (savedTextShadowHorOffset !== null) {
     let defaultShadowHor = document.getElementById("hor-shadow-offset");
-    defaultShadowHor.setAttribute("value", savedTextShadowHorOffset);
+    defaultShadowHor.value = savedTextShadowHorOffset;
 }
 
-if (savedTextShadowVerOffset) {
+if (savedTextShadowVerOffset !== null) {
     let defaultShadowVer = document.getElementById("ver-shadow-offset");
-    defaultShadowVer.setAttribute("value", savedTextShadowVerOffset);
+    defaultShadowVer.value = savedTextShadowVerOffset;
 }
 
-if (savedBgMargin) {
+if (savedBgMargin !== null) {
     let defaultMargin = document.getElementById("bg-margin");
     defaultMargin.value = savedBgMargin;
 }
@@ -301,3 +300,6 @@ if (typeof syncBgFormToContentType === "function") {
 }
 loadSavedBorder();
 loadFontStroke();
+if (window.syncControlPanelSliderValues) {
+    window.syncControlPanelSliderValues();
+}
