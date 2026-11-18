@@ -358,6 +358,18 @@ p:active, .tab-button:active, .song p:active, .color-picker:active,
     color: var(--primary-btn-fg);
 }
 
+.background-color-picker {
+    background-color: transparent;
+}
+
+.background-scope-container {
+    border-bottom-color: var(--card-border);
+}
+
+.background-video-preview {
+    border-color: var(--card-border);
+}
+
 .warning, .toggle-label{
     background-color: var(--warning-btn-bg);
     color: var(--warning-btn-fg);

@@ -709,6 +709,162 @@ button, .btn-file-upload{
   transform: scaleY(1.06);
 }
 
+/* Background mode dialog controls */
+.song-duration-control { position: relative; }
+
+.background-mode-dialog {
+  max-height: 90vh;
+  min-height: 0;
+}
+
+.background-mode-body-content {
+  gap: 12px;
+  padding: 0 14px 16px;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.background-scope-container {
+  width: 100%;
+  gap: 6px;
+  padding: 4px 0 10px;
+  margin-bottom: 4px;
+  border-bottom: 1px solid var(--card-border);
+}
+
+.gradient-section-title.background-mode-title {
+  margin-bottom: 2px;
+  font-weight: bold;
+}
+
+.background-scope-options,
+.background-source-options {
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.background-scope-options { gap: 16px; }
+.background-source-options { gap: 16px; margin-top: 6px; }
+
+.background-scope-option,
+.background-source-option {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  cursor: pointer;
+}
+
+.background-scope-option { font-size: 0.85em; }
+.background-source-option { gap: 4px; font-size: 12px; }
+
+.background-content-type-container {
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 0;
+}
+
+.background-content-type-select {
+  min-width: 160px;
+  padding: 6px 12px;
+  border-radius: 6px;
+}
+
+.background-mode-container {
+  width: 100%;
+  gap: 8px;
+}
+
+.gradient-section.background-source-section { padding: 4px 0 !important; }
+
+.background-plain-color-controls {
+  align-items: center;
+  gap: 12px;
+  margin-top: 6px;
+}
+
+.background-color-picker {
+  width: 44px;
+  height: 32px;
+  border: 0;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.background-color-hex {
+  width: 100px;
+  padding: 4px 8px;
+  font-size: 12px;
+  text-transform: uppercase;
+}
+
+.background-help-text { font-size: 11px; opacity: 0.7; }
+.background-video-help { margin-top: 4px; font-size: 10px; }
+.gradient-section-title.background-gradient-title { margin-bottom: 8px; font-weight: bold; }
+.background-gradient-subsection { margin-bottom: 10px; }
+
+.gradient-presets-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.gradient-color-grid { margin-top: 6px; }
+.background-gradient-direction-row { margin-top: 6px; }
+#gradient-opacity-track { margin-top: 6px; }
+
+.background-file-container,
+.background-url-container { margin-top: 8px; }
+
+.background-file-container .btn-browse,
+.background-apply-button {
+  padding: 6px 14px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.background-file-container .btn-browse { padding-top: 7px; padding-bottom: 7px; }
+
+.background-filename {
+  margin-top: 4px;
+  font-size: 11px;
+  opacity: 0.8;
+  word-break: break-all;
+}
+
+.background-url-form {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  width: 100%;
+}
+
+.background-url-input {
+  display: block;
+  width: 100%;
+  flex: none;
+  padding: 6px 8px;
+  font-size: 12px;
+}
+
+.background-url-form .background-apply-button {
+  align-self: flex-start;
+  width: auto;
+  min-width: 0;
+}
+
+.background-video-preview {
+  display: block;
+  width: 100%;
+  max-height: 140px;
+  margin-top: 8px;
+  border: 1px solid;
+  border-radius: 6px;
+  object-fit: cover;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .slider-track-wrap, .gradient-opacity-track { transition: none; }
   .slider-track-wrap.is-hovered,

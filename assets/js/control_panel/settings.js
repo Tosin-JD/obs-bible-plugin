@@ -434,6 +434,17 @@ function updateBackgroundPreviews() {
     updateBackgroundOpacityPreview();
 }
 
+function isGifSource(src) {
+    if (!src) return false;
+    if (/^data:image\/gif/i.test(src.trim())) return true;
+    try { return new URL(src, window.location.href).pathname.toLowerCase().endsWith(".gif"); } catch (_) { return false; }
+}
+
+function detachControlPanelMedia() {
+    const video = document.getElementById("cp-video-preview");
+    if (video) { video.pause(); video.removeAttribute("src"); video.load(); video.style.display = "none"; }
+}
+
 function broadcastGradient(cssValue) {
     const settingsChannel = new BroadcastChannel("settings");
     settingsChannel.postMessage({ gradientBackground: cssValue });
@@ -1060,6 +1071,18 @@ function updateBgScopeUI() {
 
 function setBgScope(scope) {
     localStorage.setItem("obs-bible-background-scope", scope);
+    if (scope === "separate" && bgContentTypeSelect) {
+        const type = getBgContentType();
+        const scopedMode = localStorage.getItem(`obs-bible-background-mode_${type}`);
+        if (!scopedMode) {
+            ["obs-bible-background-mode", "obs-bible-video-url", "obs-bible-video-filename", "obs-bible-video-source-type",
+             "obs-bible-gradient-colors", "obs-bible-gradient-type", "obs-bible-gradient-direction", "obs-bible-gradient-css",
+             "obs-bible-bg-color", "obs-bible-bg-opacity", "obs-bible-image-url", "obs-bible-image-filename"].forEach(key => {
+                const value = localStorage.getItem(key);
+                if (value !== null) localStorage.setItem(`${key}_${type}`, value);
+            });
+        }
+    }
     updateBgScopeUI();
     syncBgFormToContentType();
     updateBackgroundPreviews();
@@ -1288,10 +1311,12 @@ function syncBgFormToContentType() {
     if (bgImageFilename) bgImageFilename.textContent = savedImageName || (getBgItem("obs-bible-image-url") ? "Saved Image Loaded" : "No image chosen");
 
     const savedVideoName = getBgItem("obs-bible-video-filename");
+    const savedVideoType = getVideoSourceType();
     if (bgVideoFilename) bgVideoFilename.textContent = savedVideoName || (getBgItem("obs-bible-video-url") ? "Saved Video Loaded" : "No video chosen");
+    syncVideoSourceChoice();
 
     const savedVideoUrl = getBgItem("obs-bible-video-url");
-    if (savedVideoUrl && savedVideoUrl.startsWith("http")) {
+    if (savedVideoUrl && savedVideoType === "url" && /^https?:/i.test(savedVideoUrl.trim())) {
         idbMedia.getMediaBlob(savedVideoUrl).then(blob => {
             if (blob && bgVideoFilename && !bgVideoFilename.textContent.includes("(cached locally ✓)")) {
                 bgVideoFilename.textContent = `${savedVideoName || savedVideoUrl} (cached locally ✓)`;
@@ -1299,27 +1324,26 @@ function syncBgFormToContentType() {
         });
     }
 
-    const cpVideoPreview = document.getElementById("cp-video-preview");
-    if (cpVideoPreview) {
-        if (mode === "video") {
-            const currentVideoUrl = getBgItem("obs-bible-video-url");
-            if (currentVideoUrl && !currentVideoUrl.toLowerCase().includes('.gif')) {
-                idbMedia.getMediaBlob(currentVideoUrl).then(blob => {
-                    const previewSrc = blob ? URL.createObjectURL(blob) : currentVideoUrl;
-                    if (cpVideoPreview.src !== previewSrc) {
-                        cpVideoPreview.src = previewSrc;
-                    }
-                    cpVideoPreview.style.display = "block";
-                }).catch(() => {
-                    if (cpVideoPreview.src !== currentVideoUrl) cpVideoPreview.src = currentVideoUrl;
-                    cpVideoPreview.style.display = "block";
-                });
-            } else {
-                cpVideoPreview.style.display = "none";
-            }
-        } else {
-            cpVideoPreview.style.display = "none";
-        }
+    if (mode !== "video") detachControlPanelMedia();
+    else {
+        const currentVideoUrl = getBgItem("obs-bible-video-url");
+        const cpVideoPreview = document.getElementById("cp-video-preview");
+        const previewToken = `${getBgContentType()}:${savedVideoType}:${currentVideoUrl || ""}`;
+        window._cpVideoPreviewToken = previewToken;
+        if (isGifSource(currentVideoUrl)) {
+            if (cpVideoPreview) { cpVideoPreview.pause(); cpVideoPreview.removeAttribute("src"); cpVideoPreview.load(); cpVideoPreview.style.display = "none"; }
+        } else if (currentVideoUrl && cpVideoPreview) {
+            idbMedia.getMediaBlob(currentVideoUrl).then(blob => {
+                if (window._cpVideoPreviewToken !== previewToken || getBackgroundMode() !== "video") return;
+                cpVideoPreview.src = blob ? URL.createObjectURL(blob) : currentVideoUrl;
+                cpVideoPreview.style.display = "block";
+                cpVideoPreview.play().catch(() => {});
+            }).catch(() => {
+                if (window._cpVideoPreviewToken !== previewToken || getBackgroundMode() !== "video") return;
+                cpVideoPreview.src = currentVideoUrl;
+                cpVideoPreview.style.display = "block";
+            });
+        } else detachControlPanelMedia();
     }
 
     updateBackgroundPreviews();
@@ -1365,6 +1389,8 @@ if (bgVideoFileBtn && bgVideoFileInput) {
     bgVideoFileInput.addEventListener("change", (e) => {
         const file = e.target.files[0];
         if (file) {
+            setBgItem("obs-bible-video-source-type", "file");
+            syncVideoSourceChoice();
             if (bgVideoFilename) bgVideoFilename.textContent = file.name;
             setBgItem("obs-bible-video-filename", file.name);
             const reader = new FileReader();
@@ -1391,6 +1417,32 @@ const bgVideoUrlContainer = document.getElementById("bg-video-url-container");
 const bgVideoUrlInput = document.getElementById("bg-video-url-input");
 const bgVideoUrlBtn = document.getElementById("bg-video-url-btn");
 
+function getVideoSourceType() {
+    const stored = getBgItem("obs-bible-video-source-type");
+    if (stored === "file" || stored === "url") return stored;
+    const url = (getBgItem("obs-bible-video-url") || "").trim();
+    const inferred = /^(data:|blob:)/i.test(url) ? "file" : (/^https?:/i.test(url) ? "url" : "file");
+    setBgItem("obs-bible-video-source-type", inferred);
+    return inferred;
+}
+
+function syncVideoSourceChoice() {
+    const value = getVideoSourceType();
+    bgVideoSourceRadios.forEach(radio => { radio.checked = radio.value === value; });
+    if (bgVideoFileContainer) bgVideoFileContainer.style.display = value === "file" ? "block" : "none";
+    if (bgVideoUrlContainer) bgVideoUrlContainer.style.display = value === "url" ? "block" : "none";
+    const saved = getBgItem("obs-bible-video-url") || "";
+    if (value === "url" && bgVideoUrlInput && /^https?:/i.test(saved.trim())) bgVideoUrlInput.value = saved;
+    if (value === "file" && bgVideoFilename) {
+        const fileName = getBgItem("obs-bible-video-filename");
+        bgVideoFilename.textContent = fileName && !/^URL:/i.test(fileName) ? fileName : (saved ? "Saved local video/GIF loaded" : "No video or GIF chosen");
+    }
+    if (value === "url" && bgVideoFilename) {
+        const urlLabel = getBgItem("obs-bible-video-filename");
+        bgVideoFilename.textContent = urlLabel || (saved ? `URL: ${saved}` : "No video URL applied");
+    }
+}
+
 bgImageSourceRadios.forEach(radio => {
     radio.addEventListener("change", () => {
         if (radio.checked) {
@@ -1405,11 +1457,14 @@ bgVideoSourceRadios.forEach(radio => {
     radio.addEventListener("change", () => {
         if (radio.checked) {
             const isFile = radio.value === "file";
+            setBgItem("obs-bible-video-source-type", radio.value);
             if (bgVideoFileContainer) bgVideoFileContainer.style.display = isFile ? "block" : "none";
             if (bgVideoUrlContainer) bgVideoUrlContainer.style.display = isFile ? "none" : "block";
+            if (getBackgroundMode() === "video") syncBgFormToContentType();
         }
     });
 });
+syncVideoSourceChoice();
 
 if (bgImageUrlBtn && bgImageUrlInput) {
     bgImageUrlBtn.addEventListener("click", () => {
@@ -1428,6 +1483,8 @@ if (bgVideoUrlBtn && bgVideoUrlInput) {
     bgVideoUrlBtn.addEventListener("click", async () => {
         const url = bgVideoUrlInput.value.trim();
         if (url) {
+            setBgItem("obs-bible-video-source-type", "url");
+            syncVideoSourceChoice();
             setBgItem("obs-bible-video-url", url);
             setBgItem("obs-bible-video-filename", `URL: ${url}`);
             if (bgVideoFilename) bgVideoFilename.textContent = `URL: ${url} (caching in browser...)`;
@@ -1441,18 +1498,14 @@ if (bgVideoUrlBtn && bgVideoUrlInput) {
 
             try {
                 const blob = await idbMedia.cacheRemoteMedia(url);
+                const stillSelected = getBackgroundMode() === "video" && getVideoSourceType() === "url" && getBgItem("obs-bible-video-url") === url;
                 if (blob) {
-                    if (bgVideoFilename) bgVideoFilename.textContent = `URL: ${url} (cached locally ✓)`;
-                    const cpVideoPreview = document.getElementById("cp-video-preview");
-                    if (cpVideoPreview && !url.toLowerCase().includes('.gif')) {
-                        cpVideoPreview.src = URL.createObjectURL(blob);
-                        cpVideoPreview.style.display = "block";
-                    }
+                    if (stillSelected && bgVideoFilename) bgVideoFilename.textContent = `URL: ${url} (cached locally ✓)`;
                 } else {
-                    if (bgVideoFilename) bgVideoFilename.textContent = `URL: ${url} (streaming directly)`;
+                    if (stillSelected && bgVideoFilename) bgVideoFilename.textContent = `URL: ${url} (streaming directly)`;
                 }
             } catch (e) {
-                if (bgVideoFilename) bgVideoFilename.textContent = `URL: ${url}`;
+                if (getBackgroundMode() === "video" && getBgItem("obs-bible-video-url") === url && bgVideoFilename) bgVideoFilename.textContent = `URL: ${url}`;
             } finally {
                 bgVideoUrlBtn.disabled = false;
                 bgVideoUrlBtn.textContent = originalBtnText;

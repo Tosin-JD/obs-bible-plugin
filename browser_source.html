@@ -24,6 +24,8 @@
     let currentContentType = null;
     let activeVideoBlobUrl = null;
     let activeVideoSourceKey = null;
+    let backgroundApplyToken = 0;
+    let activeVideoObjectUrl = null;
 
     if (bgVideo) {
       bgVideo.loop = true;
@@ -136,6 +138,7 @@
     }
 
     async function applyBackgroundForType(contentType, force = false) {
+      const applyToken = ++backgroundApplyToken;
       if (!contentType) contentType = currentContentType || "text";
       currentContentType = contentType;
 
@@ -192,11 +195,24 @@
       if (bgVideo && bgImage) {
         if (bgMode === "video" && targetVideoUrl) {
           isMediaActive = true;
-          const isGif = targetVideoUrl.toLowerCase().includes('.gif') || targetVideoUrl.startsWith('data:image/gif');
+          const savedVideoType = (isSeparate && contentType && localStorage.getItem(`obs-bible-video-source-type_${contentType}`))
+            || localStorage.getItem("obs-bible-video-source-type") || (/^(data:|blob:)/i.test(targetVideoUrl.trim()) ? "file" : "url");
+          let sourceBlob = null;
+          if (savedVideoType === "url" && !/^(data:|blob:)/i.test(targetVideoUrl)) sourceBlob = await idbMedia.getMediaBlob(targetVideoUrl);
+          if (applyToken !== backgroundApplyToken) return;
+          const isGif = /^data:image\/gif/i.test(targetVideoUrl.trim()) || sourceBlob?.type === "image/gif" || (() => {
+            try { return new URL(targetVideoUrl, location.href).pathname.toLowerCase().endsWith(".gif"); } catch (_) { return false; }
+          })();
+          const sourceIdentity = `${savedVideoType}:${contentType}:${targetVideoUrl}`;
           if (isGif) {
-            bgImage.style.backgroundImage = `url("${targetVideoUrl}")`;
+            const gifSource = sourceBlob ? URL.createObjectURL(sourceBlob) : targetVideoUrl;
+            if (bgImage.dataset.activeGifSource && bgImage.dataset.activeGifSource.startsWith("blob:")) URL.revokeObjectURL(bgImage.dataset.activeGifSource);
+            bgImage.style.backgroundImage = `url("${gifSource}")`;
             bgImage.style.display = "block";
+            bgImage.dataset.activeGifSource = gifSource;
             if (!bgVideo.paused) bgVideo.pause();
+            bgVideo.removeAttribute("src");
+            bgVideo.load();
             bgVideo.style.display = "none";
             bgVideo.dataset.loadedSrc = "";
             activeVideoSourceKey = null;
@@ -204,20 +220,18 @@
             bgImage.style.display = "none";
 
             // Only update video source if target changed or forced
-            if (activeVideoSourceKey !== targetVideoUrl) {
-              activeVideoSourceKey = targetVideoUrl;
-              bgVideo.dataset.loadedSrc = targetVideoUrl;
+            if (activeVideoSourceKey !== sourceIdentity) {
+              activeVideoSourceKey = sourceIdentity;
+              bgVideo.dataset.loadedSrc = sourceIdentity;
 
               // Check if we already have a cached Blob in IndexedDB
               let playUrl = targetVideoUrl;
-              const cachedBlob = await idbMedia.getMediaBlob(targetVideoUrl);
+              const cachedBlob = sourceBlob || await idbMedia.getMediaBlob(targetVideoUrl);
+              if (applyToken !== backgroundApplyToken) return;
 
               if (cachedBlob) {
-                if (activeVideoBlobUrl) {
-                  URL.revokeObjectURL(activeVideoBlobUrl);
-                }
-                activeVideoBlobUrl = URL.createObjectURL(cachedBlob);
-                playUrl = activeVideoBlobUrl;
+                playUrl = URL.createObjectURL(cachedBlob);
+                activeVideoObjectUrl = playUrl;
               } else if (!targetVideoUrl.startsWith("data:") && !targetVideoUrl.startsWith("blob:")) {
                 // If not yet cached, stream directly and cache in background for future loops
                 idbMedia.cacheRemoteMedia(targetVideoUrl).catch(() => {});
@@ -228,6 +242,8 @@
               bgVideo.muted = true;
               bgVideo.style.display = "block";
               bgVideo.play().catch(e => console.error("Video play error:", e));
+              if (activeVideoObjectUrl && activeVideoObjectUrl !== playUrl) URL.revokeObjectURL(activeVideoObjectUrl);
+              activeVideoObjectUrl = playUrl.startsWith("blob:") ? playUrl : null;
             } else {
               bgVideo.style.display = "block";
               if (bgVideo.paused) {
@@ -237,7 +253,11 @@
           }
         } else {
           if (!bgVideo.paused) bgVideo.pause();
+          bgVideo.removeAttribute("src");
+          bgVideo.load();
           bgVideo.style.display = "none";
+          if (bgImage) { bgImage.style.backgroundImage = "none"; bgImage.style.display = "none"; delete bgImage.dataset.activeGifSource; }
+          if (activeVideoObjectUrl) { URL.revokeObjectURL(activeVideoObjectUrl); activeVideoObjectUrl = null; }
           bgVideo.dataset.loadedSrc = "";
           activeVideoSourceKey = null;
         }
@@ -318,6 +338,7 @@
         // Fall back gracefully to plain color if media source is unavailable or plain mode, so screen never goes blank!
         bgContainer.style.backgroundColor = hexToRgba(rawColor, opacity);
       }
+      if (applyToken !== backgroundApplyToken) return;
     }
 
     // Initialize background immediately when browser source opens
@@ -372,22 +393,8 @@
             localStorage.setItem('bgColor', event.data.opacityColor);
           }
           if (event.data.gradientBackground){
-            const bgGradient = document.getElementById("bg-gradient");
-            if (bgGradient) {
-              bgGradient.style.backgroundImage = event.data.gradientBackground;
-              bgGradient.style.display = "block";
-            }
-            if (bgVideo) bgVideo.style.display = "none";
-            const bgImage = document.getElementById("bg-image");
-            if (bgImage) bgImage.style.display = "none";
-            bgContainer.style.backgroundImage = event.data.gradientBackground;
-            bgContainer.style.backgroundColor = "transparent";
             localStorage.setItem('obs-bible-gradient-css', event.data.gradientBackground);
-            if (currentContentType) {
-              localStorage.setItem(`obs-bible-gradient-css_${currentContentType}`, event.data.gradientBackground);
-              localStorage.setItem(`obs-bible-background-mode_${currentContentType}`, "gradient");
-            }
-            localStorage.setItem('obs-bible-background-mode', "gradient");
+            applyBackgroundForType(currentContentType, true);
           }
           if (event.data.clearGradient){
             const bgGradient = document.getElementById("bg-gradient");
