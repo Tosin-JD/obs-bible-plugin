@@ -17,6 +17,15 @@
     --hover-bg-color: #585858;
     --hover-fg-color: #ffffff;
     --color-fg: #ffffff;
+    --card-border: rgba(255, 255, 255, 0.12);
+    --card-border-hover: rgba(255, 255, 255, 0.25);
+    --card-hover-bg: rgba(255, 255, 255, 0.05);
+    --card-selected-bg: rgba(154, 186, 255, 0.12);
+    --card-selected-border: #9abaff;
+    --card-swatch-border: rgba(255, 255, 255, 0.2);
+    --preset-tile-border: rgba(255, 255, 255, 0.15);
+    --preset-tile-border-hover: rgba(255, 255, 255, 0.6);
+    --preset-tile-shadow: rgba(0, 0, 0, 0.4);
 }
 
 [data-theme="obs-bible-dark"] {
@@ -38,6 +47,15 @@
     --hover-bg-color: #a1a1a1;
     --hover-fg-color: #ffffff;
     --color-fg: #ffffff;
+    --card-border: rgba(255, 255, 255, 0.12);
+    --card-border-hover: rgba(255, 255, 255, 0.25);
+    --card-hover-bg: rgba(255, 255, 255, 0.05);
+    --card-selected-bg: rgba(255, 255, 255, 0.08);
+    --card-selected-border: #ffffff;
+    --card-swatch-border: rgba(255, 255, 255, 0.2);
+    --preset-tile-border: rgba(255, 255, 255, 0.15);
+    --preset-tile-border-hover: rgba(255, 255, 255, 0.6);
+    --preset-tile-shadow: rgba(0, 0, 0, 0.4);
 }
 
 [data-theme="obs-bible-grey"] {
@@ -59,6 +77,15 @@
     --hover-bg-color: #284CB8;
     --hover-fg-color: #fffefe;
     --color-fg: #ffffff;
+    --card-border: rgba(255, 255, 255, 0.12);
+    --card-border-hover: rgba(255, 255, 255, 0.25);
+    --card-hover-bg: rgba(255, 255, 255, 0.05);
+    --card-selected-bg: rgba(40, 76, 184, 0.12);
+    --card-selected-border: #ffffff;
+    --card-swatch-border: rgba(255, 255, 255, 0.2);
+    --preset-tile-border: rgba(255, 255, 255, 0.15);
+    --preset-tile-border-hover: rgba(255, 255, 255, 0.6);
+    --preset-tile-shadow: rgba(0, 0, 0, 0.4);
 }
 
 [data-theme="obs-bible-light"] {
@@ -80,6 +107,15 @@
     --hover-bg-color: rgb(161, 204, 245);
     --hover-fg-color: #222222;
     --color-fg: #111111;
+    --card-border: rgba(0, 0, 0, 0.12);
+    --card-border-hover: rgba(0, 0, 0, 0.25);
+    --card-hover-bg: rgba(0, 0, 0, 0.04);
+    --card-selected-bg: rgba(140, 181, 255, 0.2);
+    --card-selected-border: #8CB5FF;
+    --card-swatch-border: rgba(0, 0, 0, 0.2);
+    --preset-tile-border: rgba(0, 0, 0, 0.15);
+    --preset-tile-border-hover: rgba(0, 0, 0, 0.4);
+    --preset-tile-shadow: rgba(0, 0, 0, 0.15);
 }
 
 [data-theme="obs-bible-rachni"] {
@@ -101,6 +137,15 @@
     --hover-bg-color: #945a7a;
     --hover-fg-color: #fffefe;
     --color-fg: #ffffff;
+    --card-border: rgba(255, 255, 255, 0.12);
+    --card-border-hover: rgba(255, 255, 255, 0.25);
+    --card-hover-bg: rgba(255, 255, 255, 0.05);
+    --card-selected-bg: rgba(40, 200, 228, 0.12);
+    --card-selected-border: #28c8e4;
+    --card-swatch-border: rgba(255, 255, 255, 0.2);
+    --preset-tile-border: rgba(255, 255, 255, 0.15);
+    --preset-tile-border-hover: rgba(255, 255, 255, 0.6);
+    --preset-tile-shadow: rgba(0, 0, 0, 0.4);
 }
 
 [data-theme="obs-bible-system"] {
@@ -122,6 +167,15 @@
     --hover-bg-color: #8dc8ff;
     --hover-fg-color: #000000;
     --color-fg: #111111;
+    --card-border: rgba(0, 0, 0, 0.12);
+    --card-border-hover: rgba(0, 0, 0, 0.25);
+    --card-hover-bg: rgba(0, 0, 0, 0.04);
+    --card-selected-bg: rgba(116, 178, 236, 0.2);
+    --card-selected-border: #76bdff;
+    --card-swatch-border: rgba(0, 0, 0, 0.2);
+    --preset-tile-border: rgba(0, 0, 0, 0.15);
+    --preset-tile-border-hover: rgba(0, 0, 0, 0.4);
+    --preset-tile-shadow: rgba(0, 0, 0, 0.15);
 }
 
 [data-theme="obs-bible-default-yami"] {
@@ -132,7 +186,7 @@
     --danger-btn-bg: #0f4bbd;
     --danger-btn-fg: #ffffff;
     --primary-btn-bg: #0f4bbd;
-    --primary-btn-fg: #284Cee;
+    --primary-btn-fg: #ffffff;
     --warning-btn-bg: #3C404D;
     --warning-btn-fg: #ffffff;
     --highlighted-bg-color: #3C404D;
@@ -143,6 +197,15 @@
     --hover-bg-color: #2c66d3;
     --hover-fg-color: #ffffff;
     --color-fg: #ffffff;
+    --card-border: rgba(255, 255, 255, 0.12);
+    --card-border-hover: rgba(255, 255, 255, 0.25);
+    --card-hover-bg: rgba(255, 255, 255, 0.05);
+    --card-selected-bg: rgba(40, 76, 238, 0.08);
+    --card-selected-border: #284Cee;
+    --card-swatch-border: rgba(255, 255, 255, 0.2);
+    --preset-tile-border: rgba(255, 255, 255, 0.15);
+    --preset-tile-border-hover: rgba(255, 255, 255, 0.6);
+    --preset-tile-shadow: rgba(0, 0, 0, 0.4);
 }
 
 /* --transparent-color: rgba(0,0,0,0); */

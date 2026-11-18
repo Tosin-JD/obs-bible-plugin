@@ -26,6 +26,14 @@ body{
     display: flex;
     justify-content: center;
     align-items: center;
+    position: relative;
+}
+
+#bg-video,
+#bg-image,
+#bg-gradient {
+    border-radius: inherit;
+    overflow: hidden;
 }
 
 .container {
