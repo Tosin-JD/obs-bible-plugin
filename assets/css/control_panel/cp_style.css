@@ -358,6 +358,10 @@ select{
   gap: 4px;
 }
 
+#bible-reference-alignment-control[hidden]{
+  display: none;
+}
+
 .bible-layout-separate-line .bible-reference{
   display: block;
 }

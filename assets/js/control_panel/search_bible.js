@@ -223,6 +223,7 @@ function findNearestVerseByAri(queryAri, bible_data) {
 
 function getBibleDisplayPreferences() {
   const lineLayout = localStorage.getItem("obs-bible-reference-line-layout");
+  const savedReferenceAlignment = localStorage.getItem("obs-bible-reference-alignment");
   const bookCase = localStorage.getItem("obs-bible-reference-book-case");
   const position = localStorage.getItem("obs-bible-reference-position");
   const savedReferenceFont = localStorage.getItem("obs-bible-reference-font-family") || "";
@@ -234,6 +235,9 @@ function getBibleDisplayPreferences() {
 
   return {
     lineLayout: lineLayout === "separate-line" ? lineLayout : "same-line",
+    referenceAlignment: ["left", "center", "right", "justify"].includes(savedReferenceAlignment)
+      ? savedReferenceAlignment
+      : "left",
     bookCase: bookCase === "title-case" ? bookCase : "uppercase",
     showTranslation: localStorage.getItem("obs-bible-reference-show-translation") === "true",
     position: position === "below" ? position : "above",
@@ -293,6 +297,9 @@ function createBibleVerseElement(verseObj, preferences) {
   );
   const referenceElement = document.createElement("span");
   referenceElement.classList.add("bible-reference");
+  if (preferences.lineLayout === "separate-line") {
+    referenceElement.classList.add(`bible-reference-align-${preferences.referenceAlignment}`);
+  }
   referenceElement.textContent = formatBibleReference(verseObj.name, preferences);
   if (preferences.referenceFont) {
     referenceElement.style.fontFamily = preferences.referenceFont;

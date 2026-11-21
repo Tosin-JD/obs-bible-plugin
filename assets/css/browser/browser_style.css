@@ -78,6 +78,22 @@ body{
     display: block;
 }
 
+.bible-layout-separate-line .bible-reference-align-left{
+    text-align: left;
+}
+
+.bible-layout-separate-line .bible-reference-align-center{
+    text-align: center;
+}
+
+.bible-layout-separate-line .bible-reference-align-right{
+    text-align: right;
+}
+
+.bible-layout-separate-line .bible-reference-align-justify{
+    text-align: justify;
+}
+
 .bible-message{
     white-space: pre-wrap;
 }

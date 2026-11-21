@@ -720,6 +720,7 @@ fontElement.addEventListener("change", function() {
 
 const bibleReferencePreferenceKeys = {
     lineLayout: "obs-bible-reference-line-layout",
+    alignment: "obs-bible-reference-alignment",
     bookCase: "obs-bible-reference-book-case",
     showTranslation: "obs-bible-reference-show-translation",
     position: "obs-bible-reference-position",
@@ -739,6 +740,21 @@ restoreBibleReferenceRadio(
     bibleReferencePreferenceKeys.lineLayout,
     ["same-line", "separate-line"],
     "same-line"
+);
+const bibleReferenceAlignmentControl = document.getElementById("bible-reference-alignment-control");
+
+function updateBibleReferenceAlignmentVisibility() {
+    const separateLineSelected = document.getElementById("bible-reference-separate-line").checked;
+    bibleReferenceAlignmentControl.hidden = !separateLineSelected;
+}
+
+updateBibleReferenceAlignmentVisibility();
+
+restoreBibleReferenceRadio(
+    "bible-reference-alignment",
+    bibleReferencePreferenceKeys.alignment,
+    ["left", "center", "right", "justify"],
+    "left"
 );
 restoreBibleReferenceRadio(
     "bible-reference-book-case",
@@ -776,7 +792,16 @@ function notifyBibleReferencePreferenceChange(preferenceKey, value) {
 document.querySelectorAll('input[name="bible-reference-line-layout"]').forEach(input => {
     input.addEventListener("change", () => {
         if (input.checked) {
+            updateBibleReferenceAlignmentVisibility();
             notifyBibleReferencePreferenceChange(bibleReferencePreferenceKeys.lineLayout, input.value);
+        }
+    });
+});
+
+document.querySelectorAll('input[name="bible-reference-alignment"]').forEach(input => {
+    input.addEventListener("change", () => {
+        if (input.checked) {
+            notifyBibleReferencePreferenceChange(bibleReferencePreferenceKeys.alignment, input.value);
         }
     });
 });
