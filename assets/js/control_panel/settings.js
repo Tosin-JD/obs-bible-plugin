@@ -678,6 +678,7 @@ function openBackgroundModeModal() {
         } else if (lastTab === "text") {
             bgSelect.value = "text";
         }
+        window.syncCustomSelect?.(bgSelect);
     }
     syncBgFormToContentType();
     backgroundModeModal.classList.add("is-open");
@@ -1452,7 +1453,10 @@ function syncBgFormToContentType() {
 
 if (bibleBgBtn) {
     bibleBgBtn.addEventListener("click", () => {
-        if (bgContentTypeSelect) bgContentTypeSelect.value = "bible";
+        if (bgContentTypeSelect) {
+            bgContentTypeSelect.value = "bible";
+            window.syncCustomSelect?.(bgContentTypeSelect);
+        }
         openBackgroundModeModal();
         syncBgFormToContentType();
     });
@@ -1460,7 +1464,10 @@ if (bibleBgBtn) {
 
 if (songBgBtn) {
     songBgBtn.addEventListener("click", () => {
-        if (bgContentTypeSelect) bgContentTypeSelect.value = "song";
+        if (bgContentTypeSelect) {
+            bgContentTypeSelect.value = "song";
+            window.syncCustomSelect?.(bgContentTypeSelect);
+        }
         openBackgroundModeModal();
         syncBgFormToContentType();
     });

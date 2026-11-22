@@ -52,7 +52,8 @@ body{
     align-items: center;
 }
 
-#messageDisplay {
+#messageDisplay,
+.font-fit-measurement {
     position: relative;
     opacity: 1;
     height: 100%;
@@ -70,15 +71,19 @@ body{
     hyphens: auto;
 }
 
-#messageDisplay span:not(.bible-content):not(.bible-message):not(.bible-reference):not(.text-animation-char):not(.text-animation-overlay):not(.typewriter-caret){
+#messageDisplay span:not(.bible-content):not(.bible-message):not(.bible-reference):not(.text-animation-char):not(.text-animation-overlay):not(.typewriter-caret),
+.font-fit-measurement span:not(.bible-content):not(.bible-message):not(.bible-reference):not(.text-animation-char):not(.text-animation-overlay):not(.typewriter-caret){
     color: #ff6450;
     overflow-y: hidden;
     opacity: 1;
 }
 
-#messageDisplay .bible-reference{
+#messageDisplay .bible-reference,
+.font-fit-measurement .bible-reference{
     color: var(--title-color, #ff6450);
     display: inline;
+    font-size: inherit;
+    white-space: nowrap;
     overflow: visible;
     opacity: 1;
 }

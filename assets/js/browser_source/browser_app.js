@@ -672,6 +672,20 @@ var updateMessage = async (messageId, message) =>{
 
 function getFontFitStyleSignature(messageElem) {
   const style = window.getComputedStyle(messageElem);
+  const bibleElementStyles = Array.from(
+    messageElem.querySelectorAll('.bible-reference, .bible-content')
+  ).map(element => {
+    const elementStyle = window.getComputedStyle(element);
+    return [
+      elementStyle.fontFamily,
+      elementStyle.fontWeight,
+      elementStyle.fontStyle,
+      elementStyle.whiteSpace,
+      elementStyle.padding,
+      elementStyle.margin,
+      elementStyle.borderRadius
+    ].join('\u0000');
+  }).join('\u0001');
   return [
     style.fontFamily,
     style.fontWeight,
@@ -692,7 +706,8 @@ function getFontFitStyleSignature(messageElem) {
     messageElem.style.letterSpacing,
     messageElem.style.wordSpacing,
     messageElem.style.textIndent,
-    messageElem.style.padding
+    messageElem.style.padding,
+    bibleElementStyles
   ].join('\u0000');
 }
 
@@ -700,10 +715,19 @@ function getMessageFitBounds(messageElem) {
   return messageElem.closest('.message-transition-wrapper') || messageElem.parentElement;
 }
 
+function syncBibleReferenceFontSize(messageElem) {
+  if (!messageElem) return;
+  messageElem.querySelectorAll('.bible-reference').forEach((referenceElem) => {
+    referenceElem.style.fontSize = 'inherit';
+  });
+}
+
 function createFontFitMeasurement(messageElem, originalMarkup, bounds) {
   const measurement = messageElem.cloneNode(true);
   measurement.removeAttribute('id');
+  measurement.classList.add('font-fit-measurement');
   measurement.innerHTML = originalMarkup;
+  syncBibleReferenceFontSize(measurement);
   Array.from(measurement.classList).forEach((className) => {
     if (className.startsWith('text-') || className === 'fade-in') {
       measurement.classList.remove(className);
@@ -757,6 +781,7 @@ function adjustFontSizeBasedOnScroll(messageElem = document.getElementById('mess
       lastFontFit.height === bounds.height &&
       lastFontFit.styleSignature === styleSignature &&
       lastFontFit.fontSize === messageElem.style.fontSize) {
+    syncBibleReferenceFontSize(messageElem);
     return lastFontFit.fontSize;
   }
 
@@ -787,6 +812,7 @@ function adjustFontSizeBasedOnScroll(messageElem = document.getElementById('mess
   }
 
   messageElem.style.fontSize = `${bestFit}px`;
+  syncBibleReferenceFontSize(messageElem);
   lastFontFit = {
     messageElem,
     originalMarkup,

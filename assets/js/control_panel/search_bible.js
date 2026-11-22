@@ -1,6 +1,7 @@
 
 const submitButton = document.getElementById("bible-submit");
 const inputField = document.getElementById("bible-input");
+const BIBLE_REFERENCE_BASE_FONT_SIZE = 16;
 
 function removeAccents(str) {
   if (!str) return "";
@@ -329,9 +330,9 @@ function createBibleVerseElement(verseObj, preferences, renderTarget = "preview"
         preferences.referenceBackgroundOpacity / 100
       );
     }
-    referenceElement.style.padding = `${preferences.referencePadding}px`;
-    referenceElement.style.margin = `${preferences.referenceMargin}px`;
-    referenceElement.style.borderRadius = `${preferences.referenceRadius}px`;
+    referenceElement.style.padding = `${preferences.referencePadding / BIBLE_REFERENCE_BASE_FONT_SIZE}em`;
+    referenceElement.style.margin = `${preferences.referenceMargin / BIBLE_REFERENCE_BASE_FONT_SIZE}em`;
+    referenceElement.style.borderRadius = `${preferences.referenceRadius / BIBLE_REFERENCE_BASE_FONT_SIZE}em`;
   }
 
   const contentElement = document.createElement("span");
