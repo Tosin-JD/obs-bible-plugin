@@ -358,6 +358,35 @@ select{
   gap: 4px;
 }
 
+.text-animation-settings {
+  padding: 10px;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+}
+
+.text-animation-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.text-animation-grid > div {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.text-animation-enable {
+  min-height: 28px;
+}
+
+.text-animation-preview {
+  align-self: flex-start;
+  min-height: 30px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
 #bible-reference-alignment-control[hidden]{
   display: none;
 }

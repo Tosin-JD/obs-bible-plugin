@@ -20,6 +20,7 @@ let savedTextShadowHorOffset = localStorage.getItem('savedHorOffset');
 let savedTextShadowVerOffset = localStorage.getItem('savedVerOffset');
 let savedBgMargin = localStorage.getItem('savedBgMargin');
 const savedAnimationData = localStorage.getItem('obs-bible-animationData');
+const savedTextAnimationData = localStorage.getItem('obs-bible-text-animationData');
 const savedSpaceBarCheckBox = localStorage.getItem('obs-bible-spacebar-checkbox');
 const savedFadeInCheckBox = localStorage.getItem('obs-bible-fadein-checkbox');
 const savedDisplayLineByLineCheckBox = localStorage.getItem('obs-bible-display-song-line-by-line');
@@ -102,6 +103,41 @@ if (savedAnimationData) {
         }
     }else{
       toggleCheckbox.checked = true;
+    }
+}
+
+if (savedTextAnimationData) {
+    try {
+        const textData = JSON.parse(savedTextAnimationData);
+        const transitionTypes = new Set([
+            'none', 'fade', 'crossfade', 'blur', 'slide-left', 'slide-right', 'slide-top', 'slide-bottom',
+            'flip', 'spin', 'rotate', 'mask', 'circular-reveal', 'vertical-split', 'horizontal-split',
+            'push', 'pull', 'whip-pan', 'wave', 'liquid-morph', 'pixel-dissolve', 'light-flash',
+            'glow', 'staggered-letter', 'perspective', '3d-rotation', 'zoom-in', 'zoom-out', 'bounce', 'shake'
+        ]);
+        const easings = new Set(['linear', 'ease', 'ease-in', 'ease-out', 'ease-in-out']);
+        const duration = Number(textData.duration);
+        const stagger = Number(textData.stagger);
+
+        document.getElementById('text-animation-enabled').checked = textData.enabled !== false;
+        document.getElementById('text-intro-animation-type').value =
+            transitionTypes.has(textData.intro?.type) ? textData.intro.type : 'crossfade';
+        document.getElementById('text-intro-animation-easing').value =
+            easings.has(textData.intro?.easing) ? textData.intro.easing : 'ease-in-out';
+        document.getElementById('text-outro-animation-type').value =
+            transitionTypes.has(textData.outro?.type) ? textData.outro.type : 'crossfade';
+        document.getElementById('text-outro-animation-easing').value =
+            easings.has(textData.outro?.easing) ? textData.outro.easing : 'ease-in-out';
+        document.getElementById('text-animation-duration').value =
+            Number.isFinite(duration) ? Math.min(10, Math.max(0.1, duration)) : 0.6;
+        document.getElementById('text-animation-stagger').value =
+            Number.isFinite(stagger) ? Math.min(1, Math.max(0, stagger)) : 0.03;
+        document.getElementById('text-effect-enabled').checked = textData.effect?.enabled === true;
+        if ([...document.getElementById('text-effect-type').options].some(option => option.value === textData.effect?.type)) {
+            document.getElementById('text-effect-type').value = textData.effect.type;
+        }
+    } catch (error) {
+        // Ignore malformed text-animation settings and retain the default controls.
     }
 }
 

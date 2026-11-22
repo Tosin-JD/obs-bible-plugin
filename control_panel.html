@@ -635,50 +635,106 @@ DoubleClick on History erase all previous text"></textarea>
           </div>
           <div class="settings-tab-area" id="settings-animation" style="display:none;">
             <div class="column">
-              <div class="tooltip tooltip-bottom" data-tooltip="style of the animation">
-                <label for="animation-type">Animation Type:</label>
-                <select id="animation-type">
-                  <option value="fade">Fade</option>
-                  <option value="slide">Slide</option>
-                  <option value="slide-top-left">Slide Top Left</option>
-                  <option value="slide-top-right">Slide Top Right</option>
-                  <option value="slide-bottom-left">Slide Bottom Left</option>
-                  <option value="slide-bottom-right">Slide Bottom Right</option>
-                  <option value="slide-left">Slide Left</option>
-                  <option value="slide-right">Slide Right</option>
-                  <option value="slide-top">Slide Top</option>
-                  <option value="slide-bottom">Slide Bottom</option>
-                  <option value="fly-left">Fly Left</option>
-                  <option value="fly-right">Fly Right</option>
-                  <option value="fly-top">Fly Top</option>
-                  <option value="fly-bottom">Fly Bottom</option>
-                  <option value="zoom-in">Zoom In</option>
-                  <option value="zoom-out">Zoom Out</option>
-                  <option value="rotate">Rotate</option>
-                  <option value="flip">Flip</option>
-                  <option value="bounce">Bounce</option>
-                  <option value="shake">Shake</option>
-                </select>
+              <section class="settings-control-group text-animation-settings" aria-labelledby="display-animation-heading">
+                <h3 id="display-animation-heading">Display Animation</h3>
+                <div class="tooltip tooltip-bottom" data-tooltip="style of the display on/off animation">
+                  <label for="animation-type">Animation Type:</label>
+                  <select id="animation-type">
+                    <option value="fade">Fade</option>
+                    <option value="slide">Slide</option>
+                    <option value="slide-top-left">Slide Top Left</option>
+                    <option value="slide-top-right">Slide Top Right</option>
+                    <option value="slide-bottom-left">Slide Bottom Left</option>
+                    <option value="slide-bottom-right">Slide Bottom Right</option>
+                    <option value="slide-left">Slide Left</option>
+                    <option value="slide-right">Slide Right</option>
+                    <option value="slide-top">Slide Top</option>
+                    <option value="slide-bottom">Slide Bottom</option>
+                    <option value="fly-left">Fly Left</option>
+                    <option value="fly-right">Fly Right</option>
+                    <option value="fly-top">Fly Top</option>
+                    <option value="fly-bottom">Fly Bottom</option>
+                    <option value="zoom-in">Zoom In</option>
+                    <option value="zoom-out">Zoom Out</option>
+                    <option value="rotate">Rotate</option>
+                    <option value="flip">Flip</option>
+                    <option value="bounce">Bounce</option>
+                    <option value="shake">Shake</option>
+                  </select>
+                </div>
 
-              </div>
+                <div class="tooltip tooltip-bottom" data-tooltip="time it takes for the display on/off animation">
+                  <label for="animation-duration">Duration (s):</label><br>
+                  <input type="number" id="animation-duration" min="0.1" step="0.1" value="1">
+                </div>
 
-              <div class="tooltip tooltip-bottom" data-tooltip="time it takes for the animation">
-                <label for="animation-duration">Duration (s):</label><br>
-                <input type="number" id="animation-duration" min="0.1" step="0.1" value="1">
-              </div>
+                <div class="tooltip tooltip-bottom" data-tooltip="How fast or slow the display enter or leave is">
+                  <label for="animation-easing">Easing:</label>
+                  <select id="animation-easing">
+                    <option value="linear">Linear</option>
+                    <option value="ease">Ease</option>
+                    <option value="ease-in">Ease In</option>
+                    <option value="ease-out">Ease Out</option>
+                    <option value="ease-in-out">Ease In-Out</option>
+                    <option value="step-start">Step Start</option>
+                    <option value="step-end">Step End</option>
+                  </select>
+                </div>
+              </section>
 
-              <div class="tooltip tooltip-bottom" data-tooltip="How fast or slow you want the enter or leave">
-                <label for="animation-easing">Easing:</label>
-                <select id="animation-easing">
-                  <option value="linear">Linear</option>
-                  <option value="ease">Ease</option>
-                  <option value="ease-in">Ease In</option>
-                  <option value="ease-out">Ease Out</option>
-                  <option value="ease-in-out">Ease In-Out</option>
-                  <option value="step-start">Step Start</option>
-                  <option value="step-end">Step End</option>
-                </select>
-              </div>
+              <section class="settings-control-group text-animation-settings" aria-labelledby="text-animation-heading">
+                <h3 id="text-animation-heading">Text Animation</h3>
+                <label class="text-animation-enable" for="text-animation-enabled">
+                  <input type="checkbox" id="text-animation-enabled" checked>
+                  <span>Animate text when switching content</span>
+                </label>
+
+                <div class="text-animation-grid">
+                  <div>
+                    <label for="text-intro-animation-type">Intro Animation</label>
+                    <select id="text-intro-animation-type" class="small-font"></select>
+                    <label for="text-intro-animation-easing">Intro Easing</label>
+                    <select id="text-intro-animation-easing" class="small-font">
+                      <option value="linear">Linear</option>
+                      <option value="ease">Ease</option>
+                      <option value="ease-in">Ease In</option>
+                      <option value="ease-out">Ease Out</option>
+                      <option value="ease-in-out">Ease In-Out</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label for="text-outro-animation-type">Outro Animation</label>
+                    <select id="text-outro-animation-type" class="small-font"></select>
+                    <label for="text-outro-animation-easing">Outro Easing</label>
+                    <select id="text-outro-animation-easing" class="small-font">
+                      <option value="linear">Linear</option>
+                      <option value="ease">Ease</option>
+                      <option value="ease-in">Ease In</option>
+                      <option value="ease-out">Ease Out</option>
+                      <option value="ease-in-out">Ease In-Out</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="text-animation-grid">
+                  <div>
+                    <label for="text-animation-duration">Duration (seconds)</label>
+                    <input type="number" id="text-animation-duration" min="0.1" max="10" step="0.1" value="0.6">
+                  </div>
+                  <div>
+                    <label for="text-animation-stagger">Letter Delay (seconds)</label>
+                    <input type="number" id="text-animation-stagger" min="0" max="1" step="0.01" value="0.03">
+                  </div>
+                </div>
+
+                <label class="text-animation-enable" for="text-effect-enabled">
+                  <input type="checkbox" id="text-effect-enabled">
+                  <span>Enable ongoing text effect</span>
+                </label>
+                <label for="text-effect-type">Text Effect</label>
+                <select id="text-effect-type" class="small-font"></select>
+                <button type="button" id="text-animation-preview" class="text-animation-preview">Preview Text Animation</button>
+              </section>
             </div>
           </div>
         </div>

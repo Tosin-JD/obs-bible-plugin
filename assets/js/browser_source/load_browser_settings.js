@@ -13,6 +13,7 @@ var savedTextAlign = localStorage.getItem('textAlign');
 var savedShadowColor = localStorage.getItem('savedShadowColor');
 let savedBgMargin = localStorage.getItem('savedBgMargin');
 const savedAnimationData = localStorage.getItem('obs-bible-animationData');
+const savedTextAnimationData = localStorage.getItem('obs-bible-text-animationData');
 
 function loadSavedBorder() {
   let savedMainBorder = localStorage.getItem('obs-bible-saved-main-border');
@@ -66,6 +67,20 @@ if (savedMessage && savedMessage !== "undefined" && savedMessage !== "null"){
 } else {
     messageDisplay.innerHTML = "";
     localStorage.removeItem('savedMessage');
+}
+
+if (savedTextAnimationData) {
+    try {
+        const textAnimationData = JSON.parse(savedTextAnimationData);
+        Array.from(messageDisplay.classList).forEach((className) => {
+            if (className.startsWith('text-effect-')) messageDisplay.classList.remove(className);
+        });
+        if (textAnimationData.effect?.enabled && textAnimationData.effect.type !== 'none') {
+            messageDisplay.classList.add(`text-effect-${textAnimationData.effect.type}`);
+        }
+    } catch (error) {
+        // Ignore malformed text-animation settings.
+    }
 }
 
 // Background rendering is handled dynamically by applyBackgroundForType() in browser_source.html
