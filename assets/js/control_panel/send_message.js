@@ -29,6 +29,10 @@ function sendMessage(senderChannel, message, contentType = "text", verseAri = nu
     else contentType = "text";
   }
 
+  if (contentType === "song" && typeof sanitizeSongMarkup === "function") {
+    message = sanitizeSongMarkup(message);
+  }
+
   let messageToSend = {
     fadein: fadeInCheckbox.checked,
     messageContent: message,

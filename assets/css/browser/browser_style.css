@@ -450,6 +450,17 @@ body{
     transform-origin: center;
 }
 
+.message-transition-wrapper.content-song {
+    display: flex;
+    align-items: center;
+}
+
+.message-transition-wrapper.content-song > #messageDisplay {
+    height: auto;
+    max-height: 100%;
+    margin: 0 auto;
+}
+
 @keyframes text-fade-out { from { opacity: 1; } to { opacity: 0; } }
 @keyframes text-fade-in { from { opacity: 0; } to { opacity: 1; } }
 @keyframes text-crossfade-out { from { opacity: 1; filter: blur(0); } to { opacity: 0; filter: blur(2px); } }

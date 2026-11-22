@@ -161,3 +161,42 @@ function fuzzySearch(word, text, threshold = 2) {
   return fuzzySearchWeight(word, text, threshold) > 0;
 }
 
+const songBlockLevelTags = new Set([
+  "P", "DIV", "BR", "HR", "SECTION", "ARTICLE", "ASIDE", "NAV", "HEADER", "FOOTER",
+  "MAIN", "FIGURE", "FIGCAPTION", "BLOCKQUOTE", "PRE", "LI", "UL", "OL",
+  "H1", "H2", "H3", "H4", "H5", "H6", "TABLE", "THEAD", "TBODY", "TFOOT",
+  "TR", "TD", "TH", "CAPTION"
+]);
+
+function isSongBlockNode(node) {
+  return node && node.nodeType === Node.ELEMENT_NODE && songBlockLevelTags.has(node.tagName);
+}
+
+function isBlankSongNode(node) {
+  if (node.nodeType === Node.TEXT_NODE) return node.data.trim() === "";
+  if (node.nodeType === Node.ELEMENT_NODE) return node.textContent.trim() === "";
+  return false;
+}
+
+function sanitizeSongMarkup(markup) {
+  if (!markup || typeof markup !== "string") return markup;
+  const tmp = document.createElement("div");
+  tmp.innerHTML = markup;
+
+  const walker = document.createTreeWalker(tmp, NodeFilter.SHOW_TEXT);
+  const removable = [];
+  while (walker.nextNode()) {
+    const node = walker.currentNode;
+    if (node.data.trim() === "" &&
+        (isSongBlockNode(node.previousSibling) || isSongBlockNode(node.nextSibling))) {
+      removable.push(node);
+    }
+  }
+  removable.forEach(node => node.remove());
+
+  while (tmp.firstChild && isBlankSongNode(tmp.firstChild)) tmp.firstChild.remove();
+  while (tmp.lastChild && isBlankSongNode(tmp.lastChild)) tmp.lastChild.remove();
+
+  return tmp.innerHTML;
+}
+

@@ -64,6 +64,8 @@ if (savedAnimationData) {
 
 if (savedMessage && savedMessage !== "undefined" && savedMessage !== "null"){
     messageDisplay.innerHTML = savedMessage;
+    const fitWrapper = document.getElementById("message-transition-wrapper");
+    fitWrapper?.classList.toggle("content-song", localStorage.getItem("selectedTab") === "songs");
 } else {
     messageDisplay.innerHTML = "";
     localStorage.removeItem('savedMessage');
