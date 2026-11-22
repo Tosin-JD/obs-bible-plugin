@@ -75,9 +75,11 @@ const textTransitionOptions = [
     ['slide-right', 'Slide Right'],
     ['slide-top', 'Slide Top'],
     ['slide-bottom', 'Slide Bottom'],
-    ['flip', 'Flip Transition'],
-    ['spin', 'Spin Transition'],
-    ['rotate', 'Rotate Transition'],
+    ['typewriter', 'Typewriter'],
+    ['burst', 'Burst'],
+    ['roll', 'Roll'],
+    ['skate', 'Skate'],
+    ['block', 'Block'],
     ['mask', 'Mask Transition'],
     ['circular-reveal', 'Circular Reveal'],
     ['vertical-split', 'Vertical Split Transition'],
@@ -91,8 +93,6 @@ const textTransitionOptions = [
     ['light-flash', 'Light Flash Transition'],
     ['glow', 'Glowing Transition'],
     ['staggered-letter', 'Staggered Letter Transition'],
-    ['perspective', 'Perspective Transition'],
-    ['3d-rotation', '3D Rotation Transition'],
     ['zoom-in', 'Zoom In'],
     ['zoom-out', 'Zoom Out']
 ];
@@ -130,9 +130,8 @@ const textEffectOptions = [
 const defaultTextAnimationData = {
     version: 1,
     enabled: true,
-    intro: { type: 'crossfade', easing: 'ease-in-out' },
-    outro: { type: 'crossfade', easing: 'ease-in-out' },
-    duration: 0.6,
+    intro: { type: 'crossfade', easing: 'ease-in-out', duration: 0.6 },
+    outro: { type: 'crossfade', easing: 'ease-in-out', duration: 0.6 },
     stagger: 0.03,
     effect: { enabled: false, type: 'none' }
 };
@@ -140,6 +139,15 @@ const defaultTextAnimationData = {
 const clamp = (value, min, max, fallback) => {
     const numericValue = Number(value);
     return Number.isFinite(numericValue) ? Math.min(max, Math.max(min, numericValue)) : fallback;
+};
+
+const normalizeTextDuration = (value, fallback = 0.6) => {
+    if (value === null || value === undefined) return fallback;
+    if (typeof value === 'string' && value.trim() === '') return fallback;
+    const numericValue = Number(value);
+    return Number.isFinite(numericValue)
+        ? Math.min(10, Math.max(0.01, numericValue))
+        : fallback;
 };
 
 const normalizeTextAnimationData = (data) => {
@@ -151,18 +159,22 @@ const normalizeTextAnimationData = (data) => {
     const effectType = textEffectOptions.some(([value]) => value === safe.effect?.type)
         ? safe.effect.type : 'none';
     const easings = ['linear', 'ease', 'ease-in', 'ease-out', 'ease-in-out'];
+    const legacyFallback = normalizeTextDuration(safe.duration);
+    const introDuration = normalizeTextDuration(safe.intro?.duration, legacyFallback);
+    const outroDuration = normalizeTextDuration(safe.outro?.duration, legacyFallback);
     return {
         version: 1,
         enabled: typeof safe.enabled === 'boolean' ? safe.enabled : true,
         intro: {
             type: introType,
-            easing: easings.includes(safe.intro?.easing) ? safe.intro.easing : 'ease-in-out'
+            easing: easings.includes(safe.intro?.easing) ? safe.intro.easing : 'ease-in-out',
+            duration: introDuration
         },
         outro: {
             type: outroType,
-            easing: easings.includes(safe.outro?.easing) ? safe.outro.easing : 'ease-in-out'
+            easing: easings.includes(safe.outro?.easing) ? safe.outro.easing : 'ease-in-out',
+            duration: outroDuration
         },
-        duration: clamp(safe.duration, 0.1, 10, 0.6),
         stagger: clamp(safe.stagger, 0, 1, 0.03),
         effect: {
             enabled: typeof safe.effect?.enabled === 'boolean' ? safe.effect.enabled : false,
@@ -201,13 +213,14 @@ const getTextAnimationDataFromControls = () => normalizeTextAnimationData({
     enabled: getElementById('text-animation-enabled')?.checked ?? true,
     intro: {
         type: getElementById('text-intro-animation-type')?.value,
-        easing: getElementById('text-intro-animation-easing')?.value
+        easing: getElementById('text-intro-animation-easing')?.value,
+        duration: getElementById('text-intro-animation-duration')?.value
     },
     outro: {
         type: getElementById('text-outro-animation-type')?.value,
-        easing: getElementById('text-outro-animation-easing')?.value
+        easing: getElementById('text-outro-animation-easing')?.value,
+        duration: getElementById('text-outro-animation-duration')?.value
     },
-    duration: getElementById('text-animation-duration')?.value,
     stagger: getElementById('text-animation-stagger')?.value,
     effect: {
         enabled: getElementById('text-effect-enabled')?.checked ?? false,
@@ -218,8 +231,13 @@ const getTextAnimationDataFromControls = () => normalizeTextAnimationData({
 const sendTextAnimationData = (data) => {
     localStorage.setItem(TEXT_ANIMATION_STORAGE_KEY, JSON.stringify(data));
     const sendChannel = new BroadcastChannel(TEXT_ANIMATION_CHANNEL);
-    sendChannel.postMessage(data);
+    sendChannel.postMessage({ type: 'settings', settings: data });
     sendChannel.close();
+};
+
+const setTextAnimationOptionsVisible = (enabled) => {
+    const options = getElementById('text-animation-options');
+    if (options) options.hidden = !enabled;
 };
 
 const initializeTextAnimationControls = () => {
@@ -237,10 +255,12 @@ const initializeTextAnimationControls = () => {
     getElementById('text-intro-animation-easing').value = savedData.intro.easing;
     getElementById('text-outro-animation-type').value = savedData.outro.type;
     getElementById('text-outro-animation-easing').value = savedData.outro.easing;
-    getElementById('text-animation-duration').value = savedData.duration;
+    getElementById('text-intro-animation-duration').value = savedData.intro.duration;
+    getElementById('text-outro-animation-duration').value = savedData.outro.duration;
     getElementById('text-animation-stagger').value = savedData.stagger;
     getElementById('text-effect-enabled').checked = savedData.effect.enabled;
     getElementById('text-effect-type').value = savedData.effect.type;
+    setTextAnimationOptionsVisible(savedData.enabled);
 
     const controlIds = [
         'text-animation-enabled',
@@ -248,7 +268,8 @@ const initializeTextAnimationControls = () => {
         'text-intro-animation-easing',
         'text-outro-animation-type',
         'text-outro-animation-easing',
-        'text-animation-duration',
+        'text-intro-animation-duration',
+        'text-outro-animation-duration',
         'text-animation-stagger',
         'text-effect-enabled',
         'text-effect-type'
@@ -259,8 +280,11 @@ const initializeTextAnimationControls = () => {
         if (!control) return;
         const eventName = control.type === 'checkbox' || control.tagName === 'SELECT' ? 'change' : 'input';
         control.addEventListener(eventName, () => {
-            if (id === 'text-animation-duration') {
-                control.value = clamp(control.value, 0.1, 10, 0.6);
+            if (id === 'text-animation-enabled') {
+                setTextAnimationOptionsVisible(control.checked);
+            }
+            if (id === 'text-intro-animation-duration' || id === 'text-outro-animation-duration') {
+                control.value = normalizeTextDuration(control.value);
             }
             if (id === 'text-animation-stagger') {
                 control.value = clamp(control.value, 0, 1, 0.03);

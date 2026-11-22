@@ -232,6 +232,17 @@ function getBibleDisplayPreferences() {
     Array.from(referenceFontSelect.options).some(option => option.value === savedReferenceFont)
     ? savedReferenceFont
     : "";
+  const savedReferenceBackgroundColor = localStorage.getItem("obs-bible-reference-background-color");
+  const referenceBackgroundColor = /^#[0-9A-Fa-f]{6}$/.test(savedReferenceBackgroundColor || "")
+    ? savedReferenceBackgroundColor
+    : "";
+  const getReferenceNumber = (key, min, max, fallback) => {
+    const savedValue = localStorage.getItem(key);
+    const numericValue = Number(savedValue);
+    return savedValue !== null && Number.isFinite(numericValue)
+      ? Math.min(max, Math.max(min, numericValue))
+      : fallback;
+  };
 
   return {
     lineLayout: lineLayout === "separate-line" ? lineLayout : "same-line",
@@ -241,7 +252,12 @@ function getBibleDisplayPreferences() {
     bookCase: bookCase === "title-case" ? bookCase : "uppercase",
     showTranslation: localStorage.getItem("obs-bible-reference-show-translation") === "true",
     position: position === "below" ? position : "above",
-    referenceFont
+    referenceFont,
+    referenceBackgroundColor,
+    referenceBackgroundOpacity: getReferenceNumber("obs-bible-reference-background-opacity", 0, 100, 100),
+    referencePadding: getReferenceNumber("obs-bible-reference-padding", 0, 80, 0),
+    referenceMargin: getReferenceNumber("obs-bible-reference-margin", 0, 100, 0),
+    referenceRadius: getReferenceNumber("obs-bible-reference-radius", 0, 80, 0)
   };
 }
 
@@ -283,44 +299,67 @@ function formatBibleReference(verseName, preferences) {
   return reference;
 }
 
-function createBibleVerseElement(verseObj, preferences) {
+function createBibleVerseElement(verseObj, preferences, renderTarget = "preview") {
   const pElement = document.createElement("p");
   pElement.classList.add("verse", "bible-verse");
   pElement.id = verseObj.name.replace(/:/g, "-").replace(/\s/g, "").toLowerCase();
   pElement.dataset.ari = verseObj.ari;
 
   const messageElement = document.createElement("span");
-  messageElement.classList.add(
-    "bible-message",
-    `bible-layout-${preferences.lineLayout}`,
-    `bible-position-${preferences.position}`
-  );
+  messageElement.classList.add("bible-message");
+  if (renderTarget === "browser") {
+    messageElement.classList.add(
+      `bible-layout-${preferences.lineLayout}`,
+      `bible-position-${preferences.position}`
+    );
+  }
   const referenceElement = document.createElement("span");
   referenceElement.classList.add("bible-reference");
-  if (preferences.lineLayout === "separate-line") {
+  if (renderTarget === "browser" && preferences.lineLayout === "separate-line") {
     referenceElement.classList.add(`bible-reference-align-${preferences.referenceAlignment}`);
   }
   referenceElement.textContent = formatBibleReference(verseObj.name, preferences);
-  if (preferences.referenceFont) {
+  if (renderTarget === "browser" && preferences.referenceFont) {
     referenceElement.style.fontFamily = preferences.referenceFont;
+  }
+  if (renderTarget === "browser") {
+    if (preferences.referenceBackgroundColor) {
+      referenceElement.style.backgroundColor = hexToRgba(
+        preferences.referenceBackgroundColor,
+        preferences.referenceBackgroundOpacity / 100
+      );
+    }
+    referenceElement.style.padding = `${preferences.referencePadding}px`;
+    referenceElement.style.margin = `${preferences.referenceMargin}px`;
+    referenceElement.style.borderRadius = `${preferences.referenceRadius}px`;
   }
 
   const contentElement = document.createElement("span");
   contentElement.classList.add("bible-content");
   contentElement.textContent = verseObj.verse;
 
-  if (preferences.position === "above") {
+  if (renderTarget === "preview" || preferences.position === "above") {
     messageElement.appendChild(referenceElement);
     messageElement.appendChild(document.createTextNode(" "));
     messageElement.appendChild(contentElement);
   } else {
     messageElement.appendChild(contentElement);
-    messageElement.appendChild(document.createTextNode(" "));
+    if (preferences.lineLayout === "same-line") {
+      messageElement.appendChild(document.createTextNode(" "));
+    }
     messageElement.appendChild(referenceElement);
   }
 
   pElement.appendChild(messageElement);
+  if (renderTarget === "preview") {
+    const browserElement = createBibleVerseElement(verseObj, preferences, "browser");
+    pElement.dataset.browserMessageHtml = browserElement.innerHTML;
+  }
   return pElement;
+}
+
+function getBibleVerseOutputMessage(verseElement) {
+  return verseElement?.dataset.browserMessageHtml || verseElement?.innerHTML || "";
 }
 
 function searchBible(query, bible_data) {
@@ -494,8 +533,8 @@ function refreshBibleDisplayPreferences() {
     const activeVerse = bible_data.find(verse => verse.ari === activeAri) ||
       findNearestVerseByAri(activeAri, bible_data);
     if (activeVerse) {
-      const formattedVerse = createBibleVerseElement(activeVerse, getBibleDisplayPreferences());
-      sendMessage(channel, formattedVerse.innerHTML, "bible", activeVerse.ari);
+      const formattedVerse = createBibleVerseElement(activeVerse, getBibleDisplayPreferences(), "browser");
+      sendMessage(channel, formattedVerse.innerHTML, "bible", activeVerse.ari, { animate: false });
     }
   }
 }

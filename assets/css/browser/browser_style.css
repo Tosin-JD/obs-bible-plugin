@@ -40,6 +40,11 @@ body{
     text-align: center;
     margin: 0;
     padding: 0.1em;
+    width: 100%;
+    height: 100%;
+    min-width: 0;
+    min-height: 0;
+    flex: 1 1 auto;
     overflow-y: hidden;
     opacity: 1;
     display: flex;
@@ -48,7 +53,10 @@ body{
 }
 
 #messageDisplay {
+    position: relative;
     opacity: 1;
+    height: 100%;
+    min-width: 0;
 /*    font-size: 5em;*/
     font-weight: bold;
     paint-order: stroke fill;
@@ -62,7 +70,7 @@ body{
     hyphens: auto;
 }
 
-#messageDisplay span:not(.bible-content):not(.bible-message):not(.bible-reference){
+#messageDisplay span:not(.bible-content):not(.bible-message):not(.bible-reference):not(.text-animation-char):not(.text-animation-overlay):not(.typewriter-caret){
     color: #ff6450;
     overflow-y: hidden;
     opacity: 1;
@@ -70,28 +78,43 @@ body{
 
 #messageDisplay .bible-reference{
     color: var(--title-color, #ff6450);
-    overflow-y: hidden;
+    display: inline;
+    overflow: visible;
     opacity: 1;
+}
+
+.bible-message.bible-layout-separate-line{
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
 }
 
 .bible-layout-separate-line .bible-reference{
     display: block;
+    width: fit-content;
+    max-width: 100%;
+    flex: none;
+}
+
+.bible-layout-separate-line .bible-content{
+    display: block;
 }
 
 .bible-layout-separate-line .bible-reference-align-left{
-    text-align: left;
+    align-self: flex-start;
 }
 
 .bible-layout-separate-line .bible-reference-align-center{
-    text-align: center;
+    align-self: center;
 }
 
 .bible-layout-separate-line .bible-reference-align-right{
-    text-align: right;
+    align-self: flex-end;
 }
 
 .bible-layout-separate-line .bible-reference-align-justify{
     text-align: justify;
+    align-self: flex-start;
 }
 
 .bible-message{
@@ -410,6 +433,8 @@ body{
 .message-transition-wrapper {
     width: 100%;
     height: 100%;
+    min-width: 0;
+    min-height: 0;
     position: relative;
     overflow: hidden;
     transform-style: preserve-3d;
@@ -434,12 +459,6 @@ body{
 @keyframes text-slide-top-in { from { transform: translateY(40%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 @keyframes text-slide-bottom-out { from { transform: translateY(0); opacity: 1; } to { transform: translateY(40%); opacity: 0; } }
 @keyframes text-slide-bottom-in { from { transform: translateY(-40%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-@keyframes text-flip-out { to { transform: rotateY(90deg); opacity: 0; } }
-@keyframes text-flip-in { from { transform: rotateY(-90deg); opacity: 0; } to { transform: rotateY(0); opacity: 1; } }
-@keyframes text-spin-out { to { transform: rotate(180deg) scale(.65); opacity: 0; } }
-@keyframes text-spin-in { from { transform: rotate(-180deg) scale(.65); opacity: 0; } to { transform: rotate(0) scale(1); opacity: 1; } }
-@keyframes text-rotate-out { to { transform: rotate(-90deg) scale(.8); opacity: 0; } }
-@keyframes text-rotate-in { from { transform: rotate(90deg) scale(.8); opacity: 0; } to { transform: rotate(0) scale(1); opacity: 1; } }
 @keyframes text-mask-out { from { clip-path: inset(0); opacity: 1; } to { clip-path: inset(0 100% 0 0); opacity: 0; } }
 @keyframes text-mask-in { from { clip-path: inset(0 0 0 100%); opacity: 0; } to { clip-path: inset(0); opacity: 1; } }
 @keyframes text-circular-reveal-out { to { clip-path: circle(0 at 50% 50%); opacity: 0; } }
@@ -458,32 +477,38 @@ body{
 @keyframes text-wave-in { from { transform: translateY(30px) scaleY(.7); opacity: 0; } 50% { transform: translateY(-12px) skewX(-8deg); } to { transform: translateY(0) scaleY(1); opacity: 1; } }
 @keyframes text-liquid-morph-out { to { transform: scale(1.25,.25); filter: blur(10px); opacity: 0; border-radius: 50%; } }
 @keyframes text-liquid-morph-in { from { transform: scale(.25,1.25); filter: blur(10px); opacity: 0; } to { transform: scale(1); filter: blur(0); opacity: 1; } }
-@keyframes text-pixel-dissolve-out { 50% { filter: contrast(2) saturate(.2); opacity: .5; } to { clip-path: inset(0 100% 0 0); opacity: 0; } }
-@keyframes text-pixel-dissolve-in { from { clip-path: inset(0 0 0 100%); opacity: 0; } 50% { filter: contrast(2) saturate(.2); } to { clip-path: inset(0); filter: none; opacity: 1; } }
-@keyframes text-light-flash-out { 50% { filter: brightness(3); opacity: .2; } to { opacity: 0; } }
-@keyframes text-light-flash-in { from { filter: brightness(3); opacity: 0; } 40% { opacity: 1; } 60% { filter: brightness(1.8); } to { filter: brightness(1); } }
-@keyframes text-glow-out { to { opacity: 0; filter: brightness(2) blur(3px); text-shadow: 0 0 25px currentColor; } }
-@keyframes text-glow-in { from { opacity: 0; filter: brightness(2) blur(3px); text-shadow: 0 0 25px currentColor; } to { opacity: 1; filter: none; } }
-@keyframes text-staggered-letter-out { to { transform: translateY(-30px) scale(.8); opacity: 0; letter-spacing: calc(var(--text-stagger-delay) * 20); } }
-@keyframes text-staggered-letter-in { from { transform: translateY(30px) scale(.8); opacity: 0; letter-spacing: calc(var(--text-stagger-delay) * -20); } to { transform: translateY(0) scale(1); opacity: 1; letter-spacing: normal; } }
-@keyframes text-perspective-out { to { transform: perspective(500px) rotateX(70deg) translateZ(-100px); opacity: 0; } }
-@keyframes text-perspective-in { from { transform: perspective(500px) rotateX(-70deg) translateZ(-100px); opacity: 0; } to { transform: perspective(500px) rotateX(0) translateZ(0); opacity: 1; } }
-@keyframes text-3d-rotation-out { to { transform: perspective(600px) rotateY(-120deg) translateZ(-80px); opacity: 0; } }
-@keyframes text-3d-rotation-in { from { transform: perspective(600px) rotateY(120deg) translateZ(-80px); opacity: 0; } to { transform: perspective(600px) rotateY(0) translateZ(0); opacity: 1; } }
+@keyframes text-pixel-dissolve-out { 50% { opacity: .5; } to { clip-path: inset(0 100% 0 0); opacity: 0; } }
+@keyframes text-pixel-dissolve-in { from { clip-path: inset(0 0 0 100%); opacity: 0; } 50% { opacity: .5; } to { clip-path: inset(0); opacity: 1; } }
+@keyframes text-light-flash-out { 50% { opacity: .2; } to { opacity: 0; } }
+@keyframes text-light-flash-in { from { opacity: 0; } 40% { opacity: .7; } 60% { opacity: .35; } to { opacity: 1; } }
+@keyframes text-glow-out { to { opacity: 0; transform: scale(.98); } }
+@keyframes text-glow-in { from { opacity: 0; transform: scale(1.02); } to { opacity: 1; transform: scale(1); } }
 @keyframes text-zoom-in-out { to { transform: scale(.2); opacity: 0; } }
 @keyframes text-zoom-in-in { from { transform: scale(.2); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 @keyframes text-zoom-out-out { to { transform: scale(2); opacity: 0; } }
 @keyframes text-zoom-out-in { from { transform: scale(2); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+@keyframes text-char-bounce-in { from { transform: translateY(-24px); opacity: 0; } 65% { transform: translateY(5px); opacity: 1; } to { transform: translateY(0); opacity: 1; } }
+@keyframes text-char-bounce-out { 35% { transform: translateY(-5px); opacity: 1; } to { transform: translateY(24px); opacity: 0; } }
+@keyframes text-char-burst-in { from { transform: translate(var(--text-burst-from-x), var(--text-burst-from-y)) scale(.2); opacity: 0; } to { transform: translate(0, 0) scale(1); opacity: 1; } }
+@keyframes text-char-burst-out { to { transform: translate(var(--text-burst-x), var(--text-burst-y)) scale(.2); opacity: 0; } }
+@keyframes text-char-roll-in { from { transform: perspective(350px) rotateX(-90deg) translateY(-12px); opacity: 0; } to { transform: perspective(350px) rotateX(0) translateY(0); opacity: 1; } }
+@keyframes text-char-roll-out { to { transform: perspective(350px) rotateX(90deg) translateY(18px); opacity: 0; } }
+@keyframes text-char-skate-in { from { transform: translateX(-28px) skewX(-18deg); opacity: 0; } to { transform: translateX(0) skewX(0); opacity: 1; } }
+@keyframes text-char-skate-out { to { transform: translateX(28px) skewX(18deg); opacity: 0; } }
+@keyframes text-char-block-in { from { clip-path: inset(0 100% 0 0); opacity: 0; } to { clip-path: inset(0); opacity: 1; } }
+@keyframes text-char-block-out { from { clip-path: inset(0); opacity: 1; } to { clip-path: inset(0 0 0 100%); opacity: 0; } }
+@keyframes text-char-staggered-letter-in { from { transform: translateY(30px) scale(.8); opacity: 0; } to { transform: translateY(0) scale(1); opacity: 1; } }
+@keyframes text-char-staggered-letter-out { to { transform: translateY(-30px) scale(.8); opacity: 0; } }
 
 [class*="text-fade-out"], [class*="text-fade-in"],
 [class*="text-crossfade"], [class*="text-blur"], [class*="text-slide"],
-[class*="text-flip"], [class*="text-spin"], [class*="text-rotate"],
+[class*="text-bounce"], [class*="text-burst"], [class*="text-roll"],
+[class*="text-skate"], [class*="text-block"], [class*="text-staggered-letter"],
 [class*="text-mask"], [class*="text-circular"], [class*="text-vertical"],
 [class*="text-horizontal"], [class*="text-push"], [class*="text-pull"],
 [class*="text-whip-pan"], [class*="text-wave"], [class*="text-liquid-morph"],
 [class*="text-pixel-dissolve"], [class*="text-light-flash"], [class*="text-glow"],
-[class*="text-staggered-letter"], [class*="text-perspective"], [class*="text-3d-rotation"],
-[class*="text-zoom-in"], [class*="text-zoom-out"] {
+[class*="text-zoom-in"], [class*="text-zoom-out"], [class*="text-shake"] {
     animation-duration: var(--text-animation-duration, .6s);
     animation-timing-function: var(--text-animation-easing, ease-in-out);
     animation-fill-mode: both;
@@ -499,9 +524,6 @@ body{
 .text-slide-right-out { animation-name: text-slide-right-out; }.text-slide-right-in { animation-name: text-slide-right-in; }
 .text-slide-top-out { animation-name: text-slide-top-out; }.text-slide-top-in { animation-name: text-slide-top-in; }
 .text-slide-bottom-out { animation-name: text-slide-bottom-out; }.text-slide-bottom-in { animation-name: text-slide-bottom-in; }
-.text-flip-out { animation-name: text-flip-out; }.text-flip-in { animation-name: text-flip-in; }
-.text-spin-out { animation-name: text-spin-out; }.text-spin-in { animation-name: text-spin-in; }
-.text-rotate-out { animation-name: text-rotate-out; }.text-rotate-in { animation-name: text-rotate-in; }
 .text-mask-out { animation-name: text-mask-out; }.text-mask-in { animation-name: text-mask-in; }
 .text-circular-reveal-out { animation-name: text-circular-reveal-out; }.text-circular-reveal-in { animation-name: text-circular-reveal-in; }
 .text-vertical-split-out { animation-name: text-vertical-split-out; }.text-vertical-split-in { animation-name: text-vertical-split-in; }
@@ -514,9 +536,6 @@ body{
 .text-pixel-dissolve-out { animation-name: text-pixel-dissolve-out; }.text-pixel-dissolve-in { animation-name: text-pixel-dissolve-in; }
 .text-light-flash-out { animation-name: text-light-flash-out; }.text-light-flash-in { animation-name: text-light-flash-in; }
 .text-glow-out { animation-name: text-glow-out; }.text-glow-in { animation-name: text-glow-in; }
-.text-staggered-letter-out { animation-name: text-staggered-letter-out; }.text-staggered-letter-in { animation-name: text-staggered-letter-in; }
-.text-perspective-out { animation-name: text-perspective-out; }.text-perspective-in { animation-name: text-perspective-in; }
-.text-3d-rotation-out { animation-name: text-3d-rotation-out; }.text-3d-rotation-in { animation-name: text-3d-rotation-in; }
 .text-zoom-in-out { animation-name: text-zoom-in-out; }.text-zoom-in-in { animation-name: text-zoom-in-in; }
 .text-zoom-out-out { animation-name: text-zoom-out-out; }.text-zoom-out-in { animation-name: text-zoom-out-in; }
 
@@ -566,16 +585,6 @@ body{
     animation: text-effect-wiggling .22s steps(2) infinite;
 }
 
-@keyframes text-bounce-out {
-    30% { transform: translateY(-18px); }
-    60% { transform: translateY(8px); }
-    to { transform: translateY(40px); opacity: 0; }
-}
-@keyframes text-bounce-in {
-    from { transform: translateY(-40px); opacity: 0; }
-    60% { transform: translateY(8px); opacity: 1; }
-    to { transform: translateY(0); opacity: 1; }
-}
 @keyframes text-shake-out {
     25% { transform: translateX(-12px); }
     50% { transform: translateX(12px); }
@@ -590,33 +599,74 @@ body{
     to { transform: translateX(0); opacity: 1; }
 }
 
-.text-bounce-out { animation-name: text-bounce-out; }
-.text-bounce-in { animation-name: text-bounce-in; }
 .text-shake-out { animation-name: text-shake-out; }
 .text-shake-in { animation-name: text-shake-in; }
 
-.text-stagger-char {
+.text-animation-source-hidden {
+    color: transparent !important;
+    -webkit-text-fill-color: transparent !important;
+    -webkit-text-stroke-color: transparent !important;
+    text-decoration-color: transparent !important;
+    text-shadow: none !important;
+}
+
+.text-animation-source-hidden > :not(.text-animation-overlay),
+.text-animation-source-hidden > :not(.text-animation-overlay) * {
+    color: transparent !important;
+    -webkit-text-fill-color: transparent !important;
+    -webkit-text-stroke-color: transparent !important;
+    text-decoration-color: transparent !important;
+    text-shadow: none !important;
+}
+
+.text-animation-overlay {
+    position: absolute;
+    inset: 0;
+    overflow: visible !important;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.text-animation-char {
+    position: absolute;
     display: inline-block;
-    animation: text-stagger-char-in var(--text-animation-duration, .6s) var(--text-animation-easing, ease-in-out) both;
-    animation-delay: calc(var(--text-stagger-index, 0) * var(--text-stagger-delay, .03s));
-}
-
-@keyframes text-stagger-char-in {
-    from { transform: translateY(30px) scale(.8); opacity: 0; }
-    to { transform: translateY(0) scale(1); opacity: 1; }
-}
-
-[class*="text-bounce"], [class*="text-shake"], .text-stagger-char {
+    white-space: pre;
     animation-duration: var(--text-animation-duration, .6s);
     animation-timing-function: var(--text-animation-easing, ease-in-out);
+    animation-delay: calc(var(--text-stagger-index, 0) * var(--text-stagger-delay, .03s));
     animation-fill-mode: both;
 }
+
+.text-bounce-in .text-animation-char { animation-name: text-char-bounce-in; }
+.text-bounce-out .text-animation-char { animation-name: text-char-bounce-out; }
+.text-burst-in .text-animation-char { animation-name: text-char-burst-in; }
+.text-burst-out .text-animation-char { animation-name: text-char-burst-out; }
+.text-roll-in .text-animation-char { animation-name: text-char-roll-in; transform-origin: 50% 0; backface-visibility: hidden; }
+.text-roll-out .text-animation-char { animation-name: text-char-roll-out; transform-origin: 50% 0; backface-visibility: hidden; }
+.text-skate-in .text-animation-char { animation-name: text-char-skate-in; }
+.text-skate-out .text-animation-char { animation-name: text-char-skate-out; }
+.text-block-in .text-animation-char { animation-name: text-char-block-in; animation-timing-function: steps(4, end); }
+.text-block-out .text-animation-char { animation-name: text-char-block-out; animation-timing-function: steps(4, end); }
+.text-staggered-letter-in .text-animation-char { animation-name: text-char-staggered-letter-in; }
+.text-staggered-letter-out .text-animation-char { animation-name: text-char-staggered-letter-out; }
+
+.typewriter-caret {
+    position: absolute;
+    width: 0;
+    border-right: .08em solid currentColor;
+    pointer-events: none;
+    animation: typewriter-caret-blink .8s steps(2, start) infinite;
+}
+
+@keyframes typewriter-caret-blink { to { opacity: 0; } }
 
 @media (prefers-reduced-motion: reduce) {
     [class*="text-"] {
         animation-duration: .05s !important;
         animation-iteration-count: 1 !important;
     }
+    .typewriter-caret { animation: none !important; }
+    .text-animation-char { animation-delay: 0s !important; }
     [class*="text-effect-"] {
         animation: none !important;
     }

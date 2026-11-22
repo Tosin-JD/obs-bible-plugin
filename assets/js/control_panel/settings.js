@@ -376,15 +376,23 @@ function syncBackgroundModeRadios() {
     });
 }
 
-function getBackgroundOpacityValue() {
-    const savedOpacity = Number(localStorage.getItem("savedOpacity"));
-    if (Number.isFinite(savedOpacity) && savedOpacity >= 0) {
-        return savedOpacity / BACKGROUND_OPACITY_STEPS;
-    }
-    return 1;
+function getBackgroundOpacityRawValue() {
+    const scopedValue = isSeparateBackgrounds()
+        ? localStorage.getItem(`obs-bible-bg-opacity_${getBgContentType()}`)
+        : null;
+    const savedValue = scopedValue ?? localStorage.getItem("obs-bible-bg-opacity") ??
+        localStorage.getItem("savedOpacity");
+    const numericValue = Number(savedValue);
+    return savedValue !== null && savedValue.trim() !== "" && Number.isFinite(numericValue)
+        ? Math.round(Math.min(BACKGROUND_OPACITY_STEPS, Math.max(0, numericValue)))
+        : BACKGROUND_OPACITY_STEPS;
 }
 
-function syncBackgroundOpacityControls(rawValue) {
+function getBackgroundOpacityValue() {
+    return getBackgroundOpacityRawValue() / BACKGROUND_OPACITY_STEPS;
+}
+
+function syncBackgroundOpacityControls(rawValue = String(getBackgroundOpacityRawValue())) {
     backgroundOpacityControls.forEach(control => {
         control.max = String(BACKGROUND_OPACITY_STEPS);
         control.value = rawValue;
@@ -396,10 +404,18 @@ function updateBackgroundOpacityPreview() {
     const rawColor = localStorage.getItem("rawBgColor") || bgColorInput?.value || "#553355";
     const transparent = hexToRgba(rawColor, 0);
     const solid = hexToRgba(rawColor, 1);
+    const opacity = getBackgroundOpacityValue();
 
     backgroundOpacityControls.forEach(control => {
         control.style.backgroundImage = `linear-gradient(to right, ${transparent}, ${solid})`;
     });
+    if (backgroundColorOptionPreview) backgroundColorOptionPreview.style.opacity = "1";
+    if (backgroundGradientOptionPreview) backgroundGradientOptionPreview.style.opacity = String(opacity);
+    if (backgroundStylePreview) {
+        backgroundStylePreview.style.opacity = getBackgroundMode() === "gradient" ? String(opacity) : "1";
+    }
+    const videoPreview = document.getElementById("cp-video-preview");
+    if (videoPreview) videoPreview.style.opacity = String(opacity);
 }
 
 function getSolidBackgroundCss() {
@@ -424,8 +440,8 @@ function updateBackgroundPreviews() {
     setBackgroundSurface(backgroundColorOptionPreview, solidBackgroundCss, "none");
     setBackgroundSurface(backgroundGradientOptionPreview, "transparent", gradientCss);
 
-    if (currentMode === "gradient" && savedGradientCss) {
-        setBackgroundSurface(backgroundStylePreview, solidBackgroundCss, savedGradientCss);
+    if (currentMode === "gradient") {
+        setBackgroundSurface(backgroundStylePreview, "transparent", gradientCss);
     } else {
         setBackgroundSurface(backgroundStylePreview, solidBackgroundCss, "none");
     }
@@ -724,7 +740,12 @@ const bibleReferencePreferenceKeys = {
     bookCase: "obs-bible-reference-book-case",
     showTranslation: "obs-bible-reference-show-translation",
     position: "obs-bible-reference-position",
-    fontFamily: "obs-bible-reference-font-family"
+    fontFamily: "obs-bible-reference-font-family",
+    backgroundColor: "obs-bible-reference-background-color",
+    backgroundOpacity: "obs-bible-reference-background-opacity",
+    padding: "obs-bible-reference-padding",
+    margin: "obs-bible-reference-margin",
+    radius: "obs-bible-reference-radius"
 };
 
 function restoreBibleReferenceRadio(name, preferenceKey, allowedValues, defaultValue) {
@@ -780,6 +801,23 @@ bibleReferenceFontSelect.value = Array.from(bibleReferenceFontSelect.options)
     ? savedBibleReferenceFont
     : "";
 
+const bibleReferenceBackgroundColorInput = document.getElementById("bible-reference-background-color");
+const savedBibleReferenceBackgroundColor = localStorage.getItem(bibleReferencePreferenceKeys.backgroundColor);
+const validBibleReferenceBackgroundColor = /^#[0-9A-Fa-f]{6}$/.test(savedBibleReferenceBackgroundColor || "");
+if (savedBibleReferenceBackgroundColor !== null && !validBibleReferenceBackgroundColor) {
+    localStorage.removeItem(bibleReferencePreferenceKeys.backgroundColor);
+}
+bibleReferenceBackgroundColorInput.value = validBibleReferenceBackgroundColor
+    ? savedBibleReferenceBackgroundColor
+    : "#000000";
+
+const bibleReferenceSliderSettings = [
+    { id: "bible-reference-background-opacity", key: bibleReferencePreferenceKeys.backgroundOpacity, min: 0, max: 100, fallback: 100 },
+    { id: "bible-reference-padding", key: bibleReferencePreferenceKeys.padding, min: 0, max: 80, fallback: 0 },
+    { id: "bible-reference-margin", key: bibleReferencePreferenceKeys.margin, min: 0, max: 100, fallback: 0 },
+    { id: "bible-reference-radius", key: bibleReferencePreferenceKeys.radius, min: 0, max: 80, fallback: 0 }
+];
+
 function notifyBibleReferencePreferenceChange(preferenceKey, value) {
     if (value === "") {
         localStorage.removeItem(preferenceKey);
@@ -788,6 +826,42 @@ function notifyBibleReferencePreferenceChange(preferenceKey, value) {
     }
     document.dispatchEvent(new CustomEvent("bible-display-settings-change"));
 }
+
+bibleReferenceSliderSettings.forEach(({ id, key, min, max, fallback }) => {
+    const slider = document.getElementById(id);
+    const savedValue = localStorage.getItem(key);
+    const numericValue = Number(savedValue);
+    slider.value = String(savedValue !== null && Number.isFinite(numericValue)
+        ? Math.min(max, Math.max(min, numericValue))
+        : fallback);
+});
+window.syncControlPanelSliderValues?.();
+
+bibleReferenceBackgroundColorInput.addEventListener("input", () => {
+    notifyBibleReferencePreferenceChange(
+        bibleReferencePreferenceKeys.backgroundColor,
+        bibleReferenceBackgroundColorInput.value
+    );
+});
+
+bibleReferenceSliderSettings.forEach(({ id, key, min, max }) => {
+    const slider = document.getElementById(id);
+    slider.addEventListener("input", () => {
+        const numericValue = Number(slider.value);
+        const normalizedValue = Number.isFinite(numericValue)
+            ? Math.min(max, Math.max(min, numericValue))
+            : min;
+        slider.value = String(normalizedValue);
+        if (key === bibleReferencePreferenceKeys.backgroundOpacity &&
+            !localStorage.getItem(bibleReferencePreferenceKeys.backgroundColor)) {
+            localStorage.setItem(
+                bibleReferencePreferenceKeys.backgroundColor,
+                bibleReferenceBackgroundColorInput.value
+            );
+        }
+        notifyBibleReferencePreferenceChange(key, String(normalizedValue));
+    });
+});
 
 document.querySelectorAll('input[name="bible-reference-line-layout"]').forEach(input => {
     input.addEventListener("change", () => {
@@ -835,17 +909,18 @@ bibleReferenceFontSelect.addEventListener("change", () => {
 
 
 function applyBackgroundOpacity(rawValue) {
-    let currentOpacity = Number(rawValue) / BACKGROUND_OPACITY_STEPS;
-    localStorage.setItem('savedOpacity', rawValue);
-    syncBackgroundOpacityControls(String(rawValue));
-    const rawColor = localStorage.getItem("rawBgColor") || bgColorInput?.value || "#553355";
-    let newColor = hexToRgba(rawColor, currentOpacity);
-
+    const numericValue = Number(rawValue);
+    const normalizedValue = Number.isFinite(numericValue)
+        ? Math.min(BACKGROUND_OPACITY_STEPS, Math.max(0, numericValue))
+        : getBackgroundOpacityRawValue();
+    const storedValue = String(normalizedValue);
+    setBgItem("obs-bible-bg-opacity", storedValue);
+    localStorage.setItem("savedOpacity", storedValue);
+    syncBackgroundOpacityControls(storedValue);
+    updateBackgroundPreviews();
     let settingsChannel = new BroadcastChannel("settings");
-    settingsChannel.postMessage({ opacityColor: newColor });
+    settingsChannel.postMessage({ backgroundOpacityChanged: true });
     settingsChannel.close();
-    setBackgroundMode("plain", { broadcast: false });
-    clearGradient();
 }
 
 backgroundOpacityControls.forEach(control => {
@@ -1061,7 +1136,7 @@ displayLineByLine.addEventListener("change", function() {
 });
 
 loadGradientState();
-syncBackgroundOpacityControls(String(localStorage.getItem("savedOpacity") || String(BACKGROUND_OPACITY_STEPS)));
+syncBackgroundOpacityControls();
 
 if (backgroundSettingTrigger) {
     backgroundSettingTrigger.addEventListener("click", openBackgroundModeModal);
@@ -1312,6 +1387,7 @@ bgPlainColorHex?.addEventListener("change", (e) => {
 
 function syncBgFormToContentType() {
     syncBackgroundModeRadios();
+    syncBackgroundOpacityControls();
     const mode = getBackgroundMode();
 
     const bgGradientInlineSection = document.getElementById("bg-gradient-inline-section");

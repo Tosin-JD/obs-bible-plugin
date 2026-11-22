@@ -111,15 +111,30 @@ if (savedTextAnimationData) {
         const textData = JSON.parse(savedTextAnimationData);
         const transitionTypes = new Set([
             'none', 'fade', 'crossfade', 'blur', 'slide-left', 'slide-right', 'slide-top', 'slide-bottom',
-            'flip', 'spin', 'rotate', 'mask', 'circular-reveal', 'vertical-split', 'horizontal-split',
+            'typewriter', 'bounce', 'burst', 'roll', 'skate', 'block', 'mask', 'circular-reveal', 'vertical-split', 'horizontal-split',
             'push', 'pull', 'whip-pan', 'wave', 'liquid-morph', 'pixel-dissolve', 'light-flash',
-            'glow', 'staggered-letter', 'perspective', '3d-rotation', 'zoom-in', 'zoom-out', 'bounce', 'shake'
+            'glow', 'staggered-letter', 'zoom-in', 'zoom-out', 'shake'
         ]);
         const easings = new Set(['linear', 'ease', 'ease-in', 'ease-out', 'ease-in-out']);
-        const duration = Number(textData.duration);
+        const legacyDuration = Number(textData.duration);
         const stagger = Number(textData.stagger);
+        const normalizeDuration = (value, fallback) => {
+            if (value === null || value === undefined) return fallback;
+            if (typeof value === 'string' && value.trim() === '') return fallback;
+            const numericValue = Number(value);
+            return Number.isFinite(numericValue)
+                ? Math.min(10, Math.max(0.01, numericValue))
+                : fallback;
+        };
+        const legacyFallback = normalizeDuration(legacyDuration, 0.6);
+        const introDuration = normalizeDuration(textData.intro?.duration, legacyFallback);
+        const outroDuration = normalizeDuration(textData.outro?.duration, legacyFallback);
 
         document.getElementById('text-animation-enabled').checked = textData.enabled !== false;
+        const textAnimationOptions = document.getElementById('text-animation-options');
+        if (textAnimationOptions) {
+            textAnimationOptions.hidden = textData.enabled === false;
+        }
         document.getElementById('text-intro-animation-type').value =
             transitionTypes.has(textData.intro?.type) ? textData.intro.type : 'crossfade';
         document.getElementById('text-intro-animation-easing').value =
@@ -128,8 +143,10 @@ if (savedTextAnimationData) {
             transitionTypes.has(textData.outro?.type) ? textData.outro.type : 'crossfade';
         document.getElementById('text-outro-animation-easing').value =
             easings.has(textData.outro?.easing) ? textData.outro.easing : 'ease-in-out';
-        document.getElementById('text-animation-duration').value =
-            Number.isFinite(duration) ? Math.min(10, Math.max(0.1, duration)) : 0.6;
+        document.getElementById('text-intro-animation-duration').value =
+            introDuration;
+        document.getElementById('text-outro-animation-duration').value =
+            outroDuration;
         document.getElementById('text-animation-stagger').value =
             Number.isFinite(stagger) ? Math.min(1, Math.max(0, stagger)) : 0.03;
         document.getElementById('text-effect-enabled').checked = textData.effect?.enabled === true;

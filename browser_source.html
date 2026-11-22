@@ -327,10 +327,16 @@
         || localStorage.getItem('bgColor')
         || "#000000";
 
-      const opacity = (isSeparate && contentType && localStorage.getItem(`obs-bible-bg-opacity_${contentType}`))
-        || localStorage.getItem('obs-bible-bg-opacity')
-        || localStorage.getItem('savedOpacity')
-        || "1";
+      const savedOpacity = (isSeparate && contentType
+        ? localStorage.getItem(`obs-bible-bg-opacity_${contentType}`)
+        : null) ?? localStorage.getItem('obs-bible-bg-opacity') ?? localStorage.getItem('savedOpacity');
+      const opacitySteps = Number(savedOpacity);
+      const backgroundOpacity = savedOpacity !== null && savedOpacity.trim() !== "" && Number.isFinite(opacitySteps)
+        ? Math.round(Math.min(20, Math.max(0, opacitySteps))) / 20
+        : 1;
+      [bgVideo, bgImage, bgGradient].forEach(layer => {
+        if (layer) layer.style.opacity = String(backgroundOpacity);
+      });
 
       if (isMediaActive) {
         bgContainer.style.backgroundColor = "transparent";
@@ -338,7 +344,7 @@
         bgContainer.style.backgroundColor = "transparent";
       } else {
         // Fall back gracefully to plain color if media source is unavailable or plain mode, so screen never goes blank!
-        bgContainer.style.backgroundColor = hexToRgba(rawColor, opacity);
+        bgContainer.style.backgroundColor = hexToRgba(rawColor, backgroundOpacity);
       }
       if (applyToken !== backgroundApplyToken) return;
     }
@@ -351,9 +357,11 @@
     function applyTitleColor(color) {
       messageDisplay.style.setProperty("--title-color", color);
       const spans = document.querySelectorAll(
-        "#messageDisplay span:not(.bible-content):not(.bible-message):not(.bible-reference)"
+        "#messageDisplay span:not(.bible-content):not(.bible-message):not(.bible-reference):not(.text-animation-char):not(.text-animation-overlay):not(.typewriter-caret)"
       );
       spans.forEach(span => span.style.color = color);
+      messageDisplay.querySelectorAll('.text-animation-char[data-title-color="true"]')
+        .forEach(span => span.style.color = color);
     }
 
     // Text channel
@@ -367,12 +375,12 @@
         data = { fadein: false, messageContent: data, contentType: "text" };
       }
       applyBackgroundForType(contentType);
-      updateMessage('messageDisplay', data);
-
       const titleColor = localStorage.getItem("titleColor");
       if (titleColor) {
           applyTitleColor(titleColor);
+          data.titleColor = titleColor;
       }
+      updateMessage('messageDisplay', data);
     };
 
     // settings channel
@@ -385,6 +393,9 @@
           }
           if (event.data.bgUpdateContentType) {
             applyBackgroundForType(event.data.bgUpdateContentType === "all" ? currentContentType : event.data.bgUpdateContentType, true);
+          }
+          if (event.data.backgroundOpacityChanged) {
+            applyBackgroundForType(currentContentType);
           }
           if (event.data.selectedFont){
             bgContainer.style.fontFamily = event.data.selectedFont;
@@ -542,15 +553,8 @@
             animationContainer.style.animationDirection = "normal";
             animationContainer.classList.add(type);
             animationContainer.style.display = 'flex';
-            
-            while(animatedElement.offsetHeight > animationContainer.offsetHeight){
-              let tempFontSize = Number(animatedElement.style.fontSize.replace(/px/i, ''));
-              tempFontSize -= 1;
-              animatedElement.style.fontSize = `${tempFontSize}px`;
-            }
-
+            adjustFontSizeBasedOnScroll(animatedElement);
             setTimeout(() => {
-              adjustFontSizeBasedOnScroll();
               animationContainer.classList.remove(type);
             }, duration * 1000);
           }

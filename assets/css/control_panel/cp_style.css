@@ -380,6 +380,11 @@ select{
   min-height: 28px;
 }
 
+.text-animation-options[hidden],
+#text-animation-options[hidden] {
+  display: none;
+}
+
 .text-animation-preview {
   align-self: flex-start;
   min-height: 30px;
@@ -391,8 +396,8 @@ select{
   display: none;
 }
 
-.bible-layout-separate-line .bible-reference{
-  display: block;
+.bible-reference{
+  display: inline;
 }
 
 #listItems{
