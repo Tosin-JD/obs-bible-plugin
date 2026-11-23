@@ -18,7 +18,6 @@ let savedTextShadowOpacity = localStorage.getItem('savedTextOpacity');
 let savedTextShadowIntensity = localStorage.getItem('savedTextIntensity');
 let savedTextShadowHorOffset = localStorage.getItem('savedHorOffset');
 let savedTextShadowVerOffset = localStorage.getItem('savedVerOffset');
-let savedBgMargin = localStorage.getItem('savedBgMargin');
 const savedAnimationData = localStorage.getItem('obs-bible-animationData');
 const savedTextAnimationData = localStorage.getItem('obs-bible-text-animationData');
 const savedSpaceBarCheckBox = localStorage.getItem('obs-bible-spacebar-checkbox');
@@ -290,9 +289,14 @@ if (savedTextShadowVerOffset !== null) {
     defaultShadowVer.value = savedTextShadowVerOffset;
 }
 
-if (savedBgMargin !== null) {
-    let defaultMargin = document.getElementById("bg-margin");
-    defaultMargin.value = savedBgMargin;
+const savedMessagePadding = getSavedMessagePadding();
+const messagePaddingVerticalSlider = document.getElementById("message-padding-vertical");
+const messagePaddingHorizontalSlider = document.getElementById("message-padding-horizontal");
+if (messagePaddingVerticalSlider) {
+    messagePaddingVerticalSlider.value = String(savedMessagePadding.vertical);
+}
+if (messagePaddingHorizontalSlider) {
+    messagePaddingHorizontalSlider.value = String(savedMessagePadding.horizontal);
 }
 
 

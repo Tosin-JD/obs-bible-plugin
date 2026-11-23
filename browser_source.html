@@ -18,6 +18,7 @@
     </div>
   </div>
 
+  <script src="assets/js/shared/display_spacing.js"></script>
   <script src="assets/js/browser_source/browser_app.js"></script>
   <script>
     const bgContainer = document.getElementById("bg-container");
@@ -455,12 +456,17 @@
             messageDisplay.style.textDecoration = event.data.currentUnderlineState;
             localStorage.setItem('underlineState', event.data.currentUnderlineState);
           }
-          if (event.data.selectedBgMargin !== undefined && event.data.selectedBgMargin !== null) {
-            const margin = Number(event.data.selectedBgMargin);
-            if (Number.isFinite(margin)) {
-              const normalizedMargin = Math.round(Math.min(200, Math.max(0, margin)));
-              messageDisplay.style.padding = normalizedMargin + "px";
-              localStorage.setItem('savedBgMargin', String(normalizedMargin));
+          if (event.data.messagePadding) {
+            const padding = normalizeMessagePaddingInput(event.data.messagePadding);
+            setSavedMessagePadding(padding);
+            applyMessagePadding(messageDisplay, padding);
+            adjustFontSizeBasedOnScroll();
+          } else if (event.data.selectedBgMargin !== undefined && event.data.selectedBgMargin !== null) {
+            const legacyPadding = normalizeObsBibleMessagePaddingValue(event.data.selectedBgMargin, null);
+            if (legacyPadding !== null) {
+              const padding = { vertical: legacyPadding, horizontal: legacyPadding };
+              setSavedMessagePadding(padding);
+              applyMessagePadding(messageDisplay, padding);
             }
             adjustFontSizeBasedOnScroll();
           }

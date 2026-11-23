@@ -752,6 +752,10 @@ function getFontFitStyleSignature(messageElem) {
     messageElem.style.wordSpacing,
     messageElem.style.textIndent,
     messageElem.style.padding,
+    messageElem.style.paddingTop,
+    messageElem.style.paddingRight,
+    messageElem.style.paddingBottom,
+    messageElem.style.paddingLeft,
     messageElem.closest('.message-transition-wrapper')?.className || '',
     bibleElementStyles
   ].join('\u0000');

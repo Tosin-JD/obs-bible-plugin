@@ -11,7 +11,6 @@ var savedItalicState = localStorage.getItem('italicState');
 var savedUnderlineState = localStorage.getItem('underlineState');
 var savedTextAlign = localStorage.getItem('textAlign');
 var savedShadowColor = localStorage.getItem('savedShadowColor');
-let savedBgMargin = localStorage.getItem('savedBgMargin');
 const savedAnimationData = localStorage.getItem('obs-bible-animationData');
 const savedTextAnimationData = localStorage.getItem('obs-bible-text-animationData');
 
@@ -131,12 +130,7 @@ if (savedShadowColor) {
     messageDisplay.style.textShadow = savedShadowColor;
 }
 
-if (savedBgMargin !== null) {
-    const margin = Number(savedBgMargin);
-    if (Number.isFinite(margin)) {
-        messageDisplay.style.padding = `${Math.round(Math.min(200, Math.max(0, margin)))}px`;
-    }
-}
+applyMessagePadding(messageDisplay);
 if (typeof applyBackgroundForType === "function") {
     applyBackgroundForType();
 }

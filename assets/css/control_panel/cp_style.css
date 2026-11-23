@@ -563,7 +563,11 @@ select{
   cursor: pointer;
 }
 
-#bible-reference-alignment-control[hidden]{
+#bible-reference-alignment-control[hidden],
+#bible-reference-padding-top-control[hidden],
+#bible-reference-padding-bottom-control[hidden],
+#bible-reference-margin-top-control[hidden],
+#bible-reference-margin-bottom-control[hidden]{
   display: none;
 }
 

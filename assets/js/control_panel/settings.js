@@ -6,7 +6,8 @@ let textShadowOpacity = document.getElementById("shadow-opacity");
 let textShadowIntensity = document.getElementById("shadow-intensity");
 let textShadowHorOffset = document.getElementById("hor-shadow-offset");
 let textShadowVerOffset = document.getElementById("ver-shadow-offset");
-let bgMargin = document.getElementById("bg-margin");
+const messagePaddingVertical = document.getElementById("message-padding-vertical");
+const messagePaddingHorizontal = document.getElementById("message-padding-horizontal");
 const fontElement = document.getElementById("fontStyle");
 const selectedFont = fontElement.options[fontElement.selectedIndex].value;
 const opacityRange = document.getElementById("bg-opacity");
@@ -744,8 +745,6 @@ const bibleReferencePreferenceKeys = {
     fontFamily: "obs-bible-reference-font-family",
     backgroundColor: "obs-bible-reference-background-color",
     backgroundOpacity: "obs-bible-reference-background-opacity",
-    padding: "obs-bible-reference-padding",
-    margin: "obs-bible-reference-margin",
     radius: "obs-bible-reference-radius"
 };
 
@@ -764,13 +763,27 @@ restoreBibleReferenceRadio(
     "same-line"
 );
 const bibleReferenceAlignmentControl = document.getElementById("bible-reference-alignment-control");
+const bibleReferenceVerticalSpacingControls = [
+    document.getElementById("bible-reference-padding-top-control"),
+    document.getElementById("bible-reference-padding-bottom-control"),
+    document.getElementById("bible-reference-margin-top-control"),
+    document.getElementById("bible-reference-margin-bottom-control")
+];
 
 function updateBibleReferenceAlignmentVisibility() {
     const separateLineSelected = document.getElementById("bible-reference-separate-line").checked;
     bibleReferenceAlignmentControl.hidden = !separateLineSelected;
 }
 
+function updateBibleReferenceVerticalSpacingVisibility() {
+    const separateLineSelected = document.getElementById("bible-reference-separate-line").checked;
+    bibleReferenceVerticalSpacingControls.forEach(control => {
+        control.hidden = !separateLineSelected;
+    });
+}
+
 updateBibleReferenceAlignmentVisibility();
+updateBibleReferenceVerticalSpacingVisibility();
 
 restoreBibleReferenceRadio(
     "bible-reference-alignment",
@@ -814,10 +827,20 @@ bibleReferenceBackgroundColorInput.value = validBibleReferenceBackgroundColor
 
 const bibleReferenceSliderSettings = [
     { id: "bible-reference-background-opacity", key: bibleReferencePreferenceKeys.backgroundOpacity, min: 0, max: 100, fallback: 100 },
-    { id: "bible-reference-padding", key: bibleReferencePreferenceKeys.padding, min: 0, max: 80, fallback: 0 },
-    { id: "bible-reference-margin", key: bibleReferencePreferenceKeys.margin, min: 0, max: 100, fallback: 0 },
     { id: "bible-reference-radius", key: bibleReferencePreferenceKeys.radius, min: 0, max: 80, fallback: 0 }
 ];
+
+const bibleReferenceSpacingSliderSettings = ["padding", "margin"].flatMap(kind => {
+    const range = kind === "padding" ? { min: 0, max: 80 } : { min: 0, max: 100 };
+    return ["top", "right", "bottom", "left"].map(side => ({
+        id: `bible-reference-${kind}-${side}`,
+        key: getBibleReferenceSpacingKey(kind, side),
+        kind,
+        side,
+        min: range.min,
+        max: range.max
+    }));
+});
 
 function notifyBibleReferencePreferenceChange(preferenceKey, value) {
     if (value === "") {
@@ -835,6 +858,11 @@ bibleReferenceSliderSettings.forEach(({ id, key, min, max, fallback }) => {
     slider.value = String(savedValue !== null && Number.isFinite(numericValue)
         ? Math.min(max, Math.max(min, numericValue))
         : fallback);
+});
+bibleReferenceSpacingSliderSettings.forEach(({ id, kind, side, min, max }) => {
+    const slider = document.getElementById(id);
+    const spacingValue = getBibleReferenceSpacingValue(kind, side);
+    slider.value = String(Math.min(max, Math.max(min, spacingValue)));
 });
 window.syncControlPanelSliderValues?.();
 
@@ -864,10 +892,23 @@ bibleReferenceSliderSettings.forEach(({ id, key, min, max }) => {
     });
 });
 
+bibleReferenceSpacingSliderSettings.forEach(({ id, key, min, max }) => {
+    const slider = document.getElementById(id);
+    slider.addEventListener("input", () => {
+        const numericValue = Number(slider.value);
+        const normalizedValue = Number.isFinite(numericValue)
+            ? Math.min(max, Math.max(min, numericValue))
+            : min;
+        slider.value = String(normalizedValue);
+        notifyBibleReferencePreferenceChange(key, String(normalizedValue));
+    });
+});
+
 document.querySelectorAll('input[name="bible-reference-line-layout"]').forEach(input => {
     input.addEventListener("change", () => {
         if (input.checked) {
             updateBibleReferenceAlignmentVisibility();
+            updateBibleReferenceVerticalSpacingVisibility();
             notifyBibleReferencePreferenceChange(bibleReferencePreferenceKeys.lineLayout, input.value);
         }
     });
@@ -1123,14 +1164,20 @@ textShadowHorOffset.addEventListener('input', updateTextShadow);
 textShadowVerOffset.addEventListener('input', updateTextShadow);
 
 
-bgMargin.addEventListener("input", function() {
-    let selectedMargin = bgMargin.value;
-    localStorage.setItem('savedBgMargin', selectedMargin);
+function broadcastMessagePadding() {
+    const padding = normalizeMessagePaddingInput({
+        vertical: messagePaddingVertical?.value,
+        horizontal: messagePaddingHorizontal?.value
+    });
+    setSavedMessagePadding(padding);
 
     let settingsChannel = new BroadcastChannel("settings");
-    settingsChannel.postMessage({ selectedBgMargin: selectedMargin });
+    settingsChannel.postMessage({ messagePadding: padding });
     settingsChannel.close();
-});
+}
+
+messagePaddingVertical.addEventListener("input", broadcastMessagePadding);
+messagePaddingHorizontal.addEventListener("input", broadcastMessagePadding);
 
 displayLineByLine.addEventListener("change", function() {
     localStorage.setItem("obs-bible-display-song-line-by-line", displayLineByLine.checked);
