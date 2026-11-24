@@ -20,6 +20,10 @@ const  splitAndOrganizeText = (text) => {
         const div = document.createElement('div');
         const paragraph = verse.split(/\r\n|\n|\r/);
 
+        while (paragraph.length > 0 && paragraph[0].trim() === "") paragraph.shift();
+        while (paragraph.length > 0 && paragraph[paragraph.length - 1].trim() === "") paragraph.pop();
+        if (paragraph.length === 0) return;
+
         // Assign an id based on content
         if (paragraph[0].includes('CHORUS')) {
             div.id = 'song-chorus';

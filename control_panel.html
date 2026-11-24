@@ -270,8 +270,12 @@ DoubleClick on History erase all previous text"></textarea>
               </div>
               <div class="row">
                 <div class="settings-icons slider-control">
-                  <div class="slider-control-header"><input class="slider-value" id="bg-margin-value" type="text" inputmode="numeric" pattern="[0-9]*" aria-label="Margin value"><label for="bg-margin">Margin</label></div>
-                  <div class="slider-track-wrap"><input type="range" min="0" max="200" value="10" class="slider" id="bg-margin"></div>
+                  <div class="slider-control-header"><input class="slider-value" id="message-padding-vertical-value" type="text" inputmode="numeric" pattern="[0-9]*" aria-label="Padding top and bottom value"><label for="message-padding-vertical">Padding (top/bottom)</label></div>
+                  <div class="slider-track-wrap"><input type="range" min="0" max="200" value="20" class="slider" id="message-padding-vertical"></div>
+                </div>
+                <div class="settings-icons slider-control">
+                  <div class="slider-control-header"><input class="slider-value" id="message-padding-horizontal-value" type="text" inputmode="numeric" pattern="[0-9]*" aria-label="Padding left and right value"><label for="message-padding-horizontal">Padding (left/right)</label></div>
+                  <div class="slider-track-wrap"><input type="range" min="0" max="200" value="20" class="slider" id="message-padding-horizontal"></div>
                 </div>
               </div>
               <div class="column" id="shadow-editor">
@@ -589,6 +593,132 @@ DoubleClick on History erase all previous text"></textarea>
                     </select>
                   </div>
                 </div>
+                <div class="row">
+                  <div class="column settings-icons slider-control">
+                    <div class="slider-control-header">
+                      <input class="slider-value" id="bible-reference-background-opacity-value" type="text"
+                        inputmode="numeric" pattern="[0-9]*" aria-label="Reference background opacity value">
+                      <label for="bible-reference-background-opacity">Reference background opacity (%)</label>
+                    </div>
+                    <div class="slider-track-wrap">
+                      <input type="range" min="0" max="100" value="100" class="slider"
+                        id="bible-reference-background-opacity">
+                    </div>
+                  </div>
+                  <div class="column settings-icons slider-control">
+                    <div class="slider-control-header">
+                      <input class="slider-value" id="bible-reference-radius-value" type="text"
+                        inputmode="numeric" pattern="[0-9]*" aria-label="Reference rounded corners value">
+                      <label for="bible-reference-radius">Reference rounded corners (px)</label>
+                    </div>
+                    <div class="slider-track-wrap">
+                      <input type="range" min="0" max="80" value="0" class="slider"
+                        id="bible-reference-radius">
+                    </div>
+                  </div>
+                </div>
+                <div class="column settings-icons">
+                  <span>Reference padding</span>
+                  <div class="row">
+                    <div class="column settings-icons slider-control" id="bible-reference-padding-top-control" hidden>
+                      <div class="slider-control-header">
+                        <input class="slider-value" id="bible-reference-padding-top-value" type="text"
+                          inputmode="numeric" pattern="[0-9]*" aria-label="Reference padding top value">
+                        <label for="bible-reference-padding-top">Top (px)</label>
+                      </div>
+                      <div class="slider-track-wrap">
+                        <input type="range" min="0" max="80" value="0" class="slider"
+                          id="bible-reference-padding-top">
+                      </div>
+                    </div>
+                    <div class="column settings-icons slider-control">
+                      <div class="slider-control-header">
+                        <input class="slider-value" id="bible-reference-padding-right-value" type="text"
+                          inputmode="numeric" pattern="[0-9]*" aria-label="Reference padding right value">
+                        <label for="bible-reference-padding-right">Right (px)</label>
+                      </div>
+                      <div class="slider-track-wrap">
+                        <input type="range" min="0" max="80" value="0" class="slider"
+                          id="bible-reference-padding-right">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="column settings-icons slider-control" id="bible-reference-padding-bottom-control" hidden>
+                      <div class="slider-control-header">
+                        <input class="slider-value" id="bible-reference-padding-bottom-value" type="text"
+                          inputmode="numeric" pattern="[0-9]*" aria-label="Reference padding bottom value">
+                        <label for="bible-reference-padding-bottom">Bottom (px)</label>
+                      </div>
+                      <div class="slider-track-wrap">
+                        <input type="range" min="0" max="80" value="0" class="slider"
+                          id="bible-reference-padding-bottom">
+                      </div>
+                    </div>
+                    <div class="column settings-icons slider-control">
+                      <div class="slider-control-header">
+                        <input class="slider-value" id="bible-reference-padding-left-value" type="text"
+                          inputmode="numeric" pattern="[0-9]*" aria-label="Reference padding left value">
+                        <label for="bible-reference-padding-left">Left (px)</label>
+                      </div>
+                      <div class="slider-track-wrap">
+                        <input type="range" min="0" max="80" value="0" class="slider"
+                          id="bible-reference-padding-left">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="column settings-icons">
+                  <span>Reference margin</span>
+                  <div class="row">
+                    <div class="column settings-icons slider-control" id="bible-reference-margin-top-control" hidden>
+                      <div class="slider-control-header">
+                        <input class="slider-value" id="bible-reference-margin-top-value" type="text"
+                          inputmode="numeric" pattern="[0-9]*" aria-label="Reference margin top value">
+                        <label for="bible-reference-margin-top">Top (px)</label>
+                      </div>
+                      <div class="slider-track-wrap">
+                        <input type="range" min="0" max="100" value="0" class="slider"
+                          id="bible-reference-margin-top">
+                      </div>
+                    </div>
+                    <div class="column settings-icons slider-control">
+                      <div class="slider-control-header">
+                        <input class="slider-value" id="bible-reference-margin-right-value" type="text"
+                          inputmode="numeric" pattern="[0-9]*" aria-label="Reference margin right value">
+                        <label for="bible-reference-margin-right">Right (px)</label>
+                      </div>
+                      <div class="slider-track-wrap">
+                        <input type="range" min="0" max="100" value="0" class="slider"
+                          id="bible-reference-margin-right">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="column settings-icons slider-control" id="bible-reference-margin-bottom-control" hidden>
+                      <div class="slider-control-header">
+                        <input class="slider-value" id="bible-reference-margin-bottom-value" type="text"
+                          inputmode="numeric" pattern="[0-9]*" aria-label="Reference margin bottom value">
+                        <label for="bible-reference-margin-bottom">Bottom (px)</label>
+                      </div>
+                      <div class="slider-track-wrap">
+                        <input type="range" min="0" max="100" value="0" class="slider"
+                          id="bible-reference-margin-bottom">
+                      </div>
+                    </div>
+                    <div class="column settings-icons slider-control">
+                      <div class="slider-control-header">
+                        <input class="slider-value" id="bible-reference-margin-left-value" type="text"
+                          inputmode="numeric" pattern="[0-9]*" aria-label="Reference margin left value">
+                        <label for="bible-reference-margin-left">Left (px)</label>
+                      </div>
+                      <div class="slider-track-wrap">
+                        <input type="range" min="0" max="100" value="0" class="slider"
+                          id="bible-reference-margin-left">
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </section>
             </div>
           </div>
@@ -613,6 +743,11 @@ DoubleClick on History erase all previous text"></textarea>
                   <input type="color" id="titleColor" value="#ff6450">
                   <span class="color-setting-label">Title</span>
                 </label>
+                <label class="column settings-icons color-setting-item color-setting-trigger tooltip tooltip-bottom"
+                  for="bible-reference-background-color" data-tooltip="Background color for the Bible reference">
+                  <input type="color" id="bible-reference-background-color" value="#000000">
+                  <span class="color-setting-label">Reference Background</span>
+                </label>
               </div>
               <div class="row color-settings-grid">
                 <label class="column settings-icons color-setting-item color-setting-trigger tooltip tooltip-bottom"
@@ -635,50 +770,114 @@ DoubleClick on History erase all previous text"></textarea>
           </div>
           <div class="settings-tab-area" id="settings-animation" style="display:none;">
             <div class="column">
-              <div class="tooltip tooltip-bottom" data-tooltip="style of the animation">
-                <label for="animation-type">Animation Type:</label>
-                <select id="animation-type">
-                  <option value="fade">Fade</option>
-                  <option value="slide">Slide</option>
-                  <option value="slide-top-left">Slide Top Left</option>
-                  <option value="slide-top-right">Slide Top Right</option>
-                  <option value="slide-bottom-left">Slide Bottom Left</option>
-                  <option value="slide-bottom-right">Slide Bottom Right</option>
-                  <option value="slide-left">Slide Left</option>
-                  <option value="slide-right">Slide Right</option>
-                  <option value="slide-top">Slide Top</option>
-                  <option value="slide-bottom">Slide Bottom</option>
-                  <option value="fly-left">Fly Left</option>
-                  <option value="fly-right">Fly Right</option>
-                  <option value="fly-top">Fly Top</option>
-                  <option value="fly-bottom">Fly Bottom</option>
-                  <option value="zoom-in">Zoom In</option>
-                  <option value="zoom-out">Zoom Out</option>
-                  <option value="rotate">Rotate</option>
-                  <option value="flip">Flip</option>
-                  <option value="bounce">Bounce</option>
-                  <option value="shake">Shake</option>
-                </select>
+              <section class="settings-control-group text-animation-settings" aria-labelledby="display-animation-heading">
+                <h3 id="display-animation-heading">Display Animation</h3>
+                <div class="tooltip tooltip-bottom" data-tooltip="style of the display on/off animation">
+                  <label for="animation-type">Animation Type:</label>
+                  <select id="animation-type">
+                    <option value="fade">Fade</option>
+                    <option value="slide">Slide</option>
+                    <option value="slide-top-left">Slide Top Left</option>
+                    <option value="slide-top-right">Slide Top Right</option>
+                    <option value="slide-bottom-left">Slide Bottom Left</option>
+                    <option value="slide-bottom-right">Slide Bottom Right</option>
+                    <option value="slide-left">Slide Left</option>
+                    <option value="slide-right">Slide Right</option>
+                    <option value="slide-top">Slide Top</option>
+                    <option value="slide-bottom">Slide Bottom</option>
+                    <option value="fly-left">Fly Left</option>
+                    <option value="fly-right">Fly Right</option>
+                    <option value="fly-top">Fly Top</option>
+                    <option value="fly-bottom">Fly Bottom</option>
+                    <option value="zoom-in">Zoom In</option>
+                    <option value="zoom-out">Zoom Out</option>
+                    <option value="rotate">Rotate</option>
+                    <option value="flip">Flip</option>
+                    <option value="bounce">Bounce</option>
+                    <option value="shake">Shake</option>
+                  </select>
+                </div>
 
-              </div>
+                <div class="tooltip tooltip-bottom" data-tooltip="time it takes for the display on/off animation">
+                  <label for="animation-duration">Duration (s):</label><br>
+                  <input type="number" id="animation-duration" min="0.01" step="0.01" value="1">
+                </div>
 
-              <div class="tooltip tooltip-bottom" data-tooltip="time it takes for the animation">
-                <label for="animation-duration">Duration (s):</label><br>
-                <input type="number" id="animation-duration" min="0.1" step="0.1" value="1">
-              </div>
+                <div class="tooltip tooltip-bottom" data-tooltip="How fast or slow the display enter or leave is">
+                  <label for="animation-easing">Easing:</label>
+                  <select id="animation-easing">
+                    <option value="linear">Linear</option>
+                    <option value="ease">Ease</option>
+                    <option value="ease-in">Ease In</option>
+                    <option value="ease-out">Ease Out</option>
+                    <option value="ease-in-out">Ease In-Out</option>
+                    <option value="step-start">Step Start</option>
+                    <option value="step-end">Step End</option>
+                  </select>
+                </div>
+              </section>
 
-              <div class="tooltip tooltip-bottom" data-tooltip="How fast or slow you want the enter or leave">
-                <label for="animation-easing">Easing:</label>
-                <select id="animation-easing">
-                  <option value="linear">Linear</option>
-                  <option value="ease">Ease</option>
-                  <option value="ease-in">Ease In</option>
-                  <option value="ease-out">Ease Out</option>
-                  <option value="ease-in-out">Ease In-Out</option>
-                  <option value="step-start">Step Start</option>
-                  <option value="step-end">Step End</option>
-                </select>
-              </div>
+              <section class="settings-control-group text-animation-settings" aria-labelledby="text-animation-heading">
+                <h3 id="text-animation-heading">Text Animation</h3>
+                <label class="text-animation-enable" for="text-animation-enabled">
+                  <input type="checkbox" id="text-animation-enabled" checked>
+                  <span>Animate text when switching content</span>
+                </label>
+
+                <div id="text-animation-options">
+                <div class="text-animation-grid">
+                  <div>
+                    <label for="text-intro-animation-type">Intro Animation</label>
+                    <select id="text-intro-animation-type" class="small-font"></select>
+                    <label for="text-intro-animation-easing">Intro Easing</label>
+                    <select id="text-intro-animation-easing" class="small-font">
+                      <option value="linear">Linear</option>
+                      <option value="ease">Ease</option>
+                      <option value="ease-in">Ease In</option>
+                      <option value="ease-out">Ease Out</option>
+                      <option value="ease-in-out">Ease In-Out</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label for="text-outro-animation-type">Outro Animation</label>
+                    <select id="text-outro-animation-type" class="small-font"></select>
+                    <label for="text-outro-animation-easing">Outro Easing</label>
+                    <select id="text-outro-animation-easing" class="small-font">
+                      <option value="linear">Linear</option>
+                      <option value="ease">Ease</option>
+                      <option value="ease-in">Ease In</option>
+                      <option value="ease-out">Ease Out</option>
+                      <option value="ease-in-out">Ease In-Out</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="text-animation-grid">
+                  <div>
+                    <label for="text-intro-animation-duration">Intro Duration (seconds, total)</label>
+                    <input type="number" id="text-intro-animation-duration" min="0.01" max="10" step="0.01" value="0.6">
+                  </div>
+                  <div>
+                    <label for="text-outro-animation-duration">Outro Duration (seconds, total)</label>
+                    <input type="number" id="text-outro-animation-duration" min="0.01" max="10" step="0.01" value="0.6">
+                  </div>
+                </div>
+                <div class="text-animation-grid">
+                  <div>
+                    <label for="text-animation-stagger">Letter Delay (seconds)</label>
+                    <input type="number" id="text-animation-stagger" min="0" max="1" step="0.000001" value="0.03">
+                  </div>
+                </div>
+
+                <label class="text-animation-enable" for="text-effect-enabled">
+                  <input type="checkbox" id="text-effect-enabled">
+                  <span>Enable ongoing text effect</span>
+                </label>
+                <label for="text-effect-type">Text Effect</label>
+                <select id="text-effect-type" class="small-font"></select>
+                <button type="button" id="text-animation-preview" class="text-animation-preview">Preview Text Animation</button>
+                </div>
+              </section>
             </div>
           </div>
         </div>
@@ -804,7 +1003,7 @@ DoubleClick on History erase all previous text"></textarea>
             <div class="gradient-section-title">Background Opacity</div>
             <div class="slider-control-header"><input class="slider-value" id="bg-opacity-value" type="text" inputmode="numeric" pattern="[0-9]*" aria-label="Background opacity value"><label for="bg-opacity">Background opacity</label></div>
             <div class="slider-track-wrap">
-              <input type="range" min="0" max="20" value="20" class="slider background-opacity-slider" id="bg-opacity" data-bg-opacity-control="plain">
+              <input type="range" min="0" max="20" value="20" class="slider background-opacity-slider" id="bg-opacity" data-bg-opacity-control="global">
             </div>
           </div>
 
@@ -941,6 +1140,7 @@ DoubleClick on History erase all previous text"></textarea>
   </div>
   <script src="assets/js/control_panel/choose_bible_translation.js"></script>
 
+  <script src="assets/js/shared/display_spacing.js"></script>
   <script src="assets/js/control_panel/utils.js"></script>
   <script src="assets/js/control_panel/shortcuts.js"></script>
   <script src="assets/js/control_panel/control_app.js"></script>
@@ -956,6 +1156,7 @@ DoubleClick on History erase all previous text"></textarea>
   <script src="assets/js/control_panel/search_lyrics.js"></script>
   <script src="assets/js/control_panel/suggest_bible_books.js"></script>
   <script src="assets/js/control_panel/flyout_tool.js"></script>
+  <script src="assets/js/control_panel/custom_selects.js"></script>
 </body>
 
 </html>

@@ -226,10 +226,74 @@ body, .main-bg {
     color: var(--color-fg);
 }
 
-#suggestions, .book-picker-dropdown {
+#suggestions, .book-picker-dropdown, .custom-select-menu {
     background-color: var(--color-mid-bg);
     color: var(--color-fg);
     box-shadow: 0 3px 8px var(--picker-shadow-color, rgba(0, 0, 0, .3));
+}
+
+#suggestions li, .custom-select-option {
+    background-color: var(--color-mid-bg);
+    color: var(--color-fg);
+}
+
+#suggestions li:hover, .custom-select-option:hover,
+.custom-select-option:focus-visible {
+    background-color: var(--hover-bg-color);
+    color: var(--hover-fg-color);
+}
+
+.custom-select-option:focus-visible {
+    outline: 2px solid var(--selected-fg-color);
+    outline-offset: -2px;
+}
+
+.custom-select-option[aria-selected="true"] {
+    background-color: var(--selected-bg-color);
+    color: var(--selected-fg-color);
+}
+
+.custom-select-group {
+    color: var(--color-fg);
+    border-bottom: 1px solid var(--card-border);
+}
+
+.custom-select-trigger {
+    border-color: var(--card-border);
+    background-color: var(--color-mid-bg);
+    color: var(--color-fg);
+}
+
+.custom-select-chevron {
+    border-color: var(--color-fg);
+}
+
+.custom-select-trigger:hover,
+.custom-select-trigger:focus-visible,
+.custom-select-trigger[aria-expanded="true"] {
+    border-color: var(--card-border-hover);
+    background-color: var(--hover-bg-color);
+    color: var(--hover-fg-color);
+}
+
+.custom-select-trigger:focus-visible {
+    outline: 2px solid var(--selected-fg-color);
+    outline-offset: 2px;
+}
+
+.custom-select-layer .custom-select-backdrop {
+    background-color: rgba(0, 0, 0, 0.48);
+}
+
+.custom-select-trigger:hover .custom-select-chevron,
+.custom-select-trigger:focus-visible .custom-select-chevron,
+.custom-select-trigger[aria-expanded="true"] .custom-select-chevron {
+    border-color: var(--hover-fg-color);
+}
+
+.custom-select-heading {
+    color: var(--color-fg);
+    border-bottom: 1px solid var(--card-border);
 }
 
 #suggestions {
@@ -290,7 +354,7 @@ p, .tab-button, .song p, .color-picker,  .settings, .settings-icons, .bible-cont
 }
 
 .slider::-webkit-slider-thumb:hover, ::-webkit-scrollbar-thumb:hover,
-.btn-file-upload:hover, #suggestions li:hover, button:hover,
+.btn-file-upload:hover, #suggestions li:hover, .custom-select-option:hover, button:hover,
 .slider:hover, #song-input:hover, .input:hover, #bible-input:hover, button:hover,
 p:hover, .tab-button:hover, .song p:hover, .color-picker:hover,
 .bible-container p:hover, .btn:hover{
@@ -299,7 +363,7 @@ p:hover, .tab-button:hover, .song p:hover, .color-picker:hover,
 }
 
 .slider::-webkit-slider-thumb:active, ::-webkit-scrollbar-thumb:active,
-.btn-file-upload:active, #suggestions li:active, button:active,
+.btn-file-upload:active, #suggestions li:active, .custom-select-option:active, button:active,
 .slider:active, #song-input:active, .input:active, #bible-input:active,
 p:active, .tab-button:active, .song p:active, .color-picker:active,
 .bible-container p:active, .btn:active{

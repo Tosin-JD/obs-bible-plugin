@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+### Added
+- Added a separate Text Animation section under the Animation settings tab.
+- Added configurable text intro and outro animations, durations, easing, and ongoing text effects for switching between text, Bible, and song content.
+- Kept the existing display on/off container animation independent from text transitions.
+
 ## [5.0.0] - 2026-11-18
 ### Added
 - Added seven Bible translations: ASV, BBE, CSB, NASB, NLT, TPT, and WEB.

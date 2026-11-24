@@ -18,8 +18,8 @@ let savedTextShadowOpacity = localStorage.getItem('savedTextOpacity');
 let savedTextShadowIntensity = localStorage.getItem('savedTextIntensity');
 let savedTextShadowHorOffset = localStorage.getItem('savedHorOffset');
 let savedTextShadowVerOffset = localStorage.getItem('savedVerOffset');
-let savedBgMargin = localStorage.getItem('savedBgMargin');
 const savedAnimationData = localStorage.getItem('obs-bible-animationData');
+const savedTextAnimationData = localStorage.getItem('obs-bible-text-animationData');
 const savedSpaceBarCheckBox = localStorage.getItem('obs-bible-spacebar-checkbox');
 const savedFadeInCheckBox = localStorage.getItem('obs-bible-fadein-checkbox');
 const savedDisplayLineByLineCheckBox = localStorage.getItem('obs-bible-display-song-line-by-line');
@@ -102,6 +102,58 @@ if (savedAnimationData) {
         }
     }else{
       toggleCheckbox.checked = true;
+    }
+}
+
+if (savedTextAnimationData) {
+    try {
+        const textData = JSON.parse(savedTextAnimationData);
+        const transitionTypes = new Set([
+            'none', 'fade', 'crossfade', 'blur', 'slide-left', 'slide-right', 'slide-top', 'slide-bottom',
+            'typewriter', 'bounce', 'burst', 'roll', 'skate', 'block', 'mask', 'circular-reveal', 'vertical-split', 'horizontal-split',
+            'push', 'pull', 'whip-pan', 'wave', 'liquid-morph', 'pixel-dissolve', 'light-flash',
+            'glow', 'staggered-letter', 'zoom-in', 'zoom-out', 'shake'
+        ]);
+        const easings = new Set(['linear', 'ease', 'ease-in', 'ease-out', 'ease-in-out']);
+        const legacyDuration = Number(textData.duration);
+        const stagger = Number(textData.stagger);
+        const normalizeDuration = (value, fallback) => {
+            if (value === null || value === undefined) return fallback;
+            if (typeof value === 'string' && value.trim() === '') return fallback;
+            const numericValue = Number(value);
+            return Number.isFinite(numericValue)
+                ? Math.min(10, Math.max(0.01, numericValue))
+                : fallback;
+        };
+        const legacyFallback = normalizeDuration(legacyDuration, 0.6);
+        const introDuration = normalizeDuration(textData.intro?.duration, legacyFallback);
+        const outroDuration = normalizeDuration(textData.outro?.duration, legacyFallback);
+
+        document.getElementById('text-animation-enabled').checked = textData.enabled !== false;
+        const textAnimationOptions = document.getElementById('text-animation-options');
+        if (textAnimationOptions) {
+            textAnimationOptions.hidden = textData.enabled === false;
+        }
+        document.getElementById('text-intro-animation-type').value =
+            transitionTypes.has(textData.intro?.type) ? textData.intro.type : 'crossfade';
+        document.getElementById('text-intro-animation-easing').value =
+            easings.has(textData.intro?.easing) ? textData.intro.easing : 'ease-in-out';
+        document.getElementById('text-outro-animation-type').value =
+            transitionTypes.has(textData.outro?.type) ? textData.outro.type : 'crossfade';
+        document.getElementById('text-outro-animation-easing').value =
+            easings.has(textData.outro?.easing) ? textData.outro.easing : 'ease-in-out';
+        document.getElementById('text-intro-animation-duration').value =
+            introDuration;
+        document.getElementById('text-outro-animation-duration').value =
+            outroDuration;
+        document.getElementById('text-animation-stagger').value =
+            Number.isFinite(stagger) ? Math.min(1, Math.max(0, stagger)) : 0.03;
+        document.getElementById('text-effect-enabled').checked = textData.effect?.enabled === true;
+        if ([...document.getElementById('text-effect-type').options].some(option => option.value === textData.effect?.type)) {
+            document.getElementById('text-effect-type').value = textData.effect.type;
+        }
+    } catch (error) {
+        // Ignore malformed text-animation settings and retain the default controls.
     }
 }
 
@@ -237,9 +289,14 @@ if (savedTextShadowVerOffset !== null) {
     defaultShadowVer.value = savedTextShadowVerOffset;
 }
 
-if (savedBgMargin !== null) {
-    let defaultMargin = document.getElementById("bg-margin");
-    defaultMargin.value = savedBgMargin;
+const savedMessagePadding = getSavedMessagePadding();
+const messagePaddingVerticalSlider = document.getElementById("message-padding-vertical");
+const messagePaddingHorizontalSlider = document.getElementById("message-padding-horizontal");
+if (messagePaddingVerticalSlider) {
+    messagePaddingVerticalSlider.value = String(savedMessagePadding.vertical);
+}
+if (messagePaddingHorizontalSlider) {
+    messagePaddingHorizontalSlider.value = String(savedMessagePadding.horizontal);
 }
 
 

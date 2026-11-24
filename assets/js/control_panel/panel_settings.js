@@ -14,7 +14,7 @@ function savePanelTheme(){
     window.addEventListener('DOMContentLoaded', (event) => {
         const savedTheme = localStorage.getItem('obs-bible-panel-theme') || 'obs-bible-default-yami';
         document.body.setAttribute('data-theme', savedTheme);
-        document.getElementById('obs-bible-panel-theme').value = savedTheme.charAt(0).toUpperCase() + savedTheme.slice(1);
+        document.getElementById('obs-bible-panel-theme').value = savedTheme;
     });
 }
 

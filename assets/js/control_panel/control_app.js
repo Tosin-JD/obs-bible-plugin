@@ -114,6 +114,7 @@ window.onload = function() {
   const scriptFile = localStorage.getItem('selectedScriptFile') || bibleVersion?.value;
   if (scriptFile && bibleVersion) {
       bibleVersion.value = scriptFile;
+      window.syncCustomSelect?.(bibleVersion);
       loadScriptFile(scriptFile).then(() => {
           getSavedBible();
           displayBible();

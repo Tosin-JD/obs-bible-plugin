@@ -11,8 +11,8 @@ var savedItalicState = localStorage.getItem('italicState');
 var savedUnderlineState = localStorage.getItem('underlineState');
 var savedTextAlign = localStorage.getItem('textAlign');
 var savedShadowColor = localStorage.getItem('savedShadowColor');
-let savedBgMargin = localStorage.getItem('savedBgMargin');
 const savedAnimationData = localStorage.getItem('obs-bible-animationData');
+const savedTextAnimationData = localStorage.getItem('obs-bible-text-animationData');
 
 function loadSavedBorder() {
   let savedMainBorder = localStorage.getItem('obs-bible-saved-main-border');
@@ -63,9 +63,25 @@ if (savedAnimationData) {
 
 if (savedMessage && savedMessage !== "undefined" && savedMessage !== "null"){
     messageDisplay.innerHTML = savedMessage;
+    const fitWrapper = document.getElementById("message-transition-wrapper");
+    fitWrapper?.classList.toggle("content-song", localStorage.getItem("selectedTab") === "songs");
 } else {
     messageDisplay.innerHTML = "";
     localStorage.removeItem('savedMessage');
+}
+
+if (savedTextAnimationData) {
+    try {
+        const textAnimationData = JSON.parse(savedTextAnimationData);
+        Array.from(messageDisplay.classList).forEach((className) => {
+            if (className.startsWith('text-effect-')) messageDisplay.classList.remove(className);
+        });
+        if (textAnimationData.effect?.enabled && textAnimationData.effect.type !== 'none') {
+            messageDisplay.classList.add(`text-effect-${textAnimationData.effect.type}`);
+        }
+    } catch (error) {
+        // Ignore malformed text-animation settings.
+    }
 }
 
 // Background rendering is handled dynamically by applyBackgroundForType() in browser_source.html
@@ -114,12 +130,7 @@ if (savedShadowColor) {
     messageDisplay.style.textShadow = savedShadowColor;
 }
 
-if (savedBgMargin !== null) {
-    const margin = Number(savedBgMargin);
-    if (Number.isFinite(margin)) {
-        messageDisplay.style.padding = `${Math.round(Math.min(200, Math.max(0, margin)))}px`;
-    }
-}
+applyMessagePadding(messageDisplay);
 if (typeof applyBackgroundForType === "function") {
     applyBackgroundForType();
 }
